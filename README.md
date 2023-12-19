@@ -7,14 +7,14 @@
 <br>
 
 1. In Root package.json:
-* npm install --save-dev @types/jest
-* npm install --save-dev typescript
+* post-install script that installs both backend and frontend dependencies (for local use)
 
 <br>
 
 2. In the Backend Folder package.json:
-* npm install express,
-* npm install --save-dev @types/node,
+* npm install express
+* npm install nodemon
+* npm install --save-dev @types/node
 * npm install --save-dev @types/express
 
 <br>
@@ -32,4 +32,4 @@
 
 <br>
 
-5. tsconfig.json in root folder. connected with references to backend and frontend folders with their own respective tsconfig.json files
+5. tsconfig.json file in both backend and frontend folders. dist output for each so JS files will have respective dependencies available
