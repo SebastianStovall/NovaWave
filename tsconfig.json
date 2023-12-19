@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "noEmit": false,
+    "jsx": "react-jsx"
+  },
+  "include": ["backend/src/**/*.ts", "frontend/src/**/*.ts", "frontend/src/**/*.tsx"],
+  "exclude": ["node_modules", "backend/node_modules", "frontend/node_modules"],
+  "references": [
+    {
+      "path": "backend/tsconfig.json"
+    },
+    {
+      "path": "frontend/tsconfig.json"
+    }
+  ]
+}
