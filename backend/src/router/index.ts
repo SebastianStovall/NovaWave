@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import authentication from './authentication'
+import authentication from './authentication' // name router whatever you want
 
 const router = Router()
 

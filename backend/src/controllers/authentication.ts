@@ -70,7 +70,7 @@ export const login: RequestHandler = async (req, res) => {
         user.authentication.sessionToken = authentication(salt, user._id.toString())
         await user.save()
 
-        res.cookie('Auth-Token', user.authentication.sessionToken) // store session token as cookie
+        res.cookie('Auth-Token', user.authentication.sessionToken, {domain: 'localhost', path: '/'}) // store session token as cookie
 
         res.status(200).json(user)
 

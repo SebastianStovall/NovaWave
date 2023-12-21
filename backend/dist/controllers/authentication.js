@@ -64,7 +64,7 @@ const login = async (req, res) => {
         const salt = (0, auth_1.random)(); // if login success, generate session token for this user
         user.authentication.sessionToken = (0, auth_1.authentication)(salt, user._id.toString());
         await user.save();
-        res.cookie('Auth-Token', user.authentication.sessionToken); // store session token as cookie
+        res.cookie('Auth-Token', user.authentication.sessionToken, { domain: 'localhost', path: '/' }); // store session token as cookie
         res.status(200).json(user);
     }
     catch (e) {
