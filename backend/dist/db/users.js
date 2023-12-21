@@ -33,5 +33,13 @@ const createUser = (values) => new exports.UserModel(values).save()
 exports.createUser = createUser;
 const updateUserById = (id, values) => exports.UserModel.findByIdAndUpdate(id, values);
 exports.updateUserById = updateUserById;
-const deleteUserById = (id) => exports.UserModel.findOneAndDelete({ _id: id });
+const deleteUserById = async (id) => {
+    try {
+        const deletedUser = await exports.UserModel.findOneAndDelete({ _id: id });
+        return deletedUser;
+    }
+    catch (e) {
+        return null;
+    }
+};
 exports.deleteUserById = deleteUserById;

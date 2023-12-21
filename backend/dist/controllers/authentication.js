@@ -26,20 +26,11 @@ const register = async (req, res) => {
                 password: (0, auth_1.authentication)(salt, password) // store salted password in the database
             }
         });
-        return res.status(200).json(user);
+        return res.status(200).json({ message: 'Successfully Registered User', user: user });
     }
     catch (e) {
         if (e instanceof CustomError_1.default) {
-            switch (e.name) {
-                case 'MissingFieldError':
-                    res.status(e.code).json({ message: 'Bad Request', error: e.message });
-                    break;
-                case 'DuplicateAccountError':
-                    res.status(e.code).json({ message: 'Conflict', error: e.message });
-                    break;
-                default:
-                    break;
-            }
+            res.status(e.code).json({ message: e.name, error: e.message });
         }
         else {
             res.status(500).json({ message: 'Internal Server Error', error: e.message });
@@ -65,20 +56,11 @@ const login = async (req, res) => {
         user.authentication.sessionToken = (0, auth_1.authentication)(salt, user._id.toString());
         await user.save();
         res.cookie('Auth-Token', user.authentication.sessionToken, { domain: 'localhost', path: '/' }); // store session token as cookie
-        res.status(200).json(user);
+        res.status(200).json({ message: 'Successfully Logged In User', user: user });
     }
     catch (e) {
         if (e instanceof CustomError_1.default) {
-            switch (e.name) {
-                case 'MissingFieldError':
-                    res.status(e.code).json({ message: 'Bad Request', error: e.message });
-                    break;
-                case 'UserNotFound':
-                    res.status(e.code).json({ message: 'Forbidden', error: e.message });
-                    break;
-                default:
-                    break;
-            }
+            res.status(e.code).json({ message: e.name, error: e.message });
         }
         else {
             res.status(500).json({ message: 'Internal Server Error', error: e.message });

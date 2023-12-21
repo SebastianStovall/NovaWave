@@ -7,6 +7,8 @@ exports.isAuthenticated = void 0;
 const lodash_1 = require("lodash"); // get retreives nested object values and merge will merge two object's properties together
 const users_1 = require("../db/users");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
+// export const isOwner: RequestHandler = async(req, res, next) => {
+// }
 const isAuthenticated = async (req, res, next) => {
     try {
         const sessionToken = req.cookies['Auth-Token'];
@@ -22,13 +24,7 @@ const isAuthenticated = async (req, res, next) => {
     }
     catch (e) {
         if (e instanceof CustomError_1.default) {
-            switch (e.name) {
-                case 'UserNotAuthenticated':
-                    res.status(e.code).json({ message: 'Unauthorized', error: e.message });
-                    break;
-                default:
-                    break;
-            }
+            res.status(e.code).json({ message: e.name, error: e.message });
         }
         else {
             res.status(500).json({ message: 'Internal Server Error', error: e.message });

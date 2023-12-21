@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import CustomError from "../utils/CustomError";
 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
@@ -30,4 +31,11 @@ export const createUser = (values: Record<string, any>) => new UserModel(values)
 .then((user) => user.toObject())
 
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values)
-export const deleteUserById = (id: string) => UserModel.findOneAndDelete({_id: id})
+export const deleteUserById = async(id: string) => {
+    try {
+        const deletedUser = await UserModel.findOneAndDelete({_id: id});
+        return deletedUser;
+    } catch(e) {
+        return null
+    }
+}

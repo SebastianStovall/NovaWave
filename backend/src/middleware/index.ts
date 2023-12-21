@@ -4,6 +4,10 @@ import {get, merge} from 'lodash' // get retreives nested object values and merg
 import { getUserBySessionToken } from '../db/users'
 import CustomError from '../utils/CustomError'
 
+// export const isOwner: RequestHandler = async(req, res, next) => {
+
+// }
+
 export const isAuthenticated: RequestHandler = async(req, res, next) => { // middleware to determine if user is authenticated
     try {
         const sessionToken = req.cookies['Auth-Token']
@@ -23,13 +27,7 @@ export const isAuthenticated: RequestHandler = async(req, res, next) => { // mid
 
     } catch(e: any) {
         if (e instanceof CustomError) {
-            switch (e.name) {
-                case 'UserNotAuthenticated':
-                    res.status(e.code).json({ message: 'Unauthorized', error: e.message });
-                    break;
-                default:
-                    break;
-            }
+            res.status(e.code).json({ message: e.name, error: e.message });
         } else {
             res.status(500).json({ message: 'Internal Server Error', error: e.message });
         }
