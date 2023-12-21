@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import CustomError from "../utils/CustomError";
 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
@@ -18,6 +17,7 @@ export const UserModel = mongoose.model('User', UserSchema) // turn this schema 
 // actions for User (used in controller functions)
 
 export const getUsers = () => UserModel.find() // queries all documents in collection
+
 export const getUserByEmail = (email: string) => UserModel.findOne({email})
 
 export const getUserBySessionToken = (sessionToken: string) => UserModel.find({
@@ -31,6 +31,7 @@ export const createUser = (values: Record<string, any>) => new UserModel(values)
 .then((user) => user.toObject())
 
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values)
+
 export const deleteUserById = async(id: string) => {
     try {
         const deletedUser = await UserModel.findOneAndDelete({_id: id});

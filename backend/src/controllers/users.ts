@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { deleteUserById, getUsers } from "../db/users";
+import { deleteUserById, getUserById, getUsers } from "../db/users";
 import CustomError from "../utils/CustomError";
 
 export const getAllUsers: RequestHandler = async(req, res) => {
@@ -25,6 +25,32 @@ export const deleteUser: RequestHandler = async(req, res) => {
         }
 
         return res.json({message: `Successfully Deleted User ${id}`})
+    } catch(e: any) {
+        if (e instanceof CustomError) {
+            res.status(e.code).json({ message: e.name, error: e.message });
+        } else {
+            res.status(500).json({ message: 'Internal Server Error', error: e.message });
+        }
+    }
+}
+
+export const updateUser: RequestHandler = async(req, res) => {
+    try {
+        const {id} = req.params
+        const {username} = req.body
+
+        if(!username) {
+            throw new CustomError('MissingFieldError', 'A required field is missing', 422)
+        }
+
+        const user = await getUserById(id)
+        if(user) {
+            user.username = username
+            await user.save()
+        }
+
+        return res.status(200).json({message: 'Successfully Updated User Info', user: user})
+
     } catch(e: any) {
         if (e instanceof CustomError) {
             res.status(e.code).json({ message: e.name, error: e.message });
