@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.logout = exports.login = exports.register = void 0;
 const users_1 = require("../db/users");
 const auth_1 = require("../helpers/auth");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
@@ -29,6 +29,7 @@ const register = async (req, res) => {
         return res.status(200).json({ message: 'Successfully Registered User', user: user });
     }
     catch (e) {
+        console.log("ERROR STACK", e.stack);
         if (e instanceof CustomError_1.default) {
             res.status(e.code).json({ message: e.name, error: e.message });
         }
@@ -55,10 +56,11 @@ const login = async (req, res) => {
         const salt = (0, auth_1.random)(); // if login success, generate session token for this user
         user.authentication.sessionToken = (0, auth_1.authentication)(salt, user._id.toString());
         await user.save();
-        res.cookie('Auth-Token', user.authentication.sessionToken, { domain: 'localhost', path: '/' }); // store session token as cookie
+        res.cookie('AuthToken', user.authentication.sessionToken, { domain: 'localhost', path: '/' }); // store session token as cookie
         res.status(200).json({ message: 'Successfully Logged In User', user: user });
     }
     catch (e) {
+        console.log("ERROR STACK", e.stack);
         if (e instanceof CustomError_1.default) {
             res.status(e.code).json({ message: e.name, error: e.message });
         }
@@ -68,3 +70,14 @@ const login = async (req, res) => {
     }
 };
 exports.login = login;
+const logout = async (req, res) => {
+    try {
+        res.clearCookie('AuthToken', { domain: 'localhost', path: '/' });
+        res.status(200).json({ message: 'Successfully signed out user' });
+    }
+    catch (e) {
+        console.log("ERROR STACK", e.stack);
+        res.status(500).json({ message: 'Internal Server Error', error: e.message });
+    }
+};
+exports.logout = logout;

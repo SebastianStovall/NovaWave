@@ -2,6 +2,7 @@ import express, { RequestHandler } from "express";
 import { createUser, getUserByEmail } from '../db/users'
 import { random, authentication } from "../helpers/auth";
 import CustomError from "../utils/CustomError";
+import { get } from 'lodash'
 
 export const register: RequestHandler = async (req, res) => {
     try {
@@ -29,6 +30,7 @@ export const register: RequestHandler = async (req, res) => {
         return res.status(200).json({message: 'Successfully Registered User', user: user})
 
     } catch(e: any) {
+        console.log("ERROR STACK", e.stack)
         if (e instanceof CustomError) {
             res.status(e.code).json({ message: e.name, error: e.message });
         } else {
@@ -61,15 +63,28 @@ export const login: RequestHandler = async (req, res) => {
         user.authentication.sessionToken = authentication(salt, user._id.toString())
         await user.save()
 
-        res.cookie('Auth-Token', user.authentication.sessionToken, {domain: 'localhost', path: '/'}) // store session token as cookie
+        res.cookie('AuthToken', user.authentication.sessionToken, {domain: 'localhost', path: '/'}) // store session token as cookie
 
         res.status(200).json({message: 'Successfully Logged In User', user: user})
 
     } catch(e: any) {
+        console.log("ERROR STACK", e.stack)
         if (e instanceof CustomError) {
             res.status(e.code).json({ message: e.name, error: e.message });
         } else {
             res.status(500).json({ message: 'Internal Server Error', error: e.message });
         }
+    }
+}
+
+
+export const logout: RequestHandler = async (req, res) => {
+    try {
+        res.clearCookie('AuthToken', {domain: 'localhost', path: '/'})
+        res.status(200).json({message: 'Successfully signed out user'})
+
+    } catch(e: any) {
+        console.log("ERROR STACK", e.stack)
+        res.status(500).json({ message: 'Internal Server Error', error: e.message });
     }
 }
