@@ -28,8 +28,12 @@ app.listen(3000, () => {
 const connectionString = (process.env.MONGO_URL as string)
 
 mongoose.Promise = Promise
-mongoose.connect(connectionString).then(result => console.log('database connected')).catch(err => console.log(err))
-// mongoose.connection.on('error', (error: Error) => console.log(error))
+mongoose.connect(connectionString)
+
+mongoose.connection.on('error', (error: Error) => console.log(error))
+mongoose.connection.once('open', () => {
+  console.log('Connected to MongoDB successfully');
+});
 
 
 app.use('/', router()) // router from router/index.ts

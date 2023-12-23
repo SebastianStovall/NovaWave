@@ -95,3 +95,25 @@ mongosh --host <INSERT_IP_HERE> --port 27017
 ```bash
 mongod --version
 ```
+
+
+### Install MongoDB Compass GUI for Ubuntu Linux Subsytem for Windows
+
+1. [Install compass here](https://www.mongodb.com/try/download/atlascli) Choose Ubuntu 64 bit version
+
+2. Drag to home root folder of Ubuntu system
+
+3. install the package
+```bash
+sudo dpkg -i mongodb-compass_*.deb
+```
+
+4. run this command if any dependencies are missing
+```bash
+sudo apt-get install -f
+```
+
+5. to run compass, use this command
+```bash
+mongodb-compass
+```

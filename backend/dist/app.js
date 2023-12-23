@@ -25,8 +25,11 @@ app.listen(3000, () => {
 // connect to Mongo DB
 const connectionString = process.env.MONGO_URL;
 mongoose_1.default.Promise = Promise;
-mongoose_1.default.connect(connectionString).then(result => console.log('database connected')).catch(err => console.log(err));
-// mongoose.connection.on('error', (error: Error) => console.log(error))
+mongoose_1.default.connect(connectionString);
+mongoose_1.default.connection.on('error', (error) => console.log(error));
+mongoose_1.default.connection.once('open', () => {
+    console.log('Connected to MongoDB successfully');
+});
 app.use('/', (0, router_1.default)()); // router from router/index.ts
 app.use((err, req, res, next) => {
     // handle errors

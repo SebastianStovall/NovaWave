@@ -4,11 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUser = exports.deleteUser = exports.getAllUsers = void 0;
-const users_1 = require("../db/users");
+const user_actions_1 = require("../db/actions/user-actions");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const getAllUsers = async (req, res) => {
     try {
-        const users = await (0, users_1.getUsers)();
+        const users = await (0, user_actions_1.getUsers)();
+        if (!users) {
+            throw new CustomError_1.default("queryError", "Error while querying User collection using find()", 500);
+        }
         return res.status(200).json(users);
     }
     catch (e) {
@@ -16,7 +19,9 @@ const getAllUsers = async (req, res) => {
             res.status(e.code).json({ message: e.name, error: e.message });
         }
         else {
-            res.status(500).json({ message: 'Internal Server Error', error: e.message });
+            res
+                .status(500)
+                .json({ message: "Internal Server Error", error: e.message });
         }
     }
 };
@@ -24,10 +29,11 @@ exports.getAllUsers = getAllUsers;
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const deletedUser = await (0, users_1.deleteUserById)(id);
+        const deletedUser = await (0, user_actions_1.deleteUserById)(id);
         if (!deletedUser) {
-            throw new CustomError_1.default('UserNotFound', 'Cannot delete this user. No user exists with this id', 404);
+            throw new CustomError_1.default("UserNotFound", "Cannot delete this user. No user exists with this id", 404);
         }
+        res.clearCookie("AuthToken", { domain: "localhost", path: "/" }); // clear session token after deleting account
         return res.json({ message: `Successfully Deleted User ${id}` });
     }
     catch (e) {
@@ -35,7 +41,9 @@ const deleteUser = async (req, res) => {
             res.status(e.code).json({ message: e.name, error: e.message });
         }
         else {
-            res.status(500).json({ message: 'Internal Server Error', error: e.message });
+            res
+                .status(500)
+                .json({ message: "Internal Server Error", error: e.message });
         }
     }
 };
@@ -45,21 +53,25 @@ const updateUser = async (req, res) => {
         const { id } = req.params;
         const { username } = req.body;
         if (!username) {
-            throw new CustomError_1.default('MissingFieldError', 'A required field is missing', 422);
+            throw new CustomError_1.default("MissingFieldError", "A required field is missing", 422);
         }
-        const user = await (0, users_1.getUserById)(id);
+        const user = await (0, user_actions_1.getUserById)(id);
         if (user) {
             user.username = username;
             await user.save();
         }
-        return res.status(200).json({ message: 'Successfully Updated User Info', user: user });
+        return res
+            .status(200)
+            .json({ message: "Successfully Updated User Info", user: user });
     }
     catch (e) {
         if (e instanceof CustomError_1.default) {
             res.status(e.code).json({ message: e.name, error: e.message });
         }
         else {
-            res.status(500).json({ message: 'Internal Server Error', error: e.message });
+            res
+                .status(500)
+                .json({ message: "Internal Server Error", error: e.message });
         }
     }
 };
