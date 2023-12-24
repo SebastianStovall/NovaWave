@@ -6,4 +6,5 @@ exports.default = (router) => {
     router.get('/playlists', middleware_1.isAuthenticated, playlists_1.getUserPlaylists);
     router.post('/playlists/new', middleware_1.isAuthenticated, playlists_1.createNewPlaylist);
     router.post('/playlists/add', middleware_1.isAuthenticated, playlists_1.addTrackToPlaylist);
+    router.delete('/playlists/deleteTrack', middleware_1.isAuthenticated, playlists_1.deleteTrackFromPlaylist);
 };

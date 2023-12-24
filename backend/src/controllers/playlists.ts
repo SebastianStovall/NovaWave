@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { initNewPlaylist, getPlaylistsByUserId, addTrack } from "../db/actions/playlist-actions";
+import { initNewPlaylist, getPlaylistsByUserId, addTrack, deleteTrack } from "../db/actions/playlist-actions";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
@@ -34,6 +34,7 @@ export const createNewPlaylist: RequestHandler = async (req, res, next) => {
 export const addTrackToPlaylist: RequestHandler = async(req, res, next) => {
     try {
         const { trackId, playlistId } = req.body
+        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
 
         if(!trackId) {
             throw new CustomError(
@@ -50,10 +51,59 @@ export const addTrackToPlaylist: RequestHandler = async(req, res, next) => {
             );
         }
 
-        await addTrack(trackId, playlistId)
-        res.status(201).json({ message: `Track ${trackId} added to playlist ${playlistId} successfully` });
+        const trackAdded = await addTrack(trackId, playlistId, currentUserId)
+
+        if (trackAdded) {
+            res.status(201).json({ message: `Track added to playlist` });
+        } else {
+            res.status(200).json({ message: `Track already in playlist` });
+        }
 
     } catch(e) {
         next(e)
     }
 }
+
+
+export const deleteTrackFromPlaylist: RequestHandler = async (req, res, next) => {
+    try {
+        const { trackId, playlistId } = req.body
+        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
+
+        if(!trackId) {
+            throw new CustomError(
+                "MissingTrackId",
+                "Track ID is missing in the request body",
+                400
+            );
+        }
+        if(!playlistId) {
+            throw new CustomError(
+                "MissingPlaylistId",
+                "Playlist ID is missing in the request body",
+                400
+            );
+        }
+
+        await deleteTrack(trackId, playlistId, currentUserId)
+        res.status(200).json({ message: `If track ${trackId} existed in playlist, it has been successfully deleted` });
+
+    } catch(e) {
+        next(e)
+    }
+}
+
+
+// TODO
+
+// foo playlist ID--> 6587e6e9fd199b61ec623b12
+
+// 1. addTrackToLikedSongs              (able to grab likedSongsPlaylistId 0(1) time through req.identity.likedSongsId )
+// 2. removeTrackFromLikedSongs         (able to grab likedSongsPlaylistId 0(1) time through req.identity.likedSongsId )
+
+// 3. addPlaylistToUserLibrary(plOwnerId)            (user 0(1) -- querying for adding to collection 0(1) -- connection to db = required )      user.playlistsArray($push)
+// 4. removePlaylistFromUserLibrary(plOwnerId)       (user 0(1) -- querying for removing from collection 0(1) -- connection to db = required )  user.playlistsArray($pull)
+
+
+// 5. addAlbumToPlaylist        same setup as addTrackToPlaylist
+// 6. removeAlbumFromPlaylist   same setup as removeTrackFromPlaylist
