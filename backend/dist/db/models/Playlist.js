@@ -25,13 +25,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlaylistModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+const PLTrackSchema = new mongoose_1.Schema({
+    track: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Track' },
+    addedAt: { type: Date, default: Date.now, required: false } // keep track of when each track was added
+}, { _id: false }); // dont omit a _id field for this subSchema, its not needed
 const PlaylistSchema = new mongoose_1.Schema({
     owner: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' }, // each playlist has a single owner, but people can also like your playlist and add it to their library (goes in their playlist array under User)
     likes: { type: Number, required: true, default: 0 }, // displayed under playlist UI
     title: { type: String, required: true },
     desc: { type: String, required: false, default: '' },
-    tracks: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Track' }],
-    numSongs: { type: Number, required: true, default: 0 },
+    tracks: [PLTrackSchema], // subdocument
     length: { type: String, required: true, default: '0:00' },
 }, { timestamps: true });
+// TODO - Add Validations (ex: playlist title must be unique)
 exports.PlaylistModel = mongoose_1.default.model('Playlist', PlaylistSchema); // turn this schema into a table/collection

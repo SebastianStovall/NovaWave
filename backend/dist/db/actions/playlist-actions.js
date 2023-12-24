@@ -1,23 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
+exports.addTrack = exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
 const Playlist_1 = require("../models/Playlist");
 const User_1 = require("../models/User");
 const user_actions_1 = require("./user-actions");
 // initializes a new empty playlist for particular user
 const initNewPlaylist = async (userId, count) => {
-    const playlistDefaultValues = {
-        owner: userId,
-        title: `My Playlist ${count + 1}`,
-    };
     try {
+        const playlistDefaultValues = {
+            owner: userId,
+            title: `My Playlist ${count + 1}`,
+        };
         const playlist = await new Playlist_1.PlaylistModel(playlistDefaultValues).save();
         await User_1.UserModel.updateOne({ _id: userId }, { $push: { playlists: playlist._id } }); // add the playlist to the user's document
-        return playlist.toObject();
     }
     catch (e) {
-        console.error('Error creating playlist:', e.message);
-        return null;
+        throw e;
     }
 };
 exports.initNewPlaylist = initNewPlaylist;
@@ -30,8 +28,21 @@ const getPlaylistsByUserId = async (userId) => {
         }
     }
     catch (e) {
-        console.error(e);
-        return null;
+        throw (e);
     }
 };
 exports.getPlaylistsByUserId = getPlaylistsByUserId;
+const addTrack = async (trackId, playlistId) => {
+    try {
+        await Playlist_1.PlaylistModel.updateOne({ _id: playlistId, 'tracks.track': { $ne: trackId } }, // specify the criteria for the update (only update if trackId not in array) -- 0(log n) -- cannot use $addToSet due to having addedAt field
+        {
+            $push: {
+                tracks: { track: trackId, addedAt: new Date() }
+            }
+        });
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.addTrack = addTrack;

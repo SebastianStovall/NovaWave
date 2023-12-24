@@ -42,8 +42,8 @@ app.use('/', router()) // router from router/index.ts
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // cenertalized error handling if no routes are hit or middleware errors
   // handle errors
   if(err instanceof CustomError) {
-    res.status(err.code).json({ message: err.name, error: err.message });
+    return res.status(err.code).json({ message: err.name, error: err.message });
   } else {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 });

@@ -35,9 +35,9 @@ app.use('/', (0, router_1.default)()); // router from router/index.ts
 app.use((err, req, res, next) => {
     // handle errors
     if (err instanceof CustomError_1.default) {
-        res.status(err.code).json({ message: err.name, error: err.message });
+        return res.status(err.code).json({ message: err.name, error: err.message });
     }
     else {
-        res.status(500).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 });
