@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { deleteUserById, getUserById, getUsers } from "../db/actions/user-actions";
 import CustomError from "../utils/CustomError";
 
-export const getAllUsers: RequestHandler = async (req, res) => {
+export const getAllUsers: RequestHandler = async (req, res, next) => {
   try {
     const users = await getUsers();
     if(!users) {
@@ -15,17 +15,11 @@ export const getAllUsers: RequestHandler = async (req, res) => {
     return res.status(200).json(users);
 
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    next(e)
   }
 };
 
-export const deleteUser: RequestHandler = async (req, res) => {
+export const deleteUser: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deletedUser = await deleteUserById(id);
@@ -42,17 +36,11 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
     return res.json({ message: `Successfully Deleted User ${id}` });
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    next(e)
   }
 };
 
-export const updateUser: RequestHandler = async (req, res) => {
+export const updateUser: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { username } = req.body;
@@ -75,12 +63,6 @@ export const updateUser: RequestHandler = async (req, res) => {
       .status(200)
       .json({ message: "Successfully Updated User Info", user: user });
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    next(e)
   }
 };

@@ -1,17 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initNewPlaylist = void 0;
+exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
 const Playlist_1 = require("../models/Playlist");
 const User_1 = require("../models/User");
+const user_actions_1 = require("./user-actions");
 // initializes a new empty playlist for particular user
 const initNewPlaylist = async (userId, count) => {
     const playlistDefaultValues = {
-        owners: [userId],
+        owner: userId,
         title: `My Playlist ${count + 1}`,
-        desc: '',
-        tracks: [],
-        numSongs: 0,
-        length: '0:00'
     };
     try {
         const playlist = await new Playlist_1.PlaylistModel(playlistDefaultValues).save();
@@ -24,3 +21,17 @@ const initNewPlaylist = async (userId, count) => {
     }
 };
 exports.initNewPlaylist = initNewPlaylist;
+const getPlaylistsByUserId = async (userId) => {
+    try {
+        const user = await (0, user_actions_1.getUserById)(userId);
+        if (user) {
+            await user.populate(['playlists']);
+            return user.playlists;
+        }
+    }
+    catch (e) {
+        console.error(e);
+        return null;
+    }
+};
+exports.getPlaylistsByUserId = getPlaylistsByUserId;

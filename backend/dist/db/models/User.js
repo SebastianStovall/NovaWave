@@ -46,12 +46,8 @@ function initLikedSongsPlaylist() {
             try {
                 // initialize a liked songs playlist for this user
                 const likedSongsPlaylist = await Playlist_1.PlaylistModel.create({
-                    owners: [this._id],
-                    title: `Liked Songs`,
-                    desc: '',
-                    tracks: [],
-                    numSongs: 0,
-                    length: '0:00'
+                    owner: this._id,
+                    title: `Liked Songs`
                 });
                 this.playlists.push(likedSongsPlaylist._id); // add Liked Songs to User playlist array
                 this.likedSongsPlaylistId = likedSongsPlaylist._id;

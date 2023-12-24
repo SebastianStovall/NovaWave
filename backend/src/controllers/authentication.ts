@@ -3,7 +3,7 @@ import { createUser, getUserByEmail } from "../db/actions/user-actions";
 import { random, authentication } from "../helpers/auth";
 import CustomError from "../utils/CustomError";
 
-export const register: RequestHandler = async (req, res) => {
+export const register: RequestHandler = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
 
@@ -46,17 +46,11 @@ export const register: RequestHandler = async (req, res) => {
       .status(200)
       .json({ message: "Successfully Registered User", user: user });
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    next(e)
   }
 };
 
-export const login: RequestHandler = async (req, res) => {
+export const login: RequestHandler = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -106,21 +100,15 @@ export const login: RequestHandler = async (req, res) => {
       .status(200)
       .json({ message: "Successfully Logged In User", user: user });
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    next(e)
   }
 };
 
-export const logout: RequestHandler = async (req, res) => {
+export const logout: RequestHandler = async (req, res, next) => {
   try {
     res.clearCookie("AuthToken", { domain: "localhost", path: "/" });
     res.status(200).json({ message: "Successfully signed out user" });
   } catch (e: any) {
-    res.status(500).json({ message: "Internal Server Error", error: e.message });
+    next(e)
   }
 };

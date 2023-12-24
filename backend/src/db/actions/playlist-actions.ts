@@ -1,15 +1,12 @@
 import { PlaylistModel } from "../models/Playlist";
 import { UserModel } from "../models/User";
+import { getUserById } from "./user-actions";
 
 // initializes a new empty playlist for particular user
 export const initNewPlaylist = async (userId: string, count: number): Promise<object | null> => {
     const playlistDefaultValues = {
-        owners: [userId],
+        owner: userId,
         title: `My Playlist ${count + 1}`,
-        desc: '',
-        tracks: [],
-        numSongs: 0,
-        length: '0:00'
     };
 
     try {
@@ -19,5 +16,20 @@ export const initNewPlaylist = async (userId: string, count: number): Promise<ob
     } catch (e: any) {
         console.error('Error creating playlist:', e.message);
         return null;
+    }
+}
+
+
+export const getPlaylistsByUserId = async (userId: string) => {
+    try {
+        const user = await getUserById(userId)
+        if(user) {
+            await user.populate(['playlists'])
+            return user.playlists
+        }
+
+    } catch(e: any) {
+        console.error(e)
+        return null
     }
 }

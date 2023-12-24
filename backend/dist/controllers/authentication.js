@@ -7,7 +7,7 @@ exports.logout = exports.login = exports.register = void 0;
 const user_actions_1 = require("../db/actions/user-actions");
 const auth_1 = require("../helpers/auth");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     try {
         const { email, password, username } = req.body;
         if (!email || !password || !username) {
@@ -34,18 +34,11 @@ const register = async (req, res) => {
             .json({ message: "Successfully Registered User", user: user });
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        next(e);
     }
 };
 exports.register = register;
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -72,24 +65,17 @@ const login = async (req, res) => {
             .json({ message: "Successfully Logged In User", user: user });
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        next(e);
     }
 };
 exports.login = login;
-const logout = async (req, res) => {
+const logout = async (req, res, next) => {
     try {
         res.clearCookie("AuthToken", { domain: "localhost", path: "/" });
         res.status(200).json({ message: "Successfully signed out user" });
     }
     catch (e) {
-        res.status(500).json({ message: "Internal Server Error", error: e.message });
+        next(e);
     }
 };
 exports.logout = logout;

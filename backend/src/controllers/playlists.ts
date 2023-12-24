@@ -1,10 +1,10 @@
 import { RequestHandler } from "express";
-import { initNewPlaylist } from "../db/actions/playlist-actions";
+import { initNewPlaylist, getPlaylistsByUserId } from "../db/actions/playlist-actions";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
 
-export const createNewPlaylist: RequestHandler = async (req, res) => {
+export const createNewPlaylist: RequestHandler = async (req, res, next) => {
     try {
         const userId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
         const userPlaylists = get(req, "identity.playlists") as unknown as Array<string>; // key into identify and grab ._id field
@@ -22,26 +22,28 @@ export const createNewPlaylist: RequestHandler = async (req, res) => {
         res.status(201).json({message: 'Successfully Created Playlist'})
 
     } catch (e: any) {
-        if (e instanceof CustomError) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        } else {
-        res.status(500).json({ message: "Internal Server Error", error: e.message });
-        }
+        next(e)
     }
 };
 
 
 
-// export const getAllPlaylists: RequestHandler = async (req, res) => {
-//     try {
-//         // const allPlaylists = await
-//         res.status(200).json()
+export const getUserPlaylists: RequestHandler = async (req, res, next) => {
+    try {
+        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
 
-//     } catch (e: any) {
-//         if (e instanceof CustomError) {
-//             res.status(e.code).json({ message: e.name, error: e.message });
-//         } else {
-//         res.status(500).json({ message: "Internal Server Error", error: e.message });
-//         }
-//     }
-// };
+        const userPlaylists = await getPlaylistsByUserId(currentUserId)
+        if(!userPlaylists) {
+            throw new CustomError(
+                "QueryError",
+                "Error while retreiving user playlists",
+                500
+            );
+        }
+
+        res.status(200).json(userPlaylists)
+
+    } catch (e: any) {
+        next(e)
+    }
+};

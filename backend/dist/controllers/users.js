@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUser = exports.deleteUser = exports.getAllUsers = void 0;
 const user_actions_1 = require("../db/actions/user-actions");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
     try {
         const users = await (0, user_actions_1.getUsers)();
         if (!users) {
@@ -15,18 +15,11 @@ const getAllUsers = async (req, res) => {
         return res.status(200).json(users);
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        next(e);
     }
 };
 exports.getAllUsers = getAllUsers;
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         const deletedUser = await (0, user_actions_1.deleteUserById)(id);
@@ -37,18 +30,11 @@ const deleteUser = async (req, res) => {
         return res.json({ message: `Successfully Deleted User ${id}` });
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        next(e);
     }
 };
 exports.deleteUser = deleteUser;
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { username } = req.body;
@@ -65,14 +51,7 @@ const updateUser = async (req, res) => {
             .json({ message: "Successfully Updated User Info", user: user });
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        next(e);
     }
 };
 exports.updateUser = updateUser;
