@@ -18,14 +18,9 @@ export const isOwner: RequestHandler = async (req, res, next) => {
     }
 
     next();
+
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    return next(e)
   }
 };
 
@@ -33,17 +28,9 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
   // middleware to determine if user is authenticated
   try {
     const sessionToken = req.cookies["AuthToken"];
-
-    if (!sessionToken) {
-      throw new CustomError(
-        "UserNotAuthenticated",
-        "You do not have permission to access this requested resource",
-        403
-      );
-    }
-
     const existingUser = await getUserBySessionToken(sessionToken);
-    if (!existingUser) {
+
+    if (!sessionToken || !existingUser ) { // if no session token OR no existing user with that session
       throw new CustomError(
         "UserNotAuthenticated",
         "You do not have permission to access this requested resource",
@@ -52,15 +39,9 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
     }
 
     merge(req, { identity: existingUser[0] }); // if the user is authenticated, add a key to the req object called identity which includes the user's information
-
     return next();
+
   } catch (e: any) {
-    if (e instanceof CustomError) {
-      res.status(e.code).json({ message: e.name, error: e.message });
-    } else {
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: e.message });
-    }
+    return next(e)
   }
 };

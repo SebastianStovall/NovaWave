@@ -17,14 +17,7 @@ const isOwner = async (req, res, next) => {
         next();
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        return next(e);
     }
 };
 exports.isOwner = isOwner;
@@ -32,25 +25,15 @@ const isAuthenticated = async (req, res, next) => {
     // middleware to determine if user is authenticated
     try {
         const sessionToken = req.cookies["AuthToken"];
-        if (!sessionToken) {
-            throw new CustomError_1.default("UserNotAuthenticated", "You do not have permission to access this requested resource", 403);
-        }
         const existingUser = await (0, user_actions_1.getUserBySessionToken)(sessionToken);
-        if (!existingUser) {
+        if (!sessionToken || !existingUser) { // if no session token OR no existing user with that session
             throw new CustomError_1.default("UserNotAuthenticated", "You do not have permission to access this requested resource", 403);
         }
         (0, lodash_1.merge)(req, { identity: existingUser[0] }); // if the user is authenticated, add a key to the req object called identity which includes the user's information
         return next();
     }
     catch (e) {
-        if (e instanceof CustomError_1.default) {
-            res.status(e.code).json({ message: e.name, error: e.message });
-        }
-        else {
-            res
-                .status(500)
-                .json({ message: "Internal Server Error", error: e.message });
-        }
+        return next(e);
     }
 };
 exports.isAuthenticated = isAuthenticated;

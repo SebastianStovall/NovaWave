@@ -7,6 +7,7 @@ import compression from 'compression'; // compresses size of response bodies bef
 import cors from 'cors'; // enable CORS for all routes, any client allowed to make requests to our server
 import mongoose from "mongoose";
 import router from "./router";
+import CustomError from "./utils/CustomError";
 
 const app = express();
 
@@ -38,7 +39,11 @@ mongoose.connection.once('open', () => {
 
 app.use('/', router()) // router from router/index.ts
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // cenertalized error handling if no routes are hit
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // cenertalized error handling if no routes are hit or middleware errors
   // handle errors
-  res.status(500).json({ message: err.message });
+  if(err instanceof CustomError) {
+    res.status(err.code).json({ message: err.name, error: err.message });
+  } else {
+    res.status(500).json({ message: err.message });
+  }
 });

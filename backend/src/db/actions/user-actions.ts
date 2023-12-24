@@ -20,14 +20,15 @@ export const getUserBySessionToken = (sessionToken: string) =>
 export const getUserById = (id: string) => UserModel.findById(id);
 
 
-export const createUser = (values: Record<string, any>) =>
-  new UserModel(values)
-    .save()
-    .then((user) => user.toObject())
-    .catch((error) => {
-      console.error('Error creating user:', error.message);
-      return null;
-    });
+export const createUser = async (values: Record<string, any>) => {
+  try {
+    const user = await UserModel.create(values); // when using pre-middleware, specifically use mongoose create method to ensure it triggers
+    return user.toObject();
+  } catch (e: any) {
+    console.error('Error creating user:', e.message);
+    return null;
+  }
+};
 
 export const updateUserById = (id: string, values: Record<string, any>) =>
   UserModel.findByIdAndUpdate(id, values);

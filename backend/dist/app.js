@@ -11,6 +11,7 @@ const compression_1 = __importDefault(require("compression")); // compresses siz
 const cors_1 = __importDefault(require("cors")); // enable CORS for all routes, any client allowed to make requests to our server
 const mongoose_1 = __importDefault(require("mongoose"));
 const router_1 = __importDefault(require("./router"));
+const CustomError_1 = __importDefault(require("./utils/CustomError"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     credentials: true,
@@ -33,5 +34,10 @@ mongoose_1.default.connection.once('open', () => {
 app.use('/', (0, router_1.default)()); // router from router/index.ts
 app.use((err, req, res, next) => {
     // handle errors
-    res.status(500).json({ message: err.message });
+    if (err instanceof CustomError_1.default) {
+        res.status(err.code).json({ message: err.name, error: err.message });
+    }
+    else {
+        res.status(500).json({ message: err.message });
+    }
 });

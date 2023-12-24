@@ -27,3 +27,15 @@ const createNewPlaylist = async (req, res) => {
     }
 };
 exports.createNewPlaylist = createNewPlaylist;
+// export const getAllPlaylists: RequestHandler = async (req, res) => {
+//     try {
+//         // const allPlaylists = await
+//         res.status(200).json()
+//     } catch (e: any) {
+//         if (e instanceof CustomError) {
+//             res.status(e.code).json({ message: e.name, error: e.message });
+//         } else {
+//         res.status(500).json({ message: "Internal Server Error", error: e.message });
+//         }
+//     }
+// };

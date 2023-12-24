@@ -26,11 +26,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlaylistModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const PlaylistSchema = new mongoose_1.Schema({
-    owners: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'User' }],
+    owner: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' }, // each playlist has a single owner, but people can also like your playlist and add it to their library (goes in their playlist array under User)
+    likes: { type: Number, required: true, default: 0 }, // displayed under playlist UI
     title: { type: String, required: true },
     desc: { type: String, required: false },
     tracks: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Track' }],
-    numSongs: { type: Number, required: true },
-    length: { type: String, required: true },
+    numSongs: { type: Number, required: true, default: 0 },
+    length: { type: String, required: true, default: '0:00' },
 }, { timestamps: true });
 exports.PlaylistModel = mongoose_1.default.model('Playlist', PlaylistSchema); // turn this schema into a table/collection

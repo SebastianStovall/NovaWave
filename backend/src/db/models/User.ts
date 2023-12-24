@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { PlaylistModel } from './Playlist';
 
 const UserSchema = new Schema({
     username: { type: String, required: true },
@@ -8,9 +9,53 @@ const UserSchema = new Schema({
         salt: {type: String, select: false}, // salting user password and verifying on login
         sessionToken: {type: String, select: false}
     },
-    playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }]
+
+    playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }], // order by timestamps so likedSongs playlist will be first
+    likedSongsPlaylistId: { type: Schema.Types.ObjectId, ref: 'Playlist' } // specifically reference likedSongs playlist for 0(1) lookup when favoriting songs
 
 }, {timestamps: true});
 
+initLikedSongsPlaylist()
 
 export const UserModel = mongoose.model('User', UserSchema) // turn this schema into a table/collection
+
+
+
+
+
+
+
+
+
+
+
+// PRE MIDDLEWARE ( triggered before save() to any User document )
+
+function initLikedSongsPlaylist() {
+    UserSchema.pre('save', async function(next) { // initialize NEW user's with an empty liked songs playlist
+        if (this.isNew) { // IF THIS IS A NEW USER
+            try {
+                // initialize a liked songs playlist for this user
+                const likedSongsPlaylist = await PlaylistModel.create({
+                        owners: [this._id],
+                        title: `Liked Songs`,
+                        desc: '',
+                        tracks: [],
+                        numSongs: 0,
+                        length: '0:00'
+                });
+
+                this.playlists.push(likedSongsPlaylist._id); // add Liked Songs to User playlist array
+                this.likedSongsPlaylistId = likedSongsPlaylist._id
+                console.log("User Init with Liked Songs Playlist")
+
+            } catch (e: any) {
+                console.error(e)
+                return next(e);
+            }
+        }
+
+        // playlist initialized, save user to DB
+        next();
+    });
+}
