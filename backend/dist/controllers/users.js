@@ -9,9 +9,6 @@ const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const getAllUsers = async (req, res, next) => {
     try {
         const users = await (0, user_actions_1.getUsers)();
-        if (!users) {
-            throw new CustomError_1.default("queryError", "Error while querying User collection using find()", 500);
-        }
         return res.status(200).json(users);
     }
     catch (e) {
@@ -22,10 +19,7 @@ exports.getAllUsers = getAllUsers;
 const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const deletedUser = await (0, user_actions_1.deleteUserById)(id);
-        if (!deletedUser) {
-            throw new CustomError_1.default("UserNotFound", "Cannot delete this user. No user exists with this id", 404);
-        }
+        await (0, user_actions_1.deleteUserById)(id);
         res.clearCookie("AuthToken", { domain: "localhost", path: "/" }); // clear session token after deleting account
         return res.json({ message: `Successfully Deleted User ${id}` });
     }

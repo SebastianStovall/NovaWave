@@ -1,16 +1,28 @@
 import { UserModel } from "../models/User";
+import CustomError from "../../utils/CustomError";
 
 // helper actions for User (used in controller functions)
 
-export const getUsers = () => // queries all documents in collection, return null if error occured in query
-  UserModel.find()
-    .exec()
-    .catch((error) => {
-      console.error(error);
-      return null;
-    });
+export const getUsers = async () => {
+  try {
+    const users = await UserModel.find()
+    return users
+  } catch(e) {
+    throw new CustomError(
+      "queryError",
+      "Error while querying User collection using find()",
+      500
+    );
+  }
+}
 
-export const getUserByEmail = (email: string) => UserModel.findOne({ email });
+export const getUserByEmail = (email: string) => {
+  try {
+    return UserModel.findOne({ email })
+  } catch(e) {
+    throw e
+  }
+}
 
 export const getUserBySessionToken = (sessionToken: string) =>
   UserModel.find({
@@ -25,8 +37,7 @@ export const createUser = async (values: Record<string, any>) => {
     const user = await UserModel.create(values); // when using pre-middleware, specifically use mongoose create method to ensure it triggers
     return user.toObject();
   } catch (e: any) {
-    console.error('Error creating user:', e.message);
-    return null;
+    throw e
   }
 };
 
@@ -38,6 +49,10 @@ export const deleteUserById = async (id: string) => {
     const deletedUser = await UserModel.findOneAndDelete({ _id: id });
     return deletedUser;
   } catch (e) {
-    return null;
+    throw new CustomError(
+      "UserNotFound",
+      "Cannot delete this user. No user exists with this id",
+      404
+    );
   }
 };

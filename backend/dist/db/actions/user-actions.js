@@ -1,17 +1,30 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserById = exports.updateUserById = exports.createUser = exports.getUserById = exports.getUserBySessionToken = exports.getUserByEmail = exports.getUsers = void 0;
 const User_1 = require("../models/User");
+const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 // helper actions for User (used in controller functions)
-const getUsers = () => // queries all documents in collection, return null if error occured in query
- User_1.UserModel.find()
-    .exec()
-    .catch((error) => {
-    console.error(error);
-    return null;
-});
+const getUsers = async () => {
+    try {
+        const users = await User_1.UserModel.find();
+        return users;
+    }
+    catch (e) {
+        throw new CustomError_1.default("queryError", "Error while querying User collection using find()", 500);
+    }
+};
 exports.getUsers = getUsers;
-const getUserByEmail = (email) => User_1.UserModel.findOne({ email });
+const getUserByEmail = (email) => {
+    try {
+        return User_1.UserModel.findOne({ email });
+    }
+    catch (e) {
+        throw e;
+    }
+};
 exports.getUserByEmail = getUserByEmail;
 const getUserBySessionToken = (sessionToken) => User_1.UserModel.find({
     "authentication.sessionToken": sessionToken,
@@ -25,8 +38,7 @@ const createUser = async (values) => {
         return user.toObject();
     }
     catch (e) {
-        console.error('Error creating user:', e.message);
-        return null;
+        throw e;
     }
 };
 exports.createUser = createUser;
@@ -38,7 +50,7 @@ const deleteUserById = async (id) => {
         return deletedUser;
     }
     catch (e) {
-        return null;
+        throw new CustomError_1.default("UserNotFound", "Cannot delete this user. No user exists with this id", 404);
     }
 };
 exports.deleteUserById = deleteUserById;

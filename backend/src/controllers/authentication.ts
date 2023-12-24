@@ -34,17 +34,7 @@ export const register: RequestHandler = async (req, res, next) => {
       },
     });
 
-    if(!user) {
-      throw new CustomError(
-        "CreationError",
-        "Error while creating new user",
-        500
-      );
-    }
-
-    return res
-      .status(200)
-      .json({ message: "Successfully Registered User", user: user });
+    return res.status(200).json({ message: "Successfully Registered User", user: user });
   } catch (e: any) {
     next(e)
   }

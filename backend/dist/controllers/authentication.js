@@ -26,12 +26,7 @@ const register = async (req, res, next) => {
                 password: (0, auth_1.authentication)(salt, password), // store salted password in the database
             },
         });
-        if (!user) {
-            throw new CustomError_1.default("CreationError", "Error while creating new user", 500);
-        }
-        return res
-            .status(200)
-            .json({ message: "Successfully Registered User", user: user });
+        return res.status(200).json({ message: "Successfully Registered User", user: user });
     }
     catch (e) {
         next(e);
