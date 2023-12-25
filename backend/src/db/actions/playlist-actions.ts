@@ -71,13 +71,13 @@ export const addTrack = async (trackId: string, playlistId: string, userId: stri
 };
 
 
-export const deleteTrack = async(trackId: string, playlistId: string, userId: string) => {
+export const removeTrack = async(trackId: string, playlistId: string, userId: string) => {
     try {
         const result = await PlaylistModel.updateOne({_id: playlistId, owner: userId}, { $pull: { tracks: {track: trackId} } } )
         if(result.matchedCount === 0) { // match count is based off first arg of updateOne (if conditions match = 1, else 0), if no match, playlist ownerId !== userId
             throw new CustomError(
                 "InvalidOwnerId",
-                `User with id ${userId} is not the owner of this playlist. Delete operation unsuccessful`,
+                `User is not the owner of this playlist. Delete operation unsuccessful`,
                 403
             );
         }

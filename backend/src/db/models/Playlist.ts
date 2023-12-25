@@ -19,4 +19,4 @@ const PlaylistSchema = new Schema({
 // TODO - Add Validations (ex: playlist title must be unique)
 
 
-export const PlaylistModel = mongoose.model('Playlist', PlaylistSchema) // turn this schema into a table/collection
+export const PlaylistModel = mongoose.model('Playlist', PlaylistSchema)

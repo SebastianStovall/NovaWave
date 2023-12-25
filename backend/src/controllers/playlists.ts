@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { initNewPlaylist, getPlaylistsByUserId, addTrack, deleteTrack } from "../db/actions/playlist-actions";
+import { initNewPlaylist, getPlaylistsByUserId, addTrack, removeTrack } from "../db/actions/playlist-actions";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
@@ -31,32 +31,35 @@ export const createNewPlaylist: RequestHandler = async (req, res, next) => {
 };
 
 
+// handles adding tracks to regular playlists AND liked songs playlists
 export const addTrackToPlaylist: RequestHandler = async(req, res, next) => {
     try {
         const { trackId, playlistId } = req.body
         const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
+        const userLikedSongsPlaylistId = get(req, "identity.likedSongsPlaylistId") as unknown as string; // key into identify and grab ._id field
 
-        if(!trackId) {
+        if(!trackId || !playlistId) {
             throw new CustomError(
-                "MissingTrackId",
-                "Track ID is missing in the request body",
-                400
-            );
-        }
-        if(!playlistId) {
-            throw new CustomError(
-                "MissingPlaylistId",
-                "Playlist ID is missing in the request body",
+                "Bad Request",
+                "Track ID or Playlist ID is missing in the request body",
                 400
             );
         }
 
         const trackAdded = await addTrack(trackId, playlistId, currentUserId)
 
-        if (trackAdded) {
-            res.status(201).json({ message: `Track added to playlist` });
+        if(playlistId === userLikedSongsPlaylistId.toString()) {
+            if (trackAdded) {
+                return res.status(201).json({ message: `Track added to Liked Songs playlist` });
+            } else {
+                return res.status(200).json({ message: `Track already in liked songs` });
+            }
         } else {
-            res.status(200).json({ message: `Track already in playlist` });
+            if (trackAdded) {
+                return res.status(201).json({ message: `Track added to playlist ${playlistId}` });
+            } else {
+                return res.status(200).json({ message: `Track already in playlist` });
+            }
         }
 
     } catch(e) {
@@ -65,54 +68,26 @@ export const addTrackToPlaylist: RequestHandler = async(req, res, next) => {
 }
 
 
-export const deleteTrackFromPlaylist: RequestHandler = async (req, res, next) => {
+export const removeTrackFromPlaylist: RequestHandler = async (req, res, next) => {
     try {
         const { trackId, playlistId } = req.body
         const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
-
-        if(!trackId) {
-            throw new CustomError(
-                "MissingTrackId",
-                "Track ID is missing in the request body",
-                400
-            );
-        }
-        if(!playlistId) {
-            throw new CustomError(
-                "MissingPlaylistId",
-                "Playlist ID is missing in the request body",
-                400
-            );
-        }
-
-        await deleteTrack(trackId, playlistId, currentUserId)
-        res.status(200).json({ message: `If track present in playlist, It has been successfully deleted` });
-
-    } catch(e) {
-        next(e)
-    }
-}
-
-
-export const addTrackToLikedSongs: RequestHandler = async(req, res, next) => {
-    try {
-        const { trackId } = req.body
-        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
         const userLikedSongsPlaylistId = get(req, "identity.likedSongsPlaylistId") as unknown as string; // key into identify and grab ._id field
 
-        if(!trackId) {
+        if(!trackId || !playlistId) {
             throw new CustomError(
-                "MissingTrackId",
-                "Track ID is missing in the request body",
+                "Bad request",
+                "Track ID or Playlist Id is missing in the request body",
                 400
             );
         }
 
-        const trackAdded = await addTrack(trackId, userLikedSongsPlaylistId, currentUserId)
-        if (trackAdded) {
-            res.status(201).json({ message: `Track added to Liked Songs` });
+        await removeTrack(trackId, playlistId, currentUserId)
+
+        if( playlistId === userLikedSongsPlaylistId.toString() ) {
+            return res.status(200).json({ message: `Track has been successfully removed from liked songs` });
         } else {
-            res.status(200).json({ message: `Track already in Liked Songs` });
+            return res.status(200).json({ message: `Track has been successfully removed from playlist ${playlistId}` });
         }
 
     } catch(e) {
@@ -121,32 +96,10 @@ export const addTrackToLikedSongs: RequestHandler = async(req, res, next) => {
 }
 
 
-export const removeTrackFromLikedSongs: RequestHandler = async(req, res, next) => {
-    try {
-        const { trackId } = req.body
-        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
-        const userLikedSongsPlaylistId = get(req, "identity.likedSongsPlaylistId") as unknown as string; // key into identify and grab ._id field
-
-        if(!trackId) {
-            throw new CustomError(
-                "MissingTrackId",
-                "Track ID is missing in the request body",
-                400
-            );
-        }
-
-        await deleteTrack(trackId, userLikedSongsPlaylistId, currentUserId)
-        res.status(200).json({ message: `Track removed from Liked Songs` });
-    } catch(e) {
-        next(e)
-    }
-}
 
 
 
 // TODO
 
-// foo playlist ID--> 6587e6e9fd199b61ec623b12
-
-// 5. addAlbumToPlaylist        same setup as addTrackToPlaylist
-// 6. removeAlbumFromPlaylist   same setup as removeTrackFromPlaylist
+// 5. addAlbumToPlaylist        ----> need to initialize a new playlist with helper (refactor helper) that maps an album's tracks to a playlist, and adds it to user collection
+// 6. removeAlbumFromPlaylist   ----> take playlistId and remove it from user.playlists ref array[] ? (do we want to delete its data?)

@@ -38,4 +38,4 @@ const PlaylistSchema = new mongoose_1.Schema({
     length: { type: String, required: true, default: '0:00' },
 }, { timestamps: true });
 // TODO - Add Validations (ex: playlist title must be unique)
-exports.PlaylistModel = mongoose_1.default.model('Playlist', PlaylistSchema); // turn this schema into a table/collection
+exports.PlaylistModel = mongoose_1.default.model('Playlist', PlaylistSchema);

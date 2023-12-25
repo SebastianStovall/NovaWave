@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeFromLibrary = exports.addToLibrary = exports.deleteTrack = exports.addTrack = exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
+exports.removeFromLibrary = exports.addToLibrary = exports.removeTrack = exports.addTrack = exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
 const Playlist_1 = require("../models/Playlist");
 const User_1 = require("../models/User");
 const user_actions_1 = require("./user-actions");
@@ -60,11 +60,11 @@ const addTrack = async (trackId, playlistId, userId) => {
     }
 };
 exports.addTrack = addTrack;
-const deleteTrack = async (trackId, playlistId, userId) => {
+const removeTrack = async (trackId, playlistId, userId) => {
     try {
         const result = await Playlist_1.PlaylistModel.updateOne({ _id: playlistId, owner: userId }, { $pull: { tracks: { track: trackId } } });
         if (result.matchedCount === 0) { // match count is based off first arg of updateOne (if conditions match = 1, else 0), if no match, playlist ownerId !== userId
-            throw new CustomError_1.default("InvalidOwnerId", `User with id ${userId} is not the owner of this playlist. Delete operation unsuccessful`, 403);
+            throw new CustomError_1.default("InvalidOwnerId", `User is not the owner of this playlist. Delete operation unsuccessful`, 403);
         }
     }
     catch (e) {
@@ -77,7 +77,7 @@ const deleteTrack = async (trackId, playlistId, userId) => {
         }
     }
 };
-exports.deleteTrack = deleteTrack;
+exports.removeTrack = removeTrack;
 const addToLibrary = async (playlistId, userId) => {
     try {
         await User_1.UserModel.updateOne({ _id: userId }, { $addToSet: { playlists: playlistId } }); // will only add to array if playlistObjectId was not already in user library
