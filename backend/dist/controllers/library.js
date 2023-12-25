@@ -7,6 +7,7 @@ exports.removePlaylistFromLibrary = exports.addPlaylistToLibrary = void 0;
 const playlist_actions_1 = require("../db/actions/playlist-actions");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const lodash_1 = require("lodash");
+// * These controller functions handle adding/removing playlists and albums to user's library
 const addPlaylistToLibrary = async (req, res, next) => {
     try {
         const { playlistOwnerId, playlistId } = req.body;
@@ -29,6 +30,13 @@ const removePlaylistFromLibrary = async (req, res, next) => {
     try {
         const { playlistId } = req.body;
         const currentUserId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
+        const userLikedSongsPlaylistId = (0, lodash_1.get)(req, "identity.likedSongsPlaylistId");
+        if (!playlistId) {
+            throw new CustomError_1.default("Bad Request", "playlist information is missing in the request body", 400);
+        }
+        if (playlistId === userLikedSongsPlaylistId.toString()) { // might need to change when testing on frontend...
+            throw new CustomError_1.default("Forbidden", "Cannot delete Liked Songs playlist. Each user must have one", 403);
+        }
         await (0, playlist_actions_1.removeFromLibrary)(playlistId, currentUserId);
         return res.status(200).json({ message: 'Successfully Removed Playlist from User Library' });
     }
@@ -37,6 +45,3 @@ const removePlaylistFromLibrary = async (req, res, next) => {
     }
 };
 exports.removePlaylistFromLibrary = removePlaylistFromLibrary;
-// handles favoriting/unfavoriting to "Liked Songs" playlist, and favoriting/unfavoriting other people's playlists to user library
-// 3. addPlaylistToLibrary(plOwnerId)            (user 0(1) -- querying for adding to collection 0(1) )      user.playlistsArray($push)  <--- $addToSet ??
-// 4. removePlaylistFromLibrary(plOwnerId)       (user 0(1) -- querying for removing from collection 0(n) )  user.playlistsArray($pull)

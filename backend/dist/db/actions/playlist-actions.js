@@ -38,7 +38,7 @@ const getPlaylistsByUserId = async (userId) => {
 exports.getPlaylistsByUserId = getPlaylistsByUserId;
 const addTrack = async (trackId, playlistId, userId) => {
     try {
-        const isOwner = await Playlist_1.PlaylistModel.findOne({ _id: playlistId, owner: userId });
+        const isOwner = await Playlist_1.PlaylistModel.findOne({ _id: playlistId, owner: userId }); // another query is needed here due to $ne criterion in updateOne
         if (!isOwner) {
             throw new CustomError_1.default("InvalidOwner", "User does not have the permission to modify this playlist", 403);
         }
@@ -64,7 +64,7 @@ const removeTrack = async (trackId, playlistId, userId) => {
     try {
         const result = await Playlist_1.PlaylistModel.updateOne({ _id: playlistId, owner: userId }, { $pull: { tracks: { track: trackId } } });
         if (result.matchedCount === 0) { // match count is based off first arg of updateOne (if conditions match = 1, else 0), if no match, playlist ownerId !== userId
-            throw new CustomError_1.default("InvalidOwnerId", `User is not the owner of this playlist. Delete operation unsuccessful`, 403);
+            throw new CustomError_1.default("InvalidOwner", `User does not have the permission to modify this playlist`, 403);
         }
     }
     catch (e) {
@@ -89,11 +89,10 @@ const addToLibrary = async (playlistId, userId) => {
 exports.addToLibrary = addToLibrary;
 const removeFromLibrary = async (playlistId, userId) => {
     try {
-        const result = await User_1.UserModel.updateOne({ _id: userId }, { $pull: { playlists: playlistId } });
-        console.log("RESULT", result);
+        await User_1.UserModel.updateOne({ _id: userId }, { $pull: { playlists: playlistId } });
     }
     catch (e) {
-        throw e;
+        throw new CustomError_1.default("Bad Request", 'The requested playlist cannot be removed from library because it does not exist', 400);
     }
 };
 exports.removeFromLibrary = removeFromLibrary;
