@@ -34,7 +34,8 @@ const UserSchema = new mongoose_1.Schema({
         salt: { type: String, select: false }, // salting user password and verifying on login
         sessionToken: { type: String, select: false }
     },
-    playlists: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Playlist' }], // order by timestamps so likedSongs playlist will be first
+    playlists: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Playlist' }], // all playlists (user created, user liked, and liked songs playlist)
+    albums: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Album' }], // all albums in user's collection
     likedSongsPlaylistId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Playlist' } // specifically reference likedSongs playlist for 0(1) lookup when favoriting songs
 }, { timestamps: true });
 initLikedSongsPlaylist();

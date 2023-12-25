@@ -95,14 +95,15 @@ export const removeTrack = async(trackId: string, playlistId: string, userId: st
 }
 
 
-export const addToLibrary = async(playlistId: string, userId: string) => {
+export const addToLibrary = async(entityId: string, entityType: string, userId: string) => {
     try {
-        await UserModel.updateOne({_id: userId}, {$addToSet: {playlists: playlistId}}) // will only add to array if playlistObjectId was not already in user library
+        const updateKey = entityType === 'playlist' ? 'playlists' : 'albums'
+        await UserModel.updateOne({_id: userId}, {$addToSet: {[updateKey]: entityId}}) // will only add to array if playlistObjectId was not already in user library
 
     } catch(e) {
         throw new CustomError(
             "Bad Request",
-            'The requested playlist cannot be added to library because it does not exist',
+            `The requested ${entityType} cannot be added to the library because it does not exist`,
             400
         )
     }

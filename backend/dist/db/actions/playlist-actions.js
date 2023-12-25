@@ -78,12 +78,13 @@ const removeTrack = async (trackId, playlistId, userId) => {
     }
 };
 exports.removeTrack = removeTrack;
-const addToLibrary = async (playlistId, userId) => {
+const addToLibrary = async (entityId, entityType, userId) => {
     try {
-        await User_1.UserModel.updateOne({ _id: userId }, { $addToSet: { playlists: playlistId } }); // will only add to array if playlistObjectId was not already in user library
+        const updateKey = entityType === 'playlist' ? 'playlists' : 'albums';
+        await User_1.UserModel.updateOne({ _id: userId }, { $addToSet: { [updateKey]: entityId } }); // will only add to array if playlistObjectId was not already in user library
     }
     catch (e) {
-        throw new CustomError_1.default("Bad Request", 'The requested playlist cannot be added to library because it does not exist', 400);
+        throw new CustomError_1.default("Bad Request", `The requested ${entityType} cannot be added to the library because it does not exist`, 400);
     }
 };
 exports.addToLibrary = addToLibrary;

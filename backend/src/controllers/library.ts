@@ -4,27 +4,26 @@ import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
 
-// * These controller functions handle adding/removing playlists and albums to user's library
-
-export const addPlaylistToLibrary: RequestHandler = async(req, res, next) => {
+// Adds a playlist or album to a user's library
+export const addEntityToLibrary: RequestHandler = async(req, res, next) => {
     try {
-        const { playlistOwnerId, playlistId } = req.body
-        const currentUserId = (get(req, "identity._id") as unknown as string).toString(); // key into identify and grab ._id field
+        const { entityId, entityType, entityOwnerId } = req.body; // entityOwnerId is for playlists only
+        const currentUserId = (get(req, "identity._id") as unknown as string); // key into identify and grab ._id field
 
-        if(!playlistOwnerId || !playlistId) {
+        if(!entityId || !entityType) {
             throw new CustomError(
                 "Bad Request",
-                "playlist information is missing in the request body",
+                "Entity information is missing in the request body",
                 400
             );
         }
 
-        if(playlistOwnerId === currentUserId) { // WHEN TESTING IN FRONTEND, MAKE SURE THESE ARE BEING COMPARED THE SAME WAY (string === string NOT objectId(string) === string)
-            return res.status(200).json({message: 'This playlist is already in your Library'})
+        if(entityType === 'playlist' && entityOwnerId && entityOwnerId === currentUserId.toString()) { // WHEN TESTING IN FRONTEND, MAKE SURE THESE ARE BEING COMPARED THE SAME WAY (string === string NOT objectId(string) === string)
+            return res.status(200).json({ message: `This playlist is already in your Library` });
         }
 
-        await addToLibrary(playlistId, currentUserId)
-        return res.status(200).json({message: 'Successfully Added Playlist to User Library'})
+        await addToLibrary(entityId, entityType, currentUserId)
+        return res.status(200).json({ message: `Successfully Added ${entityType} to User Library` });
 
     } catch(e) {
         next(e)

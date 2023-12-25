@@ -10,7 +10,8 @@ const UserSchema = new Schema({
         sessionToken: {type: String, select: false}
     },
 
-    playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }], // order by timestamps so likedSongs playlist will be first
+    playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }], // all playlists (user created, user liked, and liked songs playlist)
+    albums: [{ type: Schema.Types.ObjectId, ref: 'Album' }], // all albums in user's collection
     likedSongsPlaylistId: { type: Schema.Types.ObjectId, ref: 'Playlist' } // specifically reference likedSongs playlist for 0(1) lookup when favoriting songs
 
 }, {timestamps: true});
