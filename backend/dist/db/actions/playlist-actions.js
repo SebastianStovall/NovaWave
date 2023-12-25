@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTrack = exports.addTrack = exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
+exports.removeFromLibrary = exports.addToLibrary = exports.deleteTrack = exports.addTrack = exports.getPlaylistsByUserId = exports.initNewPlaylist = void 0;
 const Playlist_1 = require("../models/Playlist");
 const User_1 = require("../models/User");
 const user_actions_1 = require("./user-actions");
@@ -78,3 +78,23 @@ const deleteTrack = async (trackId, playlistId, userId) => {
     }
 };
 exports.deleteTrack = deleteTrack;
+const addToLibrary = async (playlistId, userId) => {
+    try {
+        await User_1.UserModel.updateOne({ _id: userId }, { $addToSet: { playlists: playlistId } }); // will only add to array if playlistObjectId was not already in user library
+    }
+    catch (e) {
+        throw new CustomError_1.default("Bad Request", 'The requested playlist cannot be added to library because it does not exist', 400);
+    }
+};
+exports.addToLibrary = addToLibrary;
+const removeFromLibrary = async (playlistId, userId) => {
+    try {
+        const result = await User_1.UserModel.updateOne({ _id: userId }, { $pull: { playlists: playlistId } });
+        console.log("RESULT", result);
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.removeFromLibrary = removeFromLibrary;
+// TODO --- DELETE PLAYLIST ROUTE (can only delete if the playlist ownerId = userId)

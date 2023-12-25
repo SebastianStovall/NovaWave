@@ -110,7 +110,5 @@ const removeTrackFromLikedSongs = async (req, res, next) => {
 exports.removeTrackFromLikedSongs = removeTrackFromLikedSongs;
 // TODO
 // foo playlist ID--> 6587e6e9fd199b61ec623b12
-// 3. addPlaylistToUserLibrary(plOwnerId)            (user 0(1) -- querying for adding to collection 0(1) -- connection to db = required )      user.playlistsArray($push)
-// 4. removePlaylistFromUserLibrary(plOwnerId)       (user 0(1) -- querying for removing from collection 0(1) -- connection to db = required )  user.playlistsArray($pull)
 // 5. addAlbumToPlaylist        same setup as addTrackToPlaylist
 // 6. removeAlbumFromPlaylist   same setup as removeTrackFromPlaylist

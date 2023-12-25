@@ -93,3 +93,30 @@ export const deleteTrack = async(trackId: string, playlistId: string, userId: st
         }
     }
 }
+
+
+export const addToLibrary = async(playlistId: string, userId: string) => {
+    try {
+        await UserModel.updateOne({_id: userId}, {$addToSet: {playlists: playlistId}}) // will only add to array if playlistObjectId was not already in user library
+
+    } catch(e) {
+        throw new CustomError(
+            "Bad Request",
+            'The requested playlist cannot be added to library because it does not exist',
+            400
+        )
+    }
+}
+
+
+export const removeFromLibrary = async(playlistId: string, userId: string) => {
+    try {
+        const result = await UserModel.updateOne({_id: userId}, {$pull: {playlists: playlistId}})
+        console.log("RESULT", result)
+    } catch(e) {
+        throw e
+    }
+}
+
+
+// TODO --- DELETE PLAYLIST ROUTE (can only delete if the playlist ownerId = userId)
