@@ -94,12 +94,3 @@ export const removeTrackFromPlaylist: RequestHandler = async (req, res, next) =>
         next(e)
     }
 }
-
-
-
-
-
-// TODO
-
-// 5. addAlbumToPlaylist        ----> need to initialize a new playlist with helper (refactor helper) that maps an album's tracks to a playlist, and adds it to user collection
-// 6. removeAlbumFromPlaylist   ----> take playlistId and remove it from user.playlists ref array[] ? (do we want to delete its data?)

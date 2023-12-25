@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removePlaylistFromLibrary = exports.addEntityToLibrary = void 0;
+exports.removeEntityFromLibrary = exports.addEntityToLibrary = void 0;
 const playlist_actions_1 = require("../db/actions/playlist-actions");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const lodash_1 = require("lodash");
@@ -26,22 +26,26 @@ const addEntityToLibrary = async (req, res, next) => {
     }
 };
 exports.addEntityToLibrary = addEntityToLibrary;
-const removePlaylistFromLibrary = async (req, res, next) => {
+// Removes a playlist or album to a user's library
+const removeEntityFromLibrary = async (req, res, next) => {
     try {
-        const { playlistId } = req.body;
+        const { entityId, entityType } = req.body;
         const currentUserId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
         const userLikedSongsPlaylistId = (0, lodash_1.get)(req, "identity.likedSongsPlaylistId");
-        if (!playlistId) {
-            throw new CustomError_1.default("Bad Request", "playlist information is missing in the request body", 400);
+        if (!entityId || !entityType) {
+            throw new CustomError_1.default("Bad Request", "Entity information is missing in the request body", 400);
         }
-        if (playlistId === userLikedSongsPlaylistId.toString()) { // might need to change when testing on frontend...
+        if (entityType !== 'playlist' && entityType !== 'album') {
+            throw new CustomError_1.default("Bad Request", "Entity type may only be 'playlist or 'album'", 400);
+        }
+        if (entityId === userLikedSongsPlaylistId.toString()) { // might need to change when testing on frontend...
             throw new CustomError_1.default("Forbidden", "Cannot delete Liked Songs playlist. Each user must have one", 403);
         }
-        await (0, playlist_actions_1.removeFromLibrary)(playlistId, currentUserId);
-        return res.status(200).json({ message: 'Successfully Removed Playlist from User Library' });
+        await (0, playlist_actions_1.removeFromLibrary)(entityId, entityType, currentUserId);
+        return res.status(200).json({ message: `Successfully Removed ${entityType} from User Library` });
     }
     catch (e) {
         next(e);
     }
 };
-exports.removePlaylistFromLibrary = removePlaylistFromLibrary;
+exports.removeEntityFromLibrary = removeEntityFromLibrary;

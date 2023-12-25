@@ -88,12 +88,13 @@ const addToLibrary = async (entityId, entityType, userId) => {
     }
 };
 exports.addToLibrary = addToLibrary;
-const removeFromLibrary = async (playlistId, userId) => {
+const removeFromLibrary = async (entityId, entityType, userId) => {
+    const updateKey = entityType === 'playlist' ? 'playlists' : 'albums';
     try {
-        await User_1.UserModel.updateOne({ _id: userId }, { $pull: { playlists: playlistId } });
+        await User_1.UserModel.updateOne({ _id: userId }, { $pull: { [updateKey]: entityId } });
     }
     catch (e) {
-        throw new CustomError_1.default("Bad Request", 'The requested playlist cannot be removed from library because it does not exist', 400);
+        throw new CustomError_1.default("Bad Request", `The requested ${entityType} cannot be removed from the library because it does not exist`, 400);
     }
 };
 exports.removeFromLibrary = removeFromLibrary;
