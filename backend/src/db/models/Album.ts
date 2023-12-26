@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 const AlbumSchema = new Schema({
     title: { type: String, required: true },
     artistName: {type: String, required: true},
-    // artist: { type: Schema.Types.ObjectId, ref: 'Artist' },
+    artist: { type: Schema.Types.ObjectId, ref: 'Artist' },
     yearReleased: {type: Number, required: true},
     image: {type: String, required: false}, // AWS
     tracks: [{ type: Schema.Types.ObjectId, ref: 'Track' }],
@@ -19,11 +19,13 @@ export const AlbumModel = mongoose.model('Album', AlbumSchema)
 
 
 
-//   {
-//     _id: ObjectId('658906a52bf9b966b82ffcd1'),
+// {
+//     _id: ObjectId('658b08ddc9cbeda4fa967a14'),
 //     title: 'Sample Album',
-//     artistName: 'Sample Artist',
+//     artistName: 'John Doe',
+//     artist: ObjectId('658b07dfc9cbeda4fa967a13'),
 //     yearReleased: 2023,
-//     image: 'sample_image_url',
-//     tracks: [ ObjectId('65879ab961db2497c5c9a001') ]
+//     image: 'https://example.com/samplealbum.jpg',
+//     tracks: [ ObjectId('65879ab961db2497c5c9a001') ],
+//     length: '45:30'
 //   }

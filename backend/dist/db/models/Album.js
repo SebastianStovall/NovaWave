@@ -28,7 +28,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const AlbumSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     artistName: { type: String, required: true },
-    // artist: { type: Schema.Types.ObjectId, ref: 'Artist' },
+    artist: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Artist' },
     yearReleased: { type: Number, required: true },
     image: { type: String, required: false }, // AWS
     tracks: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Track' }],
@@ -36,11 +36,13 @@ const AlbumSchema = new mongoose_1.Schema({
 }, { timestamps: true });
 // TODO - Add Validations (ex: album title should be unique)
 exports.AlbumModel = mongoose_1.default.model('Album', AlbumSchema);
-//   {
-//     _id: ObjectId('658906a52bf9b966b82ffcd1'),
+// {
+//     _id: ObjectId('658b08ddc9cbeda4fa967a14'),
 //     title: 'Sample Album',
-//     artistName: 'Sample Artist',
+//     artistName: 'John Doe',
+//     artist: ObjectId('658b07dfc9cbeda4fa967a13'),
 //     yearReleased: 2023,
-//     image: 'sample_image_url',
-//     tracks: [ ObjectId('65879ab961db2497c5c9a001') ]
+//     image: 'https://example.com/samplealbum.jpg',
+//     tracks: [ ObjectId('65879ab961db2497c5c9a001') ],
+//     length: '45:30'
 //   }

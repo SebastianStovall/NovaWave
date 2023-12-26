@@ -95,15 +95,28 @@ export const removeTrack = async(trackId: string, playlistId: string, userId: st
 }
 
 
-export const addToLibrary = async(entityId: string, entityType: string, userId: string) => {
+export const addToLibrary = async(entityId: string, entityType: string, userId: string, entityOwnerId: string | undefined) => {
+
+    if(entityType === 'playlist') { // ensure a valid owner exists for the playlist you are trying to add
+        try {
+            await UserModel.findById(entityOwnerId)
+        } catch(e) {
+            throw new CustomError(
+                "Bad Request",
+                `The playlist that you are attempting has an invalid ownerId`,
+                400
+            );
+        }
+    }
+
     try {
-        const updateKey = entityType === 'playlist' ? 'playlists' : 'albums'
+        const updateKey = entityType === 'playlist' ? 'playlists' : entityType === 'album' ? 'albums' : 'artists'
         await UserModel.updateOne({_id: userId}, {$addToSet: {[updateKey]: entityId}}) // will only add to array if playlistObjectId was not already in user library
 
     } catch(e) {
         throw new CustomError(
             "Bad Request",
-            `The requested ${entityType} cannot be added to the library because it does not exist`,
+            `The requested ${entityType} cannot be added to the library because it does not exist. Ensure its ObjectId is correct`,
             400
         )
     }
@@ -111,14 +124,14 @@ export const addToLibrary = async(entityId: string, entityType: string, userId: 
 
 
 export const removeFromLibrary = async(entityId: string, entityType: string, userId: string) => {
-    const updateKey = entityType === 'playlist' ? 'playlists' : 'albums'
 
     try {
+        const updateKey = entityType === 'playlist' ? 'playlists' : entityType === 'album' ? 'albums' : 'artists'
         await UserModel.updateOne({_id: userId}, {$pull: {[updateKey]: entityId}})
     } catch(e) {
         throw new CustomError(
             "Bad Request",
-            `The requested ${entityType} cannot be removed from the library because it does not exist`,
+            `The requested ${entityType} cannot be removed from the library because it does not exist. Ensure its ObjectId is correct`,
             400
         );
     }

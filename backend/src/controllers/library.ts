@@ -4,10 +4,10 @@ import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
 
-// Adds a playlist or album to a user's library
+// Adds a playlist or album or artist to user's library
 export const addEntityToLibrary: RequestHandler = async(req, res, next) => {
     try {
-        const { entityId, entityType, entityOwnerId } = req.body; // entityOwnerId is for playlists only
+        const { entityId, entityType, entityOwnerId } = req.body; // (***NOTE) entityOwnerId is for playlists ONLY
         const currentUserId = (get(req, "identity._id") as unknown as string); // key into identify and grab ._id field
 
         if(!entityId || !entityType) {
@@ -18,11 +18,15 @@ export const addEntityToLibrary: RequestHandler = async(req, res, next) => {
             );
         }
 
+        if (entityType !== 'playlist' && entityType !== 'album' && entityType !== 'artist') {
+            throw new CustomError("Bad Request", "Entity type may only be 'playlist, 'album', or 'artist", 400);
+        }
+
         if(entityType === 'playlist' && entityOwnerId && entityOwnerId === currentUserId.toString()) { // WHEN TESTING IN FRONTEND, MAKE SURE THESE ARE BEING COMPARED THE SAME WAY (string === string NOT objectId(string) === string)
             return res.status(200).json({ message: `This playlist is already in your Library` });
         }
 
-        await addToLibrary(entityId, entityType, currentUserId)
+        await addToLibrary(entityId, entityType, currentUserId, entityOwnerId) // entityOwnerId will be undefined unless adding playlist
         return res.status(200).json({ message: `Successfully Added ${entityType} to User Library` });
 
     } catch(e) {
@@ -31,7 +35,7 @@ export const addEntityToLibrary: RequestHandler = async(req, res, next) => {
 }
 
 
-// Removes a playlist or album to a user's library
+// Removes a playlist or album or artist from a user's library
 export const removeEntityFromLibrary: RequestHandler = async(req, res, next) => {
     try {
         const { entityId, entityType } = req.body;
@@ -42,8 +46,8 @@ export const removeEntityFromLibrary: RequestHandler = async(req, res, next) => 
             throw new CustomError("Bad Request", "Entity information is missing in the request body", 400);
         }
 
-        if (entityType !== 'playlist' && entityType !== 'album') {
-            throw new CustomError("Bad Request", "Entity type may only be 'playlist or 'album'", 400);
+        if (entityType !== 'playlist' && entityType !== 'album' && entityType !== 'artist') {
+            throw new CustomError("Bad Request", "Entity type may only be 'playlist, 'album', or 'artist", 400);
         }
 
         if(entityId === userLikedSongsPlaylistId.toString()) { // might need to change when testing on frontend...
