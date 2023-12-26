@@ -41,7 +41,7 @@ const removeEntityFromLibrary = async (req, res, next) => {
         if (entityType !== 'playlist' && entityType !== 'album' && entityType !== 'artist') {
             throw new CustomError_1.default("Bad Request", "Entity type may only be 'playlist, 'album', or 'artist", 400);
         }
-        if (entityId === userLikedSongsPlaylistId.toString()) { // might need to change when testing on frontend...
+        if (entityId === userLikedSongsPlaylistId.toString()) { // might need to change when testing on frontend... (only for likedSongs, not other playlist made by user)
             throw new CustomError_1.default("Forbidden", "Cannot delete Liked Songs playlist. Each user must have one", 403);
         }
         await (0, playlist_actions_1.removeFromLibrary)(entityId, entityType, currentUserId);

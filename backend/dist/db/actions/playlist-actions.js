@@ -89,7 +89,7 @@ const addToLibrary = async (entityId, entityType, userId, entityOwnerId) => {
     }
     try {
         const updateKey = entityType === 'playlist' ? 'playlists' : entityType === 'album' ? 'albums' : 'artists';
-        await User_1.UserModel.updateOne({ _id: userId }, { $addToSet: { [updateKey]: entityId } }); // will only add to array if playlistObjectId was not already in user library
+        await User_1.UserModel.updateOne({ _id: userId }, { $addToSet: { [updateKey]: entityId } }); // $addToSet will only add to array if playlistObjectId was not already in user library
     }
     catch (e) {
         throw new CustomError_1.default("Bad Request", `The requested ${entityType} cannot be added to the library because it does not exist. Ensure its ObjectId is correct`, 400);
@@ -100,6 +100,14 @@ const removeFromLibrary = async (entityId, entityType, userId) => {
     try {
         const updateKey = entityType === 'playlist' ? 'playlists' : entityType === 'album' ? 'albums' : 'artists';
         await User_1.UserModel.updateOne({ _id: userId }, { $pull: { [updateKey]: entityId } });
+        // If you own this playlist, set private = true (prevents lookup of this playlist in the future, and user's will still be able to use this playlist until they remove it)
+        if (entityType === 'playlist') {
+            const playlist = await Playlist_1.PlaylistModel.findById(entityId);
+            if (playlist && playlist.owner && playlist.owner.toString() === userId.toString()) {
+                playlist.isPrivate = true;
+                await playlist.save();
+            }
+        }
     }
     catch (e) {
         throw new CustomError_1.default("Bad Request", `The requested ${entityType} cannot be removed from the library because it does not exist. Ensure its ObjectId is correct`, 400);

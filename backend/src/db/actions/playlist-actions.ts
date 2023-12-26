@@ -111,7 +111,7 @@ export const addToLibrary = async(entityId: string, entityType: string, userId: 
 
     try {
         const updateKey = entityType === 'playlist' ? 'playlists' : entityType === 'album' ? 'albums' : 'artists'
-        await UserModel.updateOne({_id: userId}, {$addToSet: {[updateKey]: entityId}}) // will only add to array if playlistObjectId was not already in user library
+        await UserModel.updateOne({_id: userId}, {$addToSet: {[updateKey]: entityId}}) // $addToSet will only add to array if playlistObjectId was not already in user library
 
     } catch(e) {
         throw new CustomError(
@@ -128,6 +128,17 @@ export const removeFromLibrary = async(entityId: string, entityType: string, use
     try {
         const updateKey = entityType === 'playlist' ? 'playlists' : entityType === 'album' ? 'albums' : 'artists'
         await UserModel.updateOne({_id: userId}, {$pull: {[updateKey]: entityId}})
+
+        // If you own this playlist, set private = true (prevents lookup of this playlist in the future, and user's will still be able to use this playlist until they remove it)
+        if(entityType === 'playlist') {
+            const playlist = await PlaylistModel.findById(entityId)
+            if( playlist && playlist.owner && playlist.owner.toString() === userId.toString() ) {
+                playlist.isPrivate = true
+                await playlist.save()
+            }
+        }
+
+
     } catch(e) {
         throw new CustomError(
             "Bad Request",
