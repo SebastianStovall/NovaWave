@@ -1,20 +1,13 @@
 {
   "name": "novawave",
   "version": "1.0.0",
-  "description": "",
+  "description": "### Init and Project Structure",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "postinstall": "npm install --prefix backend && npm install --prefix frontend"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/jest": "^29.5.11"
-  },
-  "dependencies": {
-    "typescript": "^5.3.3"
-  }
+  "license": "ISC"
 }
