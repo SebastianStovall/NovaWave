@@ -5,9 +5,9 @@ import { json } from "body-parser"; // makes data accessible through req.body du
 import cookieParser from "cookie-parser"; // parse cookie data (for session token)
 import compression from 'compression'; // compresses size of response bodies before sending data (increases loading time and bandwidth usage)
 import cors from 'cors'; // enable CORS for all routes, any client allowed to make requests to our server
-import mongoose from "mongoose";
 import router from "./router";
 import CustomError from "./utils/CustomError";
+import { connectToMongoDB, disconnectFromMongoDB } from "./db/connect";
 
 const app = express();
 
@@ -21,19 +21,10 @@ app.use(cookieParser());
 
 const port = 3000;
 app.listen(3000, () => {
+  (async () => {
+    await connectToMongoDB()
+  })();
   console.log(`Example app listening on port ${port}`)
-});
-
-
-// connect to Mongo DB
-const connectionString = (process.env.MONGO_URL as string)
-
-mongoose.Promise = Promise
-mongoose.connect(connectionString)
-
-mongoose.connection.on('error', (error: Error) => console.log(error))
-mongoose.connection.once('open', () => {
-  console.log('Connected to MongoDB successfully');
 });
 
 
