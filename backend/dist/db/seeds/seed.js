@@ -6,13 +6,13 @@ const user_actions_1 = require("../actions/user-actions"); // NEEDED FOR PROPERL
 async function seedDatabase() {
     try {
         const db = await (0, connect_1.connectToMongoDB)(); // establish connection to database
-        // UNSEED DB BEFORE SEEDING
+        //? UNSEED DB BEFORE SEEDING
         await db.collection("users").deleteMany({});
         await db.collection("artists").deleteMany({});
         await db.collection("albums").deleteMany({});
         await db.collection("tracks").deleteMany({});
         await db.collection("playlists").deleteMany({});
-        // SEED USERS COLLECTION
+        //? SEED USERS COLLECTION
         const saltUser1 = (0, auth_1.random)();
         const saltUser2 = (0, auth_1.random)();
         const saltUser3 = (0, auth_1.random)();
@@ -40,7 +40,7 @@ async function seedDatabase() {
                 password: (0, auth_1.authentication)(saltUser3, 'password'), // store salted password in the database
             },
         });
-        // SEED ARTIST COLLECTION
+        //? SEED ARTISTS
         const artists = [
             {
                 name: '$uicideBoy$',
@@ -74,17 +74,22 @@ async function seedDatabase() {
             },
         ];
         await db.collection("artists").insertMany(artists);
-        // SEED ALBUMS
+        // ----------------------------------------------------------------------------------------------------------------------------------------------------------- //
+        /* artist Ids ---> */ const artistRefs = (await db.collection("artists").find({}).project({ _id: 1 }).toArray()).map(artist => artist._id);
+        //! ATTACH "Artist" REFS TO "Albums"
+        //? SEED ALBUMS
         const albums = [
             // $uicideboy$
             { title: 'I No Longer Fear The Razor Guarding My Heel (V)',
                 artistName: '$uicideboy$',
+                artist: artistRefs[0],
                 yearReleased: 2023,
                 image: 'https://example-image.jpg', // AWS
                 length: '7 min 34 sec'
             },
             { title: 'YIN YANG TAPES: Spring Season (1989-1990)',
                 artistName: '$uicideboy$',
+                artist: artistRefs[0],
                 yearReleased: 2023,
                 image: 'https://example-image.jpg', // AWS
                 length: '10 min'
@@ -92,12 +97,14 @@ async function seedDatabase() {
             // Kanye West
             { title: 'Graduation',
                 artistName: 'Kanye West',
+                artist: artistRefs[1],
                 yearReleased: 2007,
                 image: 'https://example-image.jpg', // AWS
                 length: '54 min 29 sec'
             },
             { title: '808s & Heartbreak',
                 artistName: 'Kanye West',
+                artist: artistRefs[1],
                 yearReleased: 2008,
                 image: 'https://example-image.jpg', // AWS
                 length: '52 min 5 sec'
@@ -105,12 +112,14 @@ async function seedDatabase() {
             // Eminem
             { title: 'Recovery',
                 artistName: 'Eminem',
+                artist: artistRefs[2],
                 yearReleased: 2010,
                 image: 'https://example-image.jpg', // AWS
                 length: '1hr 17min'
             },
             { title: 'The Marshall Mathers LP2',
                 artistName: 'Eminem',
+                artist: artistRefs[2],
                 yearReleased: 2013,
                 image: 'https://example-image.jpg', // AWS
                 length: '1hr 42 min'
@@ -118,12 +127,14 @@ async function seedDatabase() {
             // Hensonn
             { title: 'Fear',
                 artistName: 'Hensonn',
+                artist: artistRefs[3],
                 yearReleased: 2023,
                 image: 'https://example-image.jpg', // AWS
                 length: '2 min 11 sec'
             },
             { title: 'Sahara',
                 artistName: 'Hensonn',
+                artist: artistRefs[3],
                 yearReleased: 2021,
                 image: 'https://example-image.jpg', // AWS
                 length: '2 min 51 sec'
@@ -131,24 +142,35 @@ async function seedDatabase() {
             // fkbambam
             { title: 'KILLKA',
                 artistName: 'fkbambam',
+                artist: artistRefs[4],
                 yearReleased: 2021,
                 image: 'https://example-image.jpg', // AWS
                 length: '14 min 29 sec'
             },
             { title: 'VACATION',
                 artistName: 'fkbambam',
+                artist: artistRefs[4],
                 yearReleased: 2020,
                 image: 'https://example-image.jpg', // AWS
                 length: '1 min 56 sec'
             },
         ];
         await db.collection("albums").insertMany(albums);
-        // SEED TRACKS
-        // REFS
-        /* artist Ids ---> */ const artistRefs = (await db.collection("artists").find({}).project({ _id: 1 }).toArray()).map(artist => artist._id);
+        // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- //
+        //! ATTACH 'Album' REFS TO 'Artist' HERE:
         /* album Ids ---> */ const albumRefs = (await db.collection("albums").find({}).project({ _id: 1 }).toArray()).map(album => album._id);
-        // console.log('\n artistRefs', artistRefs)
-        // console.log('\n albumRefs', albumRefs)
+        // $uicideboy$
+        await db.collection('artists').updateOne({ _id: artistRefs[0] }, { $set: { discography: [albumRefs[0], albumRefs[1]] } });
+        // Kanye West
+        await db.collection('artists').updateOne({ _id: artistRefs[1] }, { $set: { discography: [albumRefs[2], albumRefs[3]] } });
+        // Eminem
+        await db.collection('artists').updateOne({ _id: artistRefs[2] }, { $set: { discography: [albumRefs[4], albumRefs[5]] } });
+        // Hensonn
+        await db.collection('artists').updateOne({ _id: artistRefs[3] }, { $set: { discography: [albumRefs[6], albumRefs[7]] } });
+        // fkbambam
+        await db.collection('artists').updateOne({ _id: artistRefs[4] }, { $set: { discography: [albumRefs[8], albumRefs[9]] } });
+        //? SEED TRACKS
+        //! ATTACH 'Artist' + 'Album' TO TRACKS
         const tracks = [
             // I No Longer Fear The Razor Guarding My Heel (V)
             {
@@ -156,6 +178,7 @@ async function seedDatabase() {
                 length: "3:00",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 42268454,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
@@ -167,6 +190,7 @@ async function seedDatabase() {
                 length: "2:20",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 19376796,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
@@ -178,56 +202,61 @@ async function seedDatabase() {
                 length: "2:13",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 27886693,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
                 album: albumRefs[0],
                 albumName: 'I No Longer Fear The Razor Guarding My Heel (V)'
             },
-            // YIN YANG TAPES: Spring Season (1989-1990)
+            // YIN YANG TAPES: Summer Season (1989-1990)
             {
                 title: "Summer Season Intro",
                 length: "0:40",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 1912710,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
                 album: albumRefs[1],
-                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+                albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
             },
             {
                 title: "5 'N the Mornin'",
                 length: "4:26",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 9983499,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
                 album: albumRefs[1],
-                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+                albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
             },
             {
                 title: "Starry 9",
                 length: "2:39",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 6216354,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
                 album: albumRefs[1],
-                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+                albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
             },
             {
                 title: "Bloody 98 (Feat. Ghostmane)",
                 length: "4:37",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 20227858,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
                 album: albumRefs[1],
-                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+                albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
             },
             // Graduation
             {
@@ -235,6 +264,7 @@ async function seedDatabase() {
                 length: "3:15",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 272276775,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -246,6 +276,7 @@ async function seedDatabase() {
                 length: "2:47",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 184949937,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -257,6 +288,7 @@ async function seedDatabase() {
                 length: "5:11",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 1302723304,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -268,6 +300,7 @@ async function seedDatabase() {
                 length: "4:03",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 575633353,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -279,6 +312,7 @@ async function seedDatabase() {
                 length: "3:27",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 383921280,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -290,6 +324,7 @@ async function seedDatabase() {
                 length: "4:31",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 490821294,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -301,6 +336,7 @@ async function seedDatabase() {
                 length: "3:24",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 56760640,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -312,6 +348,7 @@ async function seedDatabase() {
                 length: "5:13",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 50008455,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -323,6 +360,7 @@ async function seedDatabase() {
                 length: "3:57",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 875401287,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -334,6 +372,7 @@ async function seedDatabase() {
                 length: "3:47",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 180152731,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -345,6 +384,7 @@ async function seedDatabase() {
                 length: "3:32",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 73851938,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -356,6 +396,7 @@ async function seedDatabase() {
                 length: "3:23",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 552626848,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -367,6 +408,7 @@ async function seedDatabase() {
                 length: "4:47",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 58523882,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -378,6 +420,7 @@ async function seedDatabase() {
                 length: "3:05",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 26347080,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -390,6 +433,7 @@ async function seedDatabase() {
                 length: "6:17",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 42373107,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -401,6 +445,7 @@ async function seedDatabase() {
                 length: "4:22",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 75304097,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -412,6 +457,7 @@ async function seedDatabase() {
                 length: "3:31",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 1075586037,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -423,6 +469,7 @@ async function seedDatabase() {
                 length: "3:58",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 151231670,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -434,6 +481,7 @@ async function seedDatabase() {
                 length: "4:30",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 189617906,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -445,6 +493,7 @@ async function seedDatabase() {
                 length: "4:47",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 89871396,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -456,6 +505,7 @@ async function seedDatabase() {
                 length: "4:34",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 39091814,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -467,6 +517,7 @@ async function seedDatabase() {
                 length: "3:09",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 69516857,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -478,6 +529,7 @@ async function seedDatabase() {
                 length: "3:58",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 34326302,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -489,6 +541,7 @@ async function seedDatabase() {
                 length: "4:18",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 38991772,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -500,6 +553,7 @@ async function seedDatabase() {
                 length: "2:44",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 42550668,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -511,6 +565,7 @@ async function seedDatabase() {
                 length: "6:01",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 17627403,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
@@ -523,6 +578,7 @@ async function seedDatabase() {
                 length: "5:03",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 102638408,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -534,6 +590,7 @@ async function seedDatabase() {
                 length: "5:00",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 87048847,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -545,6 +602,7 @@ async function seedDatabase() {
                 length: "3:33",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 54016464,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -556,6 +614,7 @@ async function seedDatabase() {
                 length: "4:25",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 102202067,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -567,6 +626,7 @@ async function seedDatabase() {
                 length: "3:58",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 99806700,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -578,6 +638,7 @@ async function seedDatabase() {
                 length: "4:58",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 72584879,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -589,6 +650,7 @@ async function seedDatabase() {
                 length: "4:08",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 936886632,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -600,6 +662,7 @@ async function seedDatabase() {
                 length: "4:35",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 54463079,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -611,6 +674,7 @@ async function seedDatabase() {
                 length: "4:59",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 311027582,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -622,6 +686,7 @@ async function seedDatabase() {
                 length: "4:38",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 293785698,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -633,6 +698,7 @@ async function seedDatabase() {
                 length: "4:39",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 297045840,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -644,6 +710,7 @@ async function seedDatabase() {
                 length: "4:01",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 143833512,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -655,6 +722,7 @@ async function seedDatabase() {
                 length: "5:25",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 76770691,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -666,6 +734,7 @@ async function seedDatabase() {
                 length: "4:52",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 50811026,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -677,6 +746,7 @@ async function seedDatabase() {
                 length: "4:23",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 1362035134,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -688,6 +758,7 @@ async function seedDatabase() {
                 length: "5:05",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 47526797,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -699,6 +770,7 @@ async function seedDatabase() {
                 length: "3:14",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 48294022,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -711,6 +783,7 @@ async function seedDatabase() {
                 length: "7:14",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 111307418,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -722,6 +795,7 @@ async function seedDatabase() {
                 length: "0:55",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 27942209,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -733,6 +807,7 @@ async function seedDatabase() {
                 length: "5:01",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 61537298,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -744,6 +819,7 @@ async function seedDatabase() {
                 length: "4:21",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 56155413,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -755,6 +831,7 @@ async function seedDatabase() {
                 length: "4:32",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 248959425,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -766,6 +843,7 @@ async function seedDatabase() {
                 length: "4:56",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 147875131,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -777,6 +855,7 @@ async function seedDatabase() {
                 length: "4:48",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 56948495,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -788,6 +867,7 @@ async function seedDatabase() {
                 length: "3:58",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 294646323,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -799,6 +879,7 @@ async function seedDatabase() {
                 length: "6:03",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 1024452496,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -810,6 +891,7 @@ async function seedDatabase() {
                 length: "4:46",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 52372632,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -821,6 +903,7 @@ async function seedDatabase() {
                 length: "5:36",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 62403834,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -832,6 +915,7 @@ async function seedDatabase() {
                 length: "4:10",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 944989922,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -843,6 +927,7 @@ async function seedDatabase() {
                 length: "5:17",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 51964465,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -854,6 +939,7 @@ async function seedDatabase() {
                 length: "4:56",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 68940145,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -865,6 +951,7 @@ async function seedDatabase() {
                 length: "5:43",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 149138309,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -876,6 +963,7 @@ async function seedDatabase() {
                 length: "7:33",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 9110651,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
@@ -888,6 +976,7 @@ async function seedDatabase() {
                 length: "2:11",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 19172205,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[3],
                 artistName: 'Hensonn',
@@ -900,6 +989,7 @@ async function seedDatabase() {
                 length: "2:51",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 246129400,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[3],
                 artistName: 'Hensonn',
@@ -912,6 +1002,7 @@ async function seedDatabase() {
                 length: "2:22",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 47259289,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[4],
                 artistName: 'fkbambam',
@@ -924,6 +1015,7 @@ async function seedDatabase() {
                 length: "1:56",
                 audio: "<MP3 AUDIO HERE>", // AWS
                 image: 'https://track-image.jpg',
+                plays: 15677488,
                 artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[4],
                 artistName: 'fkbambam',
@@ -932,11 +1024,34 @@ async function seedDatabase() {
             },
         ];
         await db.collection("tracks").insertMany(tracks);
+        // --------------------------------------------------------------------------------------------------------------------------------------------------------------------- //
+        /* track Ids ---> */ const trackRefs = (await db.collection("tracks").find({}).project({ _id: 1 }).toArray()).map(track => track._id);
+        // *! ATTACH 'Track' REFS TO 'Album'
+        // I No Longer Fear The Razor Guarding My Heel (V) (3 songs)
+        await db.collection('albums').updateOne({ _id: albumRefs[0] }, { $set: { tracks: [trackRefs[0], trackRefs[1], trackRefs[2]] } });
+        // YIN YANG TAPES: Summer Season (1989-1990) (4 songs)
+        await db.collection('albums').updateOne({ _id: albumRefs[1] }, { $set: { tracks: [trackRefs[3], trackRefs[4], trackRefs[5], trackRefs[6]] } });
+        // Graduation (14 songs)
+        await db.collection('albums').updateOne({ _id: albumRefs[2] }, { $set: { tracks: [trackRefs[7], trackRefs[8], trackRefs[9], trackRefs[10], trackRefs[11], trackRefs[12], trackRefs[13], trackRefs[14], trackRefs[15], trackRefs[16], trackRefs[17], trackRefs[18], trackRefs[19], trackRefs[20]] } });
+        // 808s & Heartbreak (12 songs)
+        await db.collection('albums').updateOne({ _id: albumRefs[3] }, { $set: { tracks: [trackRefs[21], trackRefs[22], trackRefs[23], trackRefs[24], trackRefs[25], trackRefs[26], trackRefs[27], trackRefs[28], trackRefs[29], trackRefs[30], trackRefs[31], trackRefs[32]] } });
+        // Recovery (17 songs)
+        await db.collection('albums').updateOne({ _id: albumRefs[4] }, { $set: { tracks: [trackRefs[33], trackRefs[34], trackRefs[35], trackRefs[36], trackRefs[37], trackRefs[38], trackRefs[39], trackRefs[40], trackRefs[41], trackRefs[42], trackRefs[43], trackRefs[44], trackRefs[45], trackRefs[46], trackRefs[47], trackRefs[48], trackRefs[49]] } });
+        // The Marshall Mathers LP2 (16 songs)
+        await db.collection('albums').updateOne({ _id: albumRefs[5] }, { $set: { tracks: [trackRefs[50], trackRefs[51], trackRefs[52], trackRefs[53], trackRefs[54], trackRefs[55], trackRefs[56], trackRefs[57], trackRefs[58], trackRefs[59], trackRefs[60], trackRefs[61], trackRefs[62], trackRefs[63], trackRefs[64], trackRefs[65]] } });
+        // Fear (1 song)
+        await db.collection('albums').updateOne({ _id: albumRefs[6] }, { $set: { tracks: [trackRefs[66]] } });
+        // Sahara
+        await db.collection('albums').updateOne({ _id: albumRefs[7] }, { $set: { tracks: [trackRefs[67]] } });
+        // KILLKA
+        await db.collection('albums').updateOne({ _id: albumRefs[8] }, { $set: { tracks: [trackRefs[68]] } });
+        // VACATION
+        await db.collection('albums').updateOne({ _id: albumRefs[9] }, { $set: { tracks: [trackRefs[69]] } });
         console.log('Database seeded successfully.');
         return;
     }
     catch (error) {
-        // // If an error occurs, close the connection
+        // If an error occurs, close the connection
         console.error('Error seeding the database:', error);
         await (0, connect_1.disconnectFromMongoDB)();
         throw error;

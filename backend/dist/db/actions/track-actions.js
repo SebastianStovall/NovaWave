@@ -27,7 +27,7 @@ const getPlaylists = async () => {
 exports.getPlaylists = getPlaylists;
 const getAlbums = async () => {
     try {
-        const albums = await Album_1.AlbumModel.find({});
+        const albums = await Album_1.AlbumModel.find({}).populate({ path: 'tracks' });
         return albums;
     }
     catch (e) {
@@ -37,7 +37,7 @@ const getAlbums = async () => {
 exports.getAlbums = getAlbums;
 const getArtists = async () => {
     try {
-        const artists = await Artist_1.ArtistModel.find({});
+        const artists = await Artist_1.ArtistModel.find({}).populate({ path: 'discography' });
         return artists;
     }
     catch (e) {
