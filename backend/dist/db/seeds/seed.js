@@ -11,6 +11,7 @@ async function seedDatabase() {
         await db.collection("artists").deleteMany({});
         await db.collection("albums").deleteMany({});
         await db.collection("tracks").deleteMany({});
+        await db.collection("playlists").deleteMany({});
         // SEED USERS COLLECTION
         const saltUser1 = (0, auth_1.random)();
         const saltUser2 = (0, auth_1.random)();
@@ -75,6 +76,7 @@ async function seedDatabase() {
         await db.collection("artists").insertMany(artists);
         // SEED ALBUMS
         const albums = [
+            // $uicideboy$
             { title: 'I No Longer Fear The Razor Guarding My Heel (V)',
                 artistName: '$uicideboy$',
                 yearReleased: 2023,
@@ -87,6 +89,7 @@ async function seedDatabase() {
                 image: 'https://example-image.jpg', // AWS
                 length: '10 min'
             },
+            // Kanye West
             { title: 'Graduation',
                 artistName: 'Kanye West',
                 yearReleased: 2007,
@@ -99,18 +102,20 @@ async function seedDatabase() {
                 image: 'https://example-image.jpg', // AWS
                 length: '52 min 5 sec'
             },
+            // Eminem
             { title: 'Recovery',
                 artistName: 'Eminem',
                 yearReleased: 2010,
                 image: 'https://example-image.jpg', // AWS
                 length: '1hr 17min'
             },
-            { title: 'The Marshall Mathers LP2 (Deluxe)',
+            { title: 'The Marshall Mathers LP2',
                 artistName: 'Eminem',
                 yearReleased: 2013,
                 image: 'https://example-image.jpg', // AWS
                 length: '1hr 42 min'
             },
+            // Hensonn
             { title: 'Fear',
                 artistName: 'Hensonn',
                 yearReleased: 2023,
@@ -123,6 +128,7 @@ async function seedDatabase() {
                 image: 'https://example-image.jpg', // AWS
                 length: '2 min 51 sec'
             },
+            // fkbambam
             { title: 'KILLKA',
                 artistName: 'fkbambam',
                 yearReleased: 2021,
@@ -141,8 +147,8 @@ async function seedDatabase() {
         // REFS
         /* artist Ids ---> */ const artistRefs = (await db.collection("artists").find({}).project({ _id: 1 }).toArray()).map(artist => artist._id);
         /* album Ids ---> */ const albumRefs = (await db.collection("albums").find({}).project({ _id: 1 }).toArray()).map(album => album._id);
-        console.log('\n artistRefs', artistRefs);
-        console.log('\n albumRefs', albumRefs);
+        // console.log('\n artistRefs', artistRefs)
+        // console.log('\n albumRefs', albumRefs)
         const tracks = [
             // I No Longer Fear The Razor Guarding My Heel (V)
             {
@@ -179,14 +185,751 @@ async function seedDatabase() {
                 albumName: 'I No Longer Fear The Razor Guarding My Heel (V)'
             },
             // YIN YANG TAPES: Spring Season (1989-1990)
+            {
+                title: "Summer Season Intro",
+                length: "0:40",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[0],
+                artistName: '$uicideboy$',
+                album: albumRefs[1],
+                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+            },
+            {
+                title: "5 'N the Mornin'",
+                length: "4:26",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[0],
+                artistName: '$uicideboy$',
+                album: albumRefs[1],
+                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+            },
+            {
+                title: "Starry 9",
+                length: "2:39",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[0],
+                artistName: '$uicideboy$',
+                album: albumRefs[1],
+                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+            },
+            {
+                title: "Bloody 98 (Feat. Ghostmane)",
+                length: "4:37",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[0],
+                artistName: '$uicideboy$',
+                album: albumRefs[1],
+                albumName: 'YIN YANG TAPES: Spring Season (1989-1990)'
+            },
             // Graduation
+            {
+                title: "Good Morning",
+                length: "3:15",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Champion",
+                length: "2:47",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Stronger",
+                length: "5:11",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "I Wonder",
+                length: "4:03",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Good Life",
+                length: "3:27",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Can't Tell Me Nothing",
+                length: "4:31",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Barry Bonds",
+                length: "3:24",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Drunk and Hot Girls",
+                length: "5:13",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Flashing Lights",
+                length: "3:57",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Everything I Am",
+                length: "3:47",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "The Glory",
+                length: "3:32",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Homecoming",
+                length: "3:23",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Big Brother",
+                length: "4:47",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
+            {
+                title: "Good Night",
+                length: "3:05",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[2],
+                albumName: 'Graduation'
+            },
             // 808s & Heartbreak
+            {
+                title: "Say You Will",
+                length: "6:17",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Welcome To Heartbreak",
+                length: "4:22",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Heartless",
+                length: "3:31",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Amazing",
+                length: "3:58",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Love Lockdown",
+                length: "4:30",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Paranoid",
+                length: "4:47",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "RoboCop",
+                length: "4:34",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Street Lights",
+                length: "3:09",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Bad News",
+                length: "3:58",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "See You In My Nightmares",
+                length: "4:18",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Coldest Winter",
+                length: "2:44",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
+            {
+                title: "Pinocchio Story",
+                length: "6:01",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[1],
+                artistName: 'Kanye West',
+                album: albumRefs[3],
+                albumName: '808s & Heartbreak'
+            },
             // Recovery
-            // The Marshall Mathers LP2 (Deluxe)
+            {
+                title: "Cold Wind Blows",
+                length: "5:03",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Talkin' 2 Myself",
+                length: "5:00",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "On Fire",
+                length: "3:33",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Won't Back Down",
+                length: "4:25",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "W.T.P",
+                length: "3:58",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Going Through Changes",
+                length: "4:58",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Not Afraid",
+                length: "4:08",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Seduction",
+                length: "4:35",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "No Love",
+                length: "4:59",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Space Bound",
+                length: "4:38",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Cinderella Man",
+                length: "4:39",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "25 To Life",
+                length: "4:01",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "So Bad",
+                length: "5:25",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Almost Famous",
+                length: "4:52",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Love The Way You Lie",
+                length: "4:23",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "You're Never Over",
+                length: "5:05",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            {
+                title: "Untitled",
+                length: "3:14",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[4],
+                albumName: 'Recovery'
+            },
+            // The Marshall Mathers LP2
+            {
+                title: "Bad Guy",
+                length: "7:14",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Parking Lot - Skit",
+                length: "0:55",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Rhyme Or Reason",
+                length: "5:01",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "So Much Better",
+                length: "4:21",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Survival",
+                length: "4:32",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Legacy",
+                length: "4:56",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Asshole",
+                length: "4:48",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Berzerk",
+                length: "3:58",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Rap God",
+                length: "6:03",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Brainless",
+                length: "4:46",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Stronger Than I Was",
+                length: "5:36",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "The Monster",
+                length: "4:10",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "So Far...",
+                length: "5:17",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Love Game",
+                length: "4:56",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Headlights",
+                length: "5:43",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
+            {
+                title: "Evil Twin - Skit",
+                length: "7:33",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[2],
+                artistName: 'Eminem',
+                album: albumRefs[5],
+                albumName: 'The Marshall Mathers LP2'
+            },
             // Fear
+            {
+                title: "Fear",
+                length: "2:11",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[3],
+                artistName: 'Hensonn',
+                album: albumRefs[6],
+                albumName: 'Fear'
+            },
             // Sahara
+            {
+                title: "Sahara",
+                length: "2:51",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[3],
+                artistName: 'Hensonn',
+                album: albumRefs[7],
+                albumName: 'Sahara'
+            },
             // KILLKA
+            {
+                title: "KILLKA",
+                length: "2:22",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[4],
+                artistName: 'fkbambam',
+                album: albumRefs[8],
+                albumName: 'KILLKA'
+            },
             // VACATION
+            {
+                title: "VACATION",
+                length: "1:56",
+                audio: "<MP3 AUDIO HERE>", // AWS
+                image: 'https://track-image.jpg',
+                artistImage: 'https://artist-image.jpg',
+                artist: artistRefs[4],
+                artistName: 'fkbambam',
+                album: albumRefs[9],
+                albumName: 'VACATION'
+            },
         ];
         await db.collection("tracks").insertMany(tracks);
         console.log('Database seeded successfully.');
