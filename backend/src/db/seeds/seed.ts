@@ -48,6 +48,9 @@ async function seedDatabase() {
         });
 
 
+        /* user Ids ---> */ const userRefs = (await db.collection("users").find({}).project({ _id: 1 }).toArray()).map(user => user._id)
+
+
         //? SEED ARTISTS
 
         const artists = [
@@ -1289,8 +1292,8 @@ async function seedDatabase() {
         // --------------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
         /* track Ids ---> */  const trackRefs = (await db.collection("tracks").find({}).project({ _id: 1 }).toArray()).map(track => track._id)
-        // *! ATTACH 'Track' REFS TO 'Album'
 
+        // *! ATTACH 'Track' REFS TO 'Album'
 
         // I No Longer Fear The Razor Guarding My Heel (V) (3 songs)
         await db.collection('albums').updateOne({ _id: albumRefs[0] }, { $set: { tracks: [trackRefs[0], trackRefs[1], trackRefs[2]] } })
@@ -1322,6 +1325,128 @@ async function seedDatabase() {
         // VACATION
         await db.collection('albums').updateOne({ _id: albumRefs[9] }, { $set: { tracks: [trackRefs[69]] } })
 
+        //? SEED PLAYLISTS
+
+        const playlists = [
+            {
+                owner: userRefs[0],
+                likes: 0,
+                title: "The Classics",
+                desc: "i love these",
+                tracks: [
+                    {
+                        track: trackRefs[0],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[10],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[20],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[30],
+                        addedAt: new Date()
+                    },
+                ],
+                length: '14:26',
+                isPrivate: false
+            },
+
+            {
+                owner: userRefs[1],
+                likes: 0,
+                title: "Bangers",
+                desc: "",
+                tracks: [
+                    {
+                        track: trackRefs[40],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[50],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[60],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[5],
+                        addedAt: new Date()
+                    },
+                ],
+                length: '20:04',
+                isPrivate: false
+            },
+
+            {
+                owner: userRefs[2],
+                likes: 0,
+                title: "Best Songs",
+                desc: "these are the best",
+                tracks: [
+                    {
+                        track: trackRefs[11],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[22],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[33],
+                        addedAt: new Date()
+                    },
+                    {
+                        track: trackRefs[44],
+                        addedAt: new Date()
+                    },
+                ],
+                length: '16:53',
+                isPrivate: false
+            }
+        ]
+
+
+        await db.collection("playlists").insertMany(playlists)
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------------------ //
+
+        //! ADD 'Playlist' REFS TO 'User'
+        /* playlistIds ---> */  const playlistRefs = (await db.collection("playlists").find({}).project({ _id: 1 }).toArray()).map(track => track._id)
+
+        // update SebassStovall --> add Bar's playlist to collection
+        await db.collection('users').updateOne({ _id: userRefs[0] }, { $addToSet: { playlists: [ playlistRefs[5] ] } })
+
+        // update Foo --> add SebassStovall playlist to collection
+        await db.collection('users').updateOne({ _id: userRefs[1] }, { $addToSet: { playlists: [ playlistRefs[3] ] } })
+
+        // update Bar --> add Foo playlist to collection
+        await db.collection('users').updateOne({ _id: userRefs[2] }, { $addToSet: { playlists: [ playlistRefs[4] ] } })
+
+        //! ADD 'Album' REFS TO 'User'
+        // update SebassStovall
+        await db.collection('users').updateOne({ _id: userRefs[0] }, { $set: { albums: [ albumRefs[0], albumRefs[1] ] } })
+
+        // update Foo
+        await db.collection('users').updateOne({ _id: userRefs[1] }, { $set: { albums: [ albumRefs[2], albumRefs[3] ] } })
+
+        // update Bar
+        await db.collection('users').updateOne({ _id: userRefs[2] }, { $set: { albums: [ albumRefs[4], albumRefs[5] ] } })
+
+
+        //! ADD 'Artist' REFS TO 'USER'
+        // update SebassStovall
+        await db.collection('users').updateOne({ _id: userRefs[0] }, { $set: { artists: [ artistRefs[0], artistRefs[3] ] } })
+
+        // update Foo
+        await db.collection('users').updateOne({ _id: userRefs[1] }, { $set: { artists: [ artistRefs[1], artistRefs[4] ] } })
+
+        // update Bar
+        await db.collection('users').updateOne({ _id: userRefs[2] }, { $set: { artists: [ artistRefs[2] ] } })
 
         console.log('Database seeded successfully.')
         return
