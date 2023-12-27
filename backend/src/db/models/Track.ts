@@ -9,7 +9,7 @@ const TrackSchema = new Schema({
     image: { type: String, required: true}, // AWS (will be album image if from album)
 
     artistImage: { type: String, required: true}, // AWS
-    artistId: { type: Schema.Types.ObjectId, ref: 'Artist', required: true}, // only populate() when user clicks on artist Title from track UI
+    artist: { type: Schema.Types.ObjectId, ref: 'Artist', required: true}, // only populate() when user clicks on artist Title from track UI
     artistName: { type: String, required: true }, // always loaded
 
     album: { type: Schema.Types.ObjectId, ref: 'Album', required: false}, // if a track document doesnt have this album key, its a single (STILL CLASSIFIED AS AN ALBUM IN SPOTIFY)

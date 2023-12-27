@@ -7,7 +7,7 @@ const Playlist_1 = require("../models/Playlist");
 const Track_1 = require("../models/Track");
 const getTracks = async () => {
     try {
-        const tracks = await Track_1.TrackModel.find();
+        const tracks = await Track_1.TrackModel.find({}).populate({ path: 'artist' }).populate({ path: 'album' });
         return tracks;
     }
     catch (e) {
@@ -17,7 +17,7 @@ const getTracks = async () => {
 exports.getTracks = getTracks;
 const getPlaylists = async () => {
     try {
-        const playlists = await Playlist_1.PlaylistModel.find();
+        const playlists = await Playlist_1.PlaylistModel.find({});
         return playlists;
     }
     catch (e) {
@@ -27,7 +27,7 @@ const getPlaylists = async () => {
 exports.getPlaylists = getPlaylists;
 const getAlbums = async () => {
     try {
-        const albums = await Album_1.AlbumModel.find();
+        const albums = await Album_1.AlbumModel.find({});
         return albums;
     }
     catch (e) {
@@ -37,7 +37,7 @@ const getAlbums = async () => {
 exports.getAlbums = getAlbums;
 const getArtists = async () => {
     try {
-        const artists = await Artist_1.ArtistModel.find();
+        const artists = await Artist_1.ArtistModel.find({});
         return artists;
     }
     catch (e) {
