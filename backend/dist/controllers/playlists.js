@@ -21,8 +21,9 @@ exports.getUserPlaylists = getUserPlaylists;
 const createNewPlaylist = async (req, res, next) => {
     try {
         const userId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
+        const username = (0, lodash_1.get)(req, "identity.username");
         const userPlaylists = (0, lodash_1.get)(req, "identity.playlists"); // key into identify and grab ._id field
-        await (0, playlist_actions_1.initNewPlaylist)(userId, userPlaylists.length);
+        await (0, playlist_actions_1.initNewPlaylist)(userId, userPlaylists.length, username);
         res.status(201).json({ message: 'Successfully Created Playlist' });
     }
     catch (e) {

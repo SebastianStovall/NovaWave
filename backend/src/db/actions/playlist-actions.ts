@@ -4,11 +4,11 @@ import { getUserById } from "./user-actions";
 import CustomError from "../../utils/CustomError";
 
 // initializes a new empty playlist for particular user
-export const initNewPlaylist = async (userId: string, count: number) => {
+export const initNewPlaylist = async (userId: string, count: number, username: string) => {
     try {
         const playlistDefaultValues = {
             owner: userId,
-            title: `My Playlist ${count + 1}`,
+            title: `${username} playlist ${count + 1}`,
         };
 
         const playlist = await new PlaylistModel(playlistDefaultValues).save();

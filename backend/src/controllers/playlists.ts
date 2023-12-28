@@ -20,9 +20,10 @@ export const getUserPlaylists: RequestHandler = async (req, res, next) => {
 export const createNewPlaylist: RequestHandler = async (req, res, next) => {
     try {
         const userId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
+        const username = get(req, "identity.username") as unknown as string;
         const userPlaylists = get(req, "identity.playlists") as unknown as Array<string>; // key into identify and grab ._id field
 
-        await initNewPlaylist(userId, userPlaylists.length)
+        await initNewPlaylist(userId, userPlaylists.length, username)
 
         res.status(201).json({ message: 'Successfully Created Playlist' })
     } catch (e) {
