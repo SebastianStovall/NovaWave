@@ -55,31 +55,36 @@ async function seedDatabase() {
         const artists = [
             {
                 name: '$uicideBoy$',
-                image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif',
+                bannerImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
                 monthlyListeners: 11216508,
                 description: "$uicideboy$ dig light out of the deepest corners of darkness, addiction, hopelessness, and pain. The New Orleans-bred duo of cousins—Scott Arcenaux, Jr. a.k.a. $crim and Aristos Petrou a.k.a. Ruby da Cherry—translate a fight against demons (seen and unseen) into a clever, caustic, and corrosively catchy apocalyptic vision of hip-hop pierced with punk intensity and laced with Southern flows. After releasing dozens of projects and playing hundreds of sold-out shows since 2014, they’ve generated billions of streams and earned multiple RIAA certifications, including the platinum “…And To Those I Love, Thanks For Sticking Around” and gold “Carrollton,” “2nd Hand,” “Runnin’ Thru The 7th With My Woadies,” “Paris,” and “Kill Yourself (Part III).” Beyond their critical-acclaim from Billboard, XXL, Alternative Press, Pigeons and Planes, Hypebeast, Revolver, and more, they built their label G*59 Records into a bastion of independent talent and home to Night Lovell, Shakewell, Germ, Ramirez, and others. In 2022, the punk-rap duo landed in the Top 30 most-streamed artists across all genres and have climbed to the 92nd position of most-streamed artists of all-time with over 15 billion career streams. Their third official full-length LP Sing Me A Lullaby, My Sweet Temptation marked their 3rd consecutive Top 10 album debut on the Billboard Top 200. The album led to a 50-city US arena and amphitheater tour followed by a European tour and a top-billed spot at Coachella music festival in 2023"
             },
             {
                 name: 'Kanye West',
-                image: '',
+                bannerImage: '',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
                 monthlyListeners: 64191521,
                 description: "One of the most influential, critically-lauded, and controversial artists of the early 21st century, American rapper and producer Kanye West went from hip-hop beatmaker to worldwide hitmaker with a wildly successful solo career that counted an unbroken string of chart-topping, multi-platinum albums and nearly two-dozen Grammy Awards. His early 2000s production work quickly led to a major-label recording contract, yielding a classic trilogy comprised of 2004's The College Dropout, 2005's Late Registration, and 2007's Graduation. With each successive album, he pushed the boundaries of hip-hop and soon entered a new phase of artistry with game changers such as 2008's 808s & Heartbreak, 2010's widely-regarded magnum opus My Beautiful Dark Twisted Fantasy, and 2013's industrial-leaning foray Yeezus. Celebrity, tabloid headlines, and a changing artistic vision informed much of his next era, as the trappings of fame and inner turmoil became the focus of chart-toppers such as The Life of Pablo and Ye. He even released a gospel album, Jesus Is King, in 2019. As his outspoken personality and political statements began to eclipse his music into the 2020s, he still managed to top the charts and garner accolades with 2020's exploratory Donda. In 2023, West joined forces with  to form new project ¥$, the duo working towards the release of their debut album Vultures."
             },
             {
                 name: 'Eminem',
-                image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/Eminem-Banner-Artist.jfif',
+                bannerImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/Eminem-Banner-Artist.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
                 monthlyListeners: 72027242,
                 description: "Apart from being one of the best-selling artists in music history, Eminem is one of the greatest rappers of his generation: effortlessly fast, fluid, dexterous, and unpredictable, capable of pulling off long-form narratives or withering asides. And thanks to his mentor , he's had music to match: thick, muscular loops evoking the terror and paranoia conjured by his lyrics. To be certain, a great deal of the controversy Eminem courted came through in how his violent fantasias, often directed at his mother or his wife, intertwined with flights of absurdity that appealed to listeners too young to absorb the psychodramas explored on his breakthrough albums The Slim Shady LP and The Marshall Mathers LP. Eminem's commercial peak came around the time of his 2002 album The Eminem Show (which went platinum 27 times over) and with his crossover onto the big screen that same year with 8 Mile, a film that earned him acclaim for his performance and an Oscar for the film's anthem, 'Lose Yourself.' Eminem's journey as a living rap legend included struggles with addiction, near-constant feuding with other artists, and a celebrity status that shifted as the years went on. Through all his various changes, however, he continued growing as an artist as well as consistently hitting high commercial marks. Though critics could be unkind to efforts like 2009's Relapse or 2017's Revival, fans made sure that each new album sold at least platinum numbers and topped the charts. Instead of recycling old ideas, the rapper experimented with new production approaches, faster flows, and increasingly complex multisyllabic wordplay on projects like 2020's Music to Be Murdered By."
             },
             {
                 name: 'Hensonn',
-                image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/Hensonn-Banner-Artist.jfif',
+                bannerImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/Hensonn-Banner-Artist.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Hensonn-ABOUT-Artist-4.jfif',
                 monthlyListeners: 4153680,
                 description: "Hey I'm Artem , known professionally as 'Hensonn', staked his claim in the Phonk community with his 2021 TikTok viral record 'Sahara'. Born in Ukraine, his unique approach to Phonk production has amassed him tens of millions of streams across all platforms."
             },
             {
                 name: 'fkbambam',
-                image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/fkbambam-Banner-Artist.jfif',
+                bannerImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/fkbambam-Banner-Artist.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/fkbambam-ABOUT-Artist-5.jfif',
                 monthlyListeners: 851181,
                 description: "just calm down // ig: @fkbambam"
             },
@@ -222,13 +227,14 @@ async function seedDatabase() {
             {
                 title: "Not Even Ghosts Are This Empty",
                 length: "3:00",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Not+Even+Ghosts+Are+This+Empty.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/I-No-Longer-Fear-The-Razor-Guarding-My-Heel-Album-1.jfif',
                 plays: 42268454,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[0],
                 albumName: 'I No Longer Fear The Razor Guarding My Heel (V)'
@@ -237,13 +243,14 @@ async function seedDatabase() {
             {
                 title: "Finding Shelter In My Larynx",
                 length: "2:20",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Finding+Shelter+In+My+Larynx.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/I-No-Longer-Fear-The-Razor-Guarding-My-Heel-Album-1.jfif',
                 plays: 19376796,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[0],
                 albumName: 'I No Longer Fear The Razor Guarding My Heel (V)'
@@ -252,13 +259,14 @@ async function seedDatabase() {
             {
                 title: "A Little Trauma Can Be Illuminating, And I'm Shining Like The Sun",
                 length: "2:13",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+A+Little+Trauma+Can+Be+Illuminating%2C+And+I'm+Shining+Like+The+Sun.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/I-No-Longer-Fear-The-Razor-Guarding-My-Heel-Album-1.jfif',
                 plays: 27886693,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[0],
                 albumName: 'I No Longer Fear The Razor Guarding My Heel (V)'
@@ -269,13 +277,14 @@ async function seedDatabase() {
             {
                 title: "Summer Season Intro",
                 length: "0:40",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Summer+Season+Intro.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif',
                 plays: 1912710,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[1],
                 albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
@@ -284,13 +293,14 @@ async function seedDatabase() {
             {
                 title: "5 'N the Mornin'",
                 length: "4:26",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+5+'N+the+Mornin'.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif',
                 plays: 9983499,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[1],
                 albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
@@ -299,13 +309,14 @@ async function seedDatabase() {
             {
                 title: "Starry 9",
                 length: "2:39",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Starry+9.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif',
                 plays: 6216354,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[1],
                 albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
@@ -314,13 +325,14 @@ async function seedDatabase() {
             {
                 title: "Bloody 98 (Feat. Ghostmane)",
                 length: "4:37",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Bloody+98+(Feat.+Ghostemane).mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif',
                 plays: 20227858,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[0],
                 artistName: '$uicideboy$',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif',
+                artistMonthlyListeners: 11216508,
 
                 album: albumRefs[1],
                 albumName: 'YIN YANG TAPES: Summer Season (1989-1990)'
@@ -331,13 +343,14 @@ async function seedDatabase() {
             {
                 title: "Good Morning",
                 length: "3:15",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Good+Morning.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 272276775,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -346,13 +359,14 @@ async function seedDatabase() {
             {
                 title: "Champion",
                 length: "2:47",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Champion.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 184949937,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -361,13 +375,14 @@ async function seedDatabase() {
             {
                 title: "Stronger",
                 length: "5:11",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Stronger.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 1302723304,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -376,13 +391,14 @@ async function seedDatabase() {
             {
                 title: "I Wonder",
                 length: "4:03",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+I+Wonder.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 575633353,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -391,13 +407,14 @@ async function seedDatabase() {
             {
                 title: "Good Life",
                 length: "3:27",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Good+Life.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 383921280,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -406,13 +423,14 @@ async function seedDatabase() {
             {
                 title: "Can't Tell Me Nothing",
                 length: "4:31",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Can't+Tell+Me+Nothing.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 490821294,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -421,13 +439,14 @@ async function seedDatabase() {
             {
                 title: "Barry Bonds",
                 length: "3:24",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Barry+Bonds.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 56760640,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -436,13 +455,14 @@ async function seedDatabase() {
             {
                 title: "Drunk and Hot Girls",
                 length: "5:13",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Drunk+and+Hot+Girls.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 50008455,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -451,13 +471,14 @@ async function seedDatabase() {
             {
                 title: "Flashing Lights",
                 length: "3:57",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Flashing+Lights.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 875401287,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -466,13 +487,14 @@ async function seedDatabase() {
             {
                 title: "Everything I Am",
                 length: "3:47",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Everything+I+Am.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 180152731,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -481,13 +503,14 @@ async function seedDatabase() {
             {
                 title: "The Glory",
                 length: "3:32",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+The+Glory.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 73851938,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -496,13 +519,14 @@ async function seedDatabase() {
             {
                 title: "Homecoming",
                 length: "3:23",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Homecoming.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 552626848,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -511,13 +535,14 @@ async function seedDatabase() {
             {
                 title: "Big Brother",
                 length: "4:47",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Big+Brother.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 58523882,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -526,13 +551,14 @@ async function seedDatabase() {
             {
                 title: "Good Night",
                 length: "3:05",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Good+Night.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif',
                 plays: 26347080,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[2],
                 albumName: 'Graduation'
@@ -543,13 +569,14 @@ async function seedDatabase() {
             {
                 title: "Say You Will",
                 length: "6:17",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Say+You+Will.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 42373107,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -558,13 +585,14 @@ async function seedDatabase() {
             {
                 title: "Welcome To Heartbreak",
                 length: "4:22",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Welcome+To+Heartbreak.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 75304097,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -573,13 +601,14 @@ async function seedDatabase() {
             {
                 title: "Heartless",
                 length: "3:31",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Heartless.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 1075586037,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -588,13 +617,14 @@ async function seedDatabase() {
             {
                 title: "Amazing",
                 length: "3:58",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Amazing.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 151231670,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -603,13 +633,14 @@ async function seedDatabase() {
             {
                 title: "Love Lockdown",
                 length: "4:30",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Love+Lockdown.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 189617906,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -618,13 +649,14 @@ async function seedDatabase() {
             {
                 title: "Paranoid",
                 length: "4:47",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Paranoid.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 89871396,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -633,13 +665,14 @@ async function seedDatabase() {
             {
                 title: "RoboCop",
                 length: "4:34",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+RoboCop.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 39091814,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -648,13 +681,14 @@ async function seedDatabase() {
             {
                 title: "Street Lights",
                 length: "3:09",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Street+Lights.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 69516857,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -663,13 +697,14 @@ async function seedDatabase() {
             {
                 title: "Bad News",
                 length: "3:58",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Bad+News.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 34326302,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -678,13 +713,14 @@ async function seedDatabase() {
             {
                 title: "See You In My Nightmares",
                 length: "4:18",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+See+You+In+My+Nightmares.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 38991772,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -693,13 +729,14 @@ async function seedDatabase() {
             {
                 title: "Coldest Winter",
                 length: "2:44",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Coldest+Winter.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 42550668,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -708,13 +745,14 @@ async function seedDatabase() {
             {
                 title: "Pinocchio Story",
                 length: "6:01",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Pinocchio+Story.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
                 plays: 17627403,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[1],
                 artistName: 'Kanye West',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                artistMonthlyListeners: 64191521,
 
                 album: albumRefs[3],
                 albumName: '808s & Heartbreak'
@@ -726,13 +764,14 @@ async function seedDatabase() {
             {
                 title: "Cold Wind Blows",
                 length: "5:03",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Cold+Wind+Blows.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 102638408,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -741,13 +780,14 @@ async function seedDatabase() {
             {
                 title: "Talkin' 2 Myself",
                 length: "5:00",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Talkin%E2%80%99+2+Myself.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 87048847,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -756,13 +796,14 @@ async function seedDatabase() {
             {
                 title: "On Fire",
                 length: "3:33",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+On+Fire.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 54016464,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -771,13 +812,14 @@ async function seedDatabase() {
             {
                 title: "Won't Back Down",
                 length: "4:25",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Won't+Back+Down.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 102202067,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -786,13 +828,14 @@ async function seedDatabase() {
             {
                 title: "W.T.P",
                 length: "3:58",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+W.T.P..mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 99806700,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -801,13 +844,14 @@ async function seedDatabase() {
             {
                 title: "Going Through Changes",
                 length: "4:58",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Going+Through+Changes.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 72584879,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -816,13 +860,14 @@ async function seedDatabase() {
             {
                 title: "Not Afraid",
                 length: "4:08",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Not+Afraid.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 936886632,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -831,13 +876,14 @@ async function seedDatabase() {
             {
                 title: "Seduction",
                 length: "4:35",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Seduction.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 54463079,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -846,13 +892,14 @@ async function seedDatabase() {
             {
                 title: "No Love",
                 length: "4:59",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+No+Love.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 311027582,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -861,13 +908,14 @@ async function seedDatabase() {
             {
                 title: "Space Bound",
                 length: "4:38",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Space+Bound.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 293785698,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -876,13 +924,14 @@ async function seedDatabase() {
             {
                 title: "Cinderella Man",
                 length: "4:39",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Cinderella+Man.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 297045840,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -891,13 +940,14 @@ async function seedDatabase() {
             {
                 title: "25 To Life",
                 length: "4:01",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+25+To+Life.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 143833512,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -906,13 +956,14 @@ async function seedDatabase() {
             {
                 title: "So Bad",
                 length: "5:25",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+So+Bad.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 76770691,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -921,13 +972,14 @@ async function seedDatabase() {
             {
                 title: "Almost Famous",
                 length: "4:52",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Almost+Famous.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 50811026,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -936,13 +988,14 @@ async function seedDatabase() {
             {
                 title: "Love The Way You Lie",
                 length: "4:23",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Love+The+Way+You+Lie.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 1362035134,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -951,13 +1004,14 @@ async function seedDatabase() {
             {
                 title: "You're Never Over",
                 length: "5:05",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+You%E2%80%99re+Never+Over.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 47526797,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -966,13 +1020,14 @@ async function seedDatabase() {
             {
                 title: "Untitled",
                 length: "3:14",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Untitled.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif',
                 plays: 48294022,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[4],
                 albumName: 'Recovery'
@@ -983,13 +1038,14 @@ async function seedDatabase() {
             {
                 title: "Bad Guy",
                 length: "7:14",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Bad+Guy.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 111307418,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -998,13 +1054,14 @@ async function seedDatabase() {
             {
                 title: "Parking Lot - Skit",
                 length: "0:55",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Parking+Lot+-+Skit.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 27942209,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1013,13 +1070,14 @@ async function seedDatabase() {
             {
                 title: "Rhyme Or Reason",
                 length: "5:01",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Rhyme+Or+Reason.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 61537298,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1028,13 +1086,14 @@ async function seedDatabase() {
             {
                 title: "So Much Better",
                 length: "4:21",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+So+Much+Better.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 56155413,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1043,13 +1102,14 @@ async function seedDatabase() {
             {
                 title: "Survival",
                 length: "4:32",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Survival.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 248959425,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1058,13 +1118,14 @@ async function seedDatabase() {
             {
                 title: "Legacy",
                 length: "4:56",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Legacy.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 147875131,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1073,13 +1134,14 @@ async function seedDatabase() {
             {
                 title: "Asshole",
                 length: "4:48",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Asshole.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 56948495,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1088,13 +1150,14 @@ async function seedDatabase() {
             {
                 title: "Berzerk",
                 length: "3:58",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Berzerk.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 294646323,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1103,13 +1166,14 @@ async function seedDatabase() {
             {
                 title: "Rap God",
                 length: "6:03",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Rap+God.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 1024452496,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1118,13 +1182,14 @@ async function seedDatabase() {
             {
                 title: "Brainless",
                 length: "4:46",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Brainless.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 52372632,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1133,13 +1198,14 @@ async function seedDatabase() {
             {
                 title: "Stronger Than I Was",
                 length: "5:36",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Stronger+Than+I+Was.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 62403834,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1148,13 +1214,14 @@ async function seedDatabase() {
             {
                 title: "The Monster",
                 length: "4:10",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+The+Monster.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 944989922,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1163,13 +1230,14 @@ async function seedDatabase() {
             {
                 title: "So Far...",
                 length: "5:17",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+So+Far....mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 51964465,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1178,13 +1246,14 @@ async function seedDatabase() {
             {
                 title: "Love Game",
                 length: "4:56",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Love+Game.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 68940145,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1193,13 +1262,14 @@ async function seedDatabase() {
             {
                 title: "Headlights",
                 length: "5:43",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Headlights.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 149138309,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1208,13 +1278,14 @@ async function seedDatabase() {
             {
                 title: "Evil Twin - Skit",
                 length: "7:33",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Evil+Twin+-+Skit.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
                 plays: 9110651,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[2],
                 artistName: 'Eminem',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                artistMonthlyListeners: 72027242,
 
                 album: albumRefs[5],
                 albumName: 'The Marshall Mathers LP2'
@@ -1225,13 +1296,14 @@ async function seedDatabase() {
             {
                 title: "Fear",
                 length: "2:11",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Fear.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Fear-Album-7.jfif',
                 plays: 19172205,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[3],
                 artistName: 'Hensonn',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Hensonn-ABOUT-Artist-4.jfif',
+                artistMonthlyListeners: 4153680,
 
                 album: albumRefs[6],
                 albumName: 'Fear'
@@ -1242,13 +1314,14 @@ async function seedDatabase() {
             {
                 title: "Sahara",
                 length: "2:51",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Sahara.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif',
                 plays: 246129400,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[3],
                 artistName: 'Hensonn',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Hensonn-ABOUT-Artist-4.jfif',
+                artistMonthlyListeners: 4153680,
 
                 album: albumRefs[7],
                 albumName: 'Sahara'
@@ -1264,9 +1337,10 @@ async function seedDatabase() {
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/KILLKA-Album-9.jfif',
                 plays: 47259289,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[4],
                 artistName: 'fkbambam',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/fkbambam-ABOUT-Artist-5.jfif',
+                artistMonthlyListeners: 851181,
 
                 album: albumRefs[8],
                 albumName: 'KILLKA'
@@ -1277,13 +1351,14 @@ async function seedDatabase() {
             {
                 title: "VACATION",
                 length: "1:56",
-                audio: "<MP3 AUDIO HERE>", // AWS
+                audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+VACATION.mp3", // AWS
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/VACATION-Album-10.jfif',
                 plays: 15677488,
 
-                artistImage: 'https://artist-image.jpg',
                 artist: artistRefs[4],
                 artistName: 'fkbambam',
+                artistAboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/fkbambam-ABOUT-Artist-5.jfif',
+                artistMonthlyListeners: 851181,
 
                 album: albumRefs[9],
                 albumName: 'VACATION'

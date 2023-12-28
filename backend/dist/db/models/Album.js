@@ -34,15 +34,4 @@ const AlbumSchema = new mongoose_1.Schema({
     tracks: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Track' }],
     length: { type: String, required: true, default: '0:00' },
 }, { timestamps: true });
-// TODO - Add Validations (ex: album title should be unique)
 exports.AlbumModel = mongoose_1.default.model('Album', AlbumSchema);
-// {
-//     _id: ObjectId('658b08ddc9cbeda4fa967a14'),
-//     title: 'Sample Album',
-//     artistName: 'John Doe',
-//     artist: ObjectId('658b07dfc9cbeda4fa967a13'),
-//     yearReleased: 2023,
-//     image: 'https://example.com/samplealbum.jpg',
-//     tracks: [ ObjectId('65879ab961db2497c5c9a001') ],
-//     length: '45:30'
-//   }

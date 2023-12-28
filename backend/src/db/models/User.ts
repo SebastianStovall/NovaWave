@@ -25,12 +25,6 @@ export const UserModel = mongoose.model('User', UserSchema) // turn this schema 
 
 
 
-
-
-
-
-
-
 // PRE MIDDLEWARE ( triggered before save() to any User document )
 
 function initLikedSongsPlaylist() {
