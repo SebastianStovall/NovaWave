@@ -7,6 +7,10 @@ export const connectToMongoDB = async() => {
     try {
         const connectionString = (process.env.MONGO_URL as string)
 
+        if(!connectionString) {
+            console.error("!!! MONGODB IS UNDEFINED !!! ---> ", connectionString)
+        }
+
         mongoose.Promise = Promise
         await mongoose.connect(connectionString)
 

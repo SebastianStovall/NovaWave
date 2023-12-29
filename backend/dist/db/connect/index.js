@@ -10,6 +10,9 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const connectToMongoDB = async () => {
     try {
         const connectionString = process.env.MONGO_URL;
+        if (!connectionString) {
+            console.error("!!! MONGODB IS UNDEFINED !!! ---> ", connectionString);
+        }
         mongoose_1.default.Promise = Promise;
         await mongoose_1.default.connect(connectionString);
         // mongoose.connection.on('error', (error: Error) => console.log(error))
