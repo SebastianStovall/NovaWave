@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start-production": "node dist/app.js",
     "start": "nodemon dist/app.js",
     "db-reset": "node dist/db/seeds/seed.js"
   },
