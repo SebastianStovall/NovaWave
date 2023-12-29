@@ -6,8 +6,13 @@
 
 <br>
 
-1. In Root package.json:
-* post-install script that installs both backend and frontend dependencies (for local use)
+### Local Startup
+
+* if facing compile issues, run 'tsc' in backend and/or frontend folder
+
+1. from root ---> npm i (installs dependencies for backend and frontend)
+2. cd backend ---> npm start
+3. cd frontend ---> npm start
 
 <br>
 

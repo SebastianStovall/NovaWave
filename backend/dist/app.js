@@ -19,8 +19,8 @@ app.use((0, cors_1.default)({
 app.use((0, body_parser_1.json)());
 app.use((0, compression_1.default)());
 app.use((0, cookie_parser_1.default)());
-const port = 3000;
-app.listen(3000, () => {
+const port = 8000;
+app.listen(8000, () => {
     (async () => {
         await (0, connect_1.connectToMongoDB)();
     })();

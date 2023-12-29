@@ -19,8 +19,8 @@ app.use(json());
 app.use(compression());
 app.use(cookieParser());
 
-const port = 3000;
-app.listen(3000, () => {
+const port = 8000;
+app.listen(8000, () => {
   (async () => {
     await connectToMongoDB()
   })();
