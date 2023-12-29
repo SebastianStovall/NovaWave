@@ -8,7 +8,7 @@
     "postinstall": "npm install --prefix backend && npm install --prefix frontend",
     "render-postbuild": "npm run build --prefix frontend",
     "build": "npm run db-reset --prefix backend",
-    "start": "npm run start-production --prefix backend"
+    "start": "npm run start-production --prefix backend && cd frontend && serve -s build"
   },
   "keywords": [],
   "author": "",
