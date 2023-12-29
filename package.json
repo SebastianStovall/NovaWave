@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm install --prefix backend && npm install --prefix frontend"
+    "postinstall": "npm install --prefix backend && npm install --prefix frontend",
+    "start": "npm run start-production --prefix backend"
   },
   "keywords": [],
   "author": "",
