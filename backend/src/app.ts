@@ -8,6 +8,7 @@ import cors from 'cors'; // enable CORS for all routes, any client allowed to ma
 import router from "./router";
 import CustomError from "./utils/CustomError";
 import { connectToMongoDB } from "./db/connect";
+const path = require('path');
 
 const app = express();
 
@@ -18,6 +19,14 @@ app.use(cors({ // enforce certain routes to require authentication (require sess
 app.use(json());
 app.use(compression());
 app.use(cookieParser());
+
+// Serve static files from the React build directory
+app.use(express.static(path.join(__dirname, '../../frontend/build')));
+
+// Serve the React app for all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/build', 'index.html'));
+});
 
 
 const port = 8000;
