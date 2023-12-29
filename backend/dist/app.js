@@ -12,6 +12,7 @@ const cors_1 = __importDefault(require("cors")); // enable CORS for all routes, 
 const router_1 = __importDefault(require("./router"));
 const CustomError_1 = __importDefault(require("./utils/CustomError"));
 const connect_1 = require("./db/connect");
+const path = require('path');
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
     credentials: true,
@@ -19,6 +20,10 @@ app.use((0, cors_1.default)({
 app.use((0, body_parser_1.json)());
 app.use((0, compression_1.default)());
 app.use((0, cookie_parser_1.default)());
+app.use(express_1.default.static(path.join(__dirname, 'build')));
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 const port = 8000;
 app.listen(8000, () => {
     (async () => {

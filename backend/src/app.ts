@@ -7,7 +7,8 @@ import compression from 'compression'; // compresses size of response bodies bef
 import cors from 'cors'; // enable CORS for all routes, any client allowed to make requests to our server
 import router from "./router";
 import CustomError from "./utils/CustomError";
-import { connectToMongoDB, disconnectFromMongoDB } from "./db/connect";
+import { connectToMongoDB } from "./db/connect";
+const path = require('path');
 
 const app = express();
 
@@ -18,6 +19,11 @@ app.use(cors({ // enforce certain routes to require authentication (require sess
 app.use(json());
 app.use(compression());
 app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const port = 8000;
 app.listen(8000, () => {
