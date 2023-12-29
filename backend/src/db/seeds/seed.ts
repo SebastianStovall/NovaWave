@@ -1528,6 +1528,7 @@ async function seedDatabase() {
         await db.collection('users').updateOne({ _id: userRefs[2] }, { $set: { artists: [ artistRefs[2] ] } })
 
         console.log('Database seeded successfully.')
+        await disconnectFromMongoDB()
         return
 
     } catch (error) {

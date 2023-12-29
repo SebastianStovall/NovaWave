@@ -1229,6 +1229,7 @@ async function seedDatabase() {
         // update Bar
         await db.collection('users').updateOne({ _id: userRefs[2] }, { $set: { artists: [artistRefs[2]] } });
         console.log('Database seeded successfully.');
+        await (0, connect_1.disconnectFromMongoDB)();
         return;
     }
     catch (error) {
