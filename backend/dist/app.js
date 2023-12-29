@@ -27,16 +27,21 @@ app.listen(8000, () => {
     })();
     console.log(`Example app listening on port ${port}`);
 });
-app.use('/api', (0, router_1.default)()); // router from router/index.ts
+const apiRouter = (0, router_1.default)(); // global router with all api routes
+app.use('/api', apiRouter);
 // Static routes
 // Serve React build files in production
 if (process.env.NODE_ENV === 'production') {
     // Serve the frontend's index.html file at the root route
-    app.get('/', (req, res) => {
+    apiRouter.get('/', (req, res) => {
         return res.sendFile(path.resolve(__dirname, '../../frontend', 'build', 'index.html'));
     });
     // Serve the static assets in the frontend's build folder
-    app.use('/', express_1.default.static(path.join(__dirname, '../../frontend/build')));
+    apiRouter.use('/', express_1.default.static(path.join(__dirname, '../../frontend/build')));
+    // Serve the frontend's index.html file at all other routes NOT starting with /api
+    apiRouter.get(/^(?!\/?api).*/, (req, res) => {
+        return res.sendFile(path.resolve(__dirname, '../../frontend', 'build', 'index.html'));
+    });
 }
 app.use((err, req, res, next) => {
     // handle errors
