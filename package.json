@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm install --prefix backend && npm install --prefix frontend",
-    "render-postbuild": "npm run build --prefix frontend",
+    "render-postbuild": "cd frontend && npm run build && cd ..",
     "build": "npm run db-reset --prefix backend",
-    "start": "npm run start-production --prefix backend && cd frontend && serve -s build"
+    "start": "npm run start-production --prefix backend"
   },
   "keywords": [],
   "author": "",
