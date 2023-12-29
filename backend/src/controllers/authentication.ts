@@ -88,7 +88,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: "Successfully Logged In User", user: user });
+      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username} });
   } catch (e: any) {
     next(e)
   }

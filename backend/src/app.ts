@@ -12,9 +12,7 @@ import { connectToMongoDB } from "./db/connect";
 
 const app = express();
 
-app.use(cors({ // enforce certain routes to require authentication (require session token)
-  credentials: true,
-}))
+app.use(cors())
 
 app.use(json());
 app.use(compression());

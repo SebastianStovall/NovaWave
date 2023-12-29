@@ -57,7 +57,7 @@ const login = async (req, res, next) => {
         }); // store session token as cookie
         res
             .status(200)
-            .json({ message: "Successfully Logged In User", user: user });
+            .json({ message: "Successfully Logged In User", user: { id: user._id, email: user.email, username: user.username } });
     }
     catch (e) {
         next(e);
