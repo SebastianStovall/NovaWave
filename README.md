@@ -1,12 +1,6 @@
 # NovaWave
 
-### Init and Project Structure
-
-1. Three package.json folders (one in root, one in backend folder, one in frontend folder)
-
-<br>
-
-### Local Startup
+### Local Replication
 
 * if facing compile issues, run 'tsc' in backend and/or frontend folder
 
@@ -14,9 +8,25 @@
 2. cd backend ---> npm start
 3. cd frontend ---> npm start
 
+
+## Dev Notes
+
+
+### Render Build Command
+
+1. npm install ---> runs 'postinstall' script which installs dependencies in both backend and frontend package.json
+
+2. npm run render-postbuild ---> generates the react build folder to serve react app to production ( the path to serve assets to this folder can be found in app.ts... this pathing only relevant for production, since thats the only time its served with the build folder. use NODE_ENV)
+
+3. npm run build ---> runs the 'db-reset' script in the backend package json, which sets up database seeding
+
+### Render Start Command
+
+4. npm start ---> runs the  'start-production' script in backend package.json which spins up the express server
+
 <br>
 
-2. In the Backend Folder package.json:
+1. In the Backend Folder package.json:
 * npm install express
 * npm install nodemon
 * npm install --save-dev @types/node
@@ -24,12 +34,12 @@
 
 <br>
 
-3. In the Frontend Folder:
+2. In the Frontend Folder:
 * create-react-app . --typescript
 
 <br>
 
-4. in frontend package json:
+3. in frontend package json:
 * npm install --save-dev @types/node
 * npm install --save-dev @types/jest
 * npm install --save-dev @types/react
@@ -37,7 +47,7 @@
 
 <br>
 
-5. tsconfig.json file in both backend and frontend folders. dist output for each so JS files will have respective dependencies available
+5. tsconfig.json file in both backend and frontend folders. dist output for backend only
 
 
 ## MONGODB LOCAL SETUP FOR LINUX
