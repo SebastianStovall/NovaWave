@@ -20,12 +20,6 @@ app.use((0, cors_1.default)({
 app.use((0, body_parser_1.json)());
 app.use((0, compression_1.default)());
 app.use((0, cookie_parser_1.default)());
-// Serve static files from the React build directory
-app.use(express_1.default.static(path.join(__dirname, '../../frontend/build')));
-// Serve the React app for all other routes
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/build', 'index.html'));
-});
 const port = 8000;
 app.listen(8000, () => {
     (async () => {

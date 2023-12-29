@@ -7,6 +7,7 @@ const App: React.FC = () => {
   const handleTestBackend = async () => {
     try {
       const response = await fetch('/tracks/');
+      console.log(response.json())
       if (response.ok) {
         const tracks = await response.json();
         setData(tracks);
@@ -29,7 +30,7 @@ const App: React.FC = () => {
         </audio>
 
         <button onClick={handleTestBackend}>TEST BACKEND</button>
-        { data && <p>{JSON.stringify(data)}</p> }
+        { data && <p>{data}</p> }
 
     </div>
   );

@@ -20,14 +20,6 @@ app.use(json());
 app.use(compression());
 app.use(cookieParser());
 
-// Serve static files from the React build directory
-app.use(express.static(path.join(__dirname, '../../frontend/build')));
-
-// Serve the React app for all other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../frontend/build', 'index.html'));
-});
-
 
 const port = 8000;
 app.listen(8000, () => {
