@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useState } from "react";
 
@@ -21,7 +20,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="App">
         <p>App</p>
         <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" />
 
