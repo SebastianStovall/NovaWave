@@ -9,11 +9,11 @@ const User_1 = require("../models/User");
 const user_actions_1 = require("./user-actions");
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 // initializes a new empty playlist for particular user
-const initNewPlaylist = async (userId, count) => {
+const initNewPlaylist = async (userId, count, username) => {
     try {
         const playlistDefaultValues = {
             owner: userId,
-            title: `My Playlist ${count + 1}`,
+            title: `${username} playlist ${count + 1}`,
         };
         const playlist = await new Playlist_1.PlaylistModel(playlistDefaultValues).save();
         await User_1.UserModel.updateOne({ _id: userId }, { $push: { playlists: playlist._id } }); // add the playlist to the user's document
