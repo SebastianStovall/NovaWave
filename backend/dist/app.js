@@ -1,11 +1,34 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config(); // load env variables on entry
 const path = require('path');
-const express_1 = __importDefault(require("express"));
+const express_1 = __importStar(require("express"));
 const body_parser_1 = require("body-parser"); // makes data accessible through req.body due to parsing of incoming request data
 const cookie_parser_1 = __importDefault(require("cookie-parser")); // parse cookie data (for session token)
 const compression_1 = __importDefault(require("compression")); // compresses size of response bodies before sending data (increases loading time and bandwidth usage)
@@ -27,19 +50,20 @@ app.listen(8000, () => {
     })();
     console.log(`Example app listening on port ${port}`);
 });
-const apiRouter = (0, router_1.default)(); // global router with all api routes
-app.use('/api', apiRouter);
+const routes = (0, express_1.Router)();
+routes.use('/api', (0, router_1.default)()); // global router with all api routes
+app.use(routes); // router from router/index.ts
 // Static routes
 // Serve React build files in production
 if (process.env.NODE_ENV === 'production') {
     // Serve the frontend's index.html file at the root route
-    apiRouter.get('/', (req, res) => {
+    routes.get('/', (req, res) => {
         return res.sendFile(path.resolve(__dirname, '../../frontend', 'build', 'index.html'));
     });
     // Serve the static assets in the frontend's build folder
-    apiRouter.use('/', express_1.default.static(path.join(__dirname, '../../frontend/build')));
+    routes.use('/', express_1.default.static(path.join(__dirname, '../../frontend/build')));
     // Serve the frontend's index.html file at all other routes NOT starting with /api
-    apiRouter.get(/^(?!\/?api).*/, (req, res) => {
+    routes.get(/^(?!\/?api).*/, (req, res) => {
         return res.sendFile(path.resolve(__dirname, '../../frontend', 'build', 'index.html'));
     });
 }
