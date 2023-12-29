@@ -8,7 +8,6 @@ import cors from 'cors'; // enable CORS for all routes, any client allowed to ma
 import router from "./router";
 import CustomError from "./utils/CustomError";
 import { connectToMongoDB } from "./db/connect";
-const path = require('path');
 
 const app = express();
 
@@ -20,10 +19,6 @@ app.use(json());
 app.use(compression());
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 const port = 8000;
 app.listen(8000, () => {
