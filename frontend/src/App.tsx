@@ -6,7 +6,7 @@ const App: React.FC = () => {
 
   const handleTestBackend = async () => {
     try {
-      const response = await fetch('/tracks/');
+      const response = await fetch('/api/tracks/');
       if (response.ok) {
         const tracks = await response.json();
         setData(tracks);
