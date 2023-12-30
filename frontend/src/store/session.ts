@@ -62,21 +62,62 @@ export const signup = (user: RegisterUser) => async (dispatch: Function) => {
 };
 
 export const login = (user: ILoginUser) => async (dispatch: Function) => {
-    const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(user),
-    });
-    const data = await response.json();
-    dispatch(setUser(data.user));
-    return response;
+    try {
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(user),
+        })
+
+        if(response.ok) {
+            const data = await response.json();
+            dispatch(setUser(data.user));
+            return response;
+        } else {
+            const error = await response.json();
+            console.log(error)
+        }
+
+    } catch(e) {
+        console.error('Error While Performing Thunk', e)
+    }
 };
 
 export const logout = () => async (dispatch: Function) => {
-    const response = await fetch("/api/auth/logout");
-    dispatch(removeUser());
-    return response;
+    try {
+        const response = await fetch("/api/auth/logout");
+        if(response.ok) {
+            dispatch(removeUser());
+        } else {
+            const error = await response.json()
+            console.log(error)
+        }
+    } catch(e) {
+        console.error('Error While Performing Thunk', e)
+    }
 };
+
+export const restoreUser = () => async (dispatch: Function) => {
+    try {
+        const response = await fetch("/api/auth/restore");
+
+        if(response.ok) {
+            const data = await response.json()
+            console.log("SIGNED IN USER: ", data.user ? data.user : false)
+            if(data.isLoggedIn) {
+                dispatch(setUser(data.user))
+            } else {
+                dispatch(removeUser())
+            }
+        } else {
+            const error = await response.json()
+            console.log(error)
+        }
+    } catch(e: any) {
+        console.error('Error While Performing Thunk', e)
+    }
+};
+
 
 // Define an initial state
 interface SessionState {

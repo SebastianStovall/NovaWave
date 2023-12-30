@@ -45,3 +45,21 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
     return next(e)
   }
 };
+
+
+export const isLoggedIn: RequestHandler = async (req, res, next) => { //? Middleware specifically for restoreUser route
+  try {
+    const sessionToken = req.cookies["AuthToken"];
+    const existingUser = await getUserBySessionToken(sessionToken);
+
+    if (!sessionToken || !existingUser ) { // if no session token OR no existing user with that session
+      return res.status(200).json({message: 'No Logged In User', isLoggedIn: false})
+    }
+
+    merge(req, { identity: existingUser[0] }); // if the user is authenticated, add a key to the req object called identity which includes the user's information
+    return next();
+
+  } catch (e: any) {
+    return next(e)
+  }
+};
