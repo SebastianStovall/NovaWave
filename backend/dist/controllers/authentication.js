@@ -52,8 +52,9 @@ const login = async (req, res, next) => {
         const salt = (0, auth_1.random)(); // if login success, generate session token for this user
         user.authentication.sessionToken = (0, auth_1.authentication)(salt, user._id.toString());
         await user.save();
+        const isLocalhost = process.env.NODE_ENV === 'local'; // check if on local or in production env
         res.cookie("AuthToken", user.authentication.sessionToken, {
-            domain: "localhost",
+            domain: isLocalhost ? "localhost" : "novawave.onrender.com", // set cookie domain based on env
             path: "/",
         }); // store session token as cookie
         res
