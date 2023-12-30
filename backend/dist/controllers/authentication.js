@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.login = exports.register = void 0;
+exports.restoreUser = exports.logout = exports.login = exports.register = void 0;
 const user_actions_1 = require("../db/actions/user-actions");
 const auth_1 = require("../helpers/auth");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
+const lodash_1 = require("lodash");
 const register = async (req, res, next) => {
     try {
         const { email, password, username } = req.body;
@@ -57,7 +58,7 @@ const login = async (req, res, next) => {
         }); // store session token as cookie
         res
             .status(200)
-            .json({ message: "Successfully Logged In User", user: user });
+            .json({ message: "Successfully Logged In User", user: { id: user._id, email: user.email, username: user.username } });
     }
     catch (e) {
         next(e);
@@ -74,3 +75,13 @@ const logout = async (req, res, next) => {
     }
 };
 exports.logout = logout;
+const restoreUser = async (req, res, next) => {
+    try {
+        const user = (0, lodash_1.get)(req, "identity");
+        return res.status(200).json({ message: 'User Logged In', isLoggedIn: true, user: { id: user._id, email: user.email, username: user.username } });
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.restoreUser = restoreUser;

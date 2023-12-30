@@ -37,9 +37,7 @@ const router_1 = __importDefault(require("./router"));
 const CustomError_1 = __importDefault(require("./utils/CustomError"));
 const connect_1 = require("./db/connect");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)({
-    credentials: true,
-}));
+app.use((0, cors_1.default)());
 app.use((0, body_parser_1.json)());
 app.use((0, compression_1.default)());
 app.use((0, cookie_parser_1.default)());
@@ -69,6 +67,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 app.use((err, req, res, next) => {
     // handle errors
+    console.log("IN GLOBAL ERROR HANDLING MIDDLEWARE");
     if (err instanceof CustomError_1.default) {
         return res.status(err.code).json({ message: err.name, error: err.message });
     }

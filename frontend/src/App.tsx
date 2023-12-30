@@ -1,36 +1,28 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Routes, Route } from 'react-router-dom';
+import { Dashboard } from "./components/Dashboard";
+import { Auth } from "./components/Auth";
+
+import { useAppDispatch } from "./hooks";
+import { restoreUser } from "./store/session";
 
 const App: React.FC = () => {
-  const [data, setData] = useState<any>(null)
+  const dispatch = useAppDispatch()
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleTestBackend = async () => {
-    try {
-      const response = await fetch('/api/tracks/');
-      if (response.ok) {
-        const tracks = await response.json();
-        setData(tracks);
-        // You may choose to return tracks here if needed
-      } else {
-        console.error('Failed to fetch data:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  // Check for and restore user information on page refresh
+  useEffect(() => {
+    dispatch(restoreUser()).then(() => setIsLoaded(true));
+  }, [dispatch]);
 
   return (
-    <div className="App">
-        <p>App</p>
-        <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" />
-
-        <audio controls>
-          <source src="https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+KILLKA.mp3" type="audio/mp3" />
-        </audio>
-
-        <button onClick={handleTestBackend}>TEST BACKEND</button>
-        { data && <p>{JSON.stringify(data)}</p> }
-
+    <div>
+      {isLoaded && (
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/auth" element={<Auth />} />
+      </Routes>
+      )}
     </div>
   );
 };

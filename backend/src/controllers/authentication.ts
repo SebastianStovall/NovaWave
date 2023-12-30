@@ -1,7 +1,9 @@
 import { RequestHandler } from "express";
-import { createUser, getUserByEmail } from "../db/actions/user-actions";
+import { createUser, getUserByEmail, getUserBySessionToken } from "../db/actions/user-actions";
 import { random, authentication } from "../helpers/auth";
 import CustomError from "../utils/CustomError";
+import { get, merge } from 'lodash';
+import { isAuthenticated } from "../middleware";
 
 export const register: RequestHandler = async (req, res, next) => {
   try {
@@ -88,7 +90,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: "Successfully Logged In User", user: user });
+      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username} });
   } catch (e: any) {
     next(e)
   }
@@ -98,6 +100,24 @@ export const logout: RequestHandler = async (req, res, next) => {
   try {
     res.clearCookie("AuthToken", { domain: "localhost", path: "/" });
     res.status(200).json({ message: "Successfully signed out user" });
+  } catch (e: any) {
+    next(e)
+  }
+};
+
+
+export const restoreUser: RequestHandler = async (req, res, next) => {
+  try {
+
+    interface SafeUser { // if Authenticated, attach user info
+      _id: string,
+      email: string
+      username: string
+    }
+
+    const user = get(req, "identity") as unknown as SafeUser
+    return res.status(200).json({message: 'User Logged In', isLoggedIn: true, user: {id: user._id, email: user.email, username: user.username }})
+
   } catch (e: any) {
     next(e)
   }

@@ -12,9 +12,7 @@ import { connectToMongoDB } from "./db/connect";
 
 const app = express();
 
-app.use(cors({ // enforce certain routes to require authentication (require session token)
-  credentials: true,
-}))
+app.use(cors())
 
 app.use(json());
 app.use(compression());
@@ -60,6 +58,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // cenertalized error handling if no routes are hit or middleware errors
   // handle errors
+  console.log("IN GLOBAL ERROR HANDLING MIDDLEWARE")
   if(err instanceof CustomError) {
     return res.status(err.code).json({ message: err.name, error: err.message });
   } else {
