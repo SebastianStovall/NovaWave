@@ -68,7 +68,8 @@ const login = async (req, res, next) => {
 exports.login = login;
 const logout = async (req, res, next) => {
     try {
-        res.clearCookie("AuthToken", { domain: "localhost", path: "/" });
+        const isLocalhost = process.env.NODE_ENV === 'local'; // check if on local or in production env
+        res.clearCookie("AuthToken", { domain: isLocalhost ? "localhost" : "novawave.onrender.com", path: "/" });
         res.status(200).json({ message: "Successfully signed out user" });
     }
     catch (e) {
