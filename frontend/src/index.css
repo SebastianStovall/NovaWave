@@ -1,7 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 html {
-  font-family: sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
-  margin: 0;
+  background-color: #000000;
+}
+
+
+
+
+
+
+/*! LAYOUT COMPONENT */
+.full-page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 7px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
+  margin-right: 7px; /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
+}
+
+.main-border {
+  /* border: 2px solid red; */
+  background-color: #121212;
+}
+/*! --------------- */
+
+
+/** styles just to see what im doing for now **/
+
+p {
+  color: grey;
+}
+
+.header {
+  border: 2px solid yellow;
+  background-color: #121212;
+}
+.library-sidebar {
+  border: 2px solid blue;
+  background-color: #121212;
+}
+.now-playing-sidebar {
+  border: 2px solid purple;
+  background-color: #121212;
+}
+.footer {
+  height: 87px;
+  background-color: #000000;
 }

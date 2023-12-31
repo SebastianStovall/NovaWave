@@ -22,7 +22,7 @@ export const Dashboard: React.FC = () => {
     return (
         <div>
             <p>App</p>
-            <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" />
+            <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" width={'300px'} height={'200px'} />
 
             <audio controls>
                 <source src="https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+KILLKA.mp3" type="audio/mp3" />
