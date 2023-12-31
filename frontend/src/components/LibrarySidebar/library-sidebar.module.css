@@ -1,13 +1,15 @@
-.resizablesidebarcontainer {
+.resizableSidebarContainer {
     display: flex;
     height: 100%;
     background-color: #121212;
 }
 
-.resizablesidebar {
+.resizableSidebar {
     flex: 0 0 auto;
     overflow: hidden;
     border-right: 1px solid #ddd;
+    min-width: 4vw;
+    max-width: 60vw;
 }
 
 .resizebar {
@@ -15,4 +17,7 @@
     width: 3px;
     height: 100%;
     color: white;
+}
+.resizebar:hover {
+    background-color: rgb(69, 68, 68);
 }
