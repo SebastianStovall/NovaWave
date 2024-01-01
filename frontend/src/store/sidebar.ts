@@ -1,6 +1,7 @@
 // Define Our Action Types with enum
 enum ActionTypes {
-    TOGGLE_SIDEBAR = 'togglesidebar'
+    TOGGLE_SIDEBAR = 'togglesidebar',
+    IS_RESIZING = 'isresizing'
 }
 
 
@@ -9,10 +10,22 @@ interface ToggleRightSidebarAction {
     payload: Boolean
 }
 
+interface IsResizingAction {
+    type: ActionTypes.IS_RESIZING
+    payload: Boolean
+}
 
-export const setSidebar = (boolean: Boolean): ToggleRightSidebarAction => {
+
+export const togglePlayViewSidebar = (boolean: Boolean): ToggleRightSidebarAction => {
     return {
         type: ActionTypes.TOGGLE_SIDEBAR,
+        payload: boolean
+    }
+}
+
+export const resizing = (boolean: Boolean): IsResizingAction => {
+    return {
+        type: ActionTypes.IS_RESIZING,
         payload: boolean
     }
 }
@@ -20,21 +33,26 @@ export const setSidebar = (boolean: Boolean): ToggleRightSidebarAction => {
 
 // Define an initial state
 interface SidebarState {
-    sidebar: Boolean;
+    active: Boolean;
+    isresizing: Boolean;
 }
 
-const initialState: SidebarState = { sidebar: true };
+const initialState: SidebarState = { active: true, isresizing: false };
 
 // Define session reducer
 const sidebarReducer = (
     state: SidebarState = initialState,
-    action: ToggleRightSidebarAction
+    action: ToggleRightSidebarAction | IsResizingAction
     ) => {
     let newState;
     switch (action.type) {
         case ActionTypes.TOGGLE_SIDEBAR:
             newState = { ...state };
-            newState.sidebar = action.payload;
+            newState.active = action.payload;
+            return newState;
+        case ActionTypes.IS_RESIZING:
+            newState = { ...state };
+            newState.isresizing = action.payload;
             return newState;
         default:
             return state;

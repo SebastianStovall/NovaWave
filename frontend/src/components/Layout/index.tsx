@@ -5,11 +5,15 @@ import { NowPlayingSidebar } from "../NowPlayingSidebar/now-playing-sidebar";
 import { Header } from "../Header/header";
 import { Footer } from "../Footer/footer";
 
+import { useAppSelector } from "../../hooks";
+
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const isPlayViewSidebarActive = useAppSelector(state => state.sidebar.active)
+
   return (
     <div className="full-page-layout">
 
@@ -21,7 +25,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           {children}
         </div>
 
-        <NowPlayingSidebar />
+        {isPlayViewSidebarActive && <NowPlayingSidebar />}
       </div>
 
       <Footer />

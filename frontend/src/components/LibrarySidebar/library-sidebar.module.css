@@ -2,14 +2,18 @@
     display: flex;
     height: 100%;
     background-color: #121212;
+    border-radius: 15px;
 }
 
 .resizableSidebar {
     flex: 0 0 auto;
     overflow: hidden;
     border-right: 1px solid #ddd;
-    min-width: 4vw;
-    max-width: 60vw;
+    min-width: 80px;
+    max-width: 52vw;
+}
+.resizableSidebar:focus {
+    border-right: 1px solid #ddd;
 }
 
 .resizebar {
@@ -20,4 +24,44 @@
 }
 .resizebar:hover {
     background-color: rgb(69, 68, 68);
+}
+
+
+
+/* 1431 max safe at 53vw */
+/* 939 max safe at 33vw */
+/* 938 and below = no right sidebar */  /* max-width 33vw */
+/* mobile view starts at 641px */  /* max-width 80px */
+
+/*  at 1635 width and above, no dissapear             (max-width 53vw)  */
+/*  between 1634 and 1298 --> make dissapear at 0.44  (max-width 44vw)  */
+/*  below 1297 width, make dissapear at 0.33          (max-width 33vw)  */
+
+
+/* Large */
+@media screen and (min-width: 1431px) {
+    .resizableSidebar {
+        max-width: 52vw;
+    }
+}
+
+/* Medium */
+@media screen and (max-width: 1430px) and (min-width: 939px) {
+    .resizableSidebar {
+        max-width: 33vw;
+    }
+}
+
+/* Small */
+@media screen and (max-width: 938px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
+    .resizableSidebar {
+        max-width: 33vw;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 641px) {
+    .resizableSidebar {
+        max-width: 80px;
+    }
 }

@@ -19,9 +19,48 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
         if (isResizing) {
             const offsetX = initialX - e.clientX;
             const newWidth = direction === 'left' ? e.clientX : Math.min(sidebarWidth + offsetX, 450);
-            setSidebarWidth(newWidth);
+
+            if(direction === 'right') {
+                setSidebarWidth(Math.min(sidebarWidth + offsetX, 450))
+                return
+            }
+
+            const windowWidth = handleWindowWidth()
+            switch(windowWidth) {
+                case 'LARGE':
+                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.52));
+                    return
+                case 'MEDIUM':
+                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.33));
+                    return
+                case 'SMALL':
+                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.33));
+                    return
+                case 'MOBILE':
+                    setSidebarWidth(80);
+                    return
+                default:
+                    return
+            }
         }
-    };
+    }
+
+    const handleWindowWidth = () => {
+        const windowWidth = window.innerWidth
+        if(windowWidth >= 1431) {
+            // large
+            return 'LARGE'
+        } else if(windowWidth < 1431 && windowWidth >= 939) {
+            // medium
+            return 'MEDIUM'
+        } else if(windowWidth <= 938 && windowWidth > 641) {
+            // small
+            return 'SMALL'
+        } else {
+            //mobile
+            return 'MOBILE'
+        }
+    }
 
     useEffect(() => {
         if (isResizing) {
@@ -37,7 +76,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
             window.removeEventListener('mouseup', handleMouseUp);
         };
         // eslint-disable-next-line
-    }, [isResizing]);
+    }, [isResizing, sidebarWidth]);
 
     return { isResizing, sidebarWidth, handleMouseDown };
 };
