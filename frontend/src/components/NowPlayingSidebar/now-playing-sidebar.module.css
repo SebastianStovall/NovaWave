@@ -8,18 +8,30 @@
 
 .resizableSidebar {
     flex: 0 0 auto;
-    border-left: 1px solid #ddd;
     min-width: 300px;
     max-width: 430px;
-
-    overflow: hidden;
 }
 
 .resizebar {
     cursor: ew-resize;
-    width: 3px;
+    width: 6px;
     height: 100%;
-    color: white;
+}
 
-    overflow: hidden;
+.resizebar:hover {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:active {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:focus {
+    background-color: rgb(123, 122, 122);
+}
+
+
+/* Small */
+@media screen and (max-width: 1023px) and (min-width: 642px) {  /* 1023 and below = no right sidebar available */
+    .resizableSidebarContainer {
+        display: none;
+    }
 }

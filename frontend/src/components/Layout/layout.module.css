@@ -1,0 +1,47 @@
+
+/*! LAYOUT COMPONENT */
+
+.fullPageLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.contentWrapper {
+  display: flex;
+  flex: 1;
+
+  margin-top: 7px;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+.mainContent {
+  flex: 1;
+  margin-left: 7px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
+  margin-right: 7px;
+
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  min-width: 416px;
+  background-color: #121212;
+  border-radius: 15px;
+}
+
+/* Small */
+@media screen and (max-width: 990px) and (min-width: 642px) {
+  .mainContent {
+    margin-right: 0px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 641px) {
+  .mainContent {
+    margin-right: 0px;
+  }
+}
+
+/*! --------------- */

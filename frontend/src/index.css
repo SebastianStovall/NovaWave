@@ -12,78 +12,8 @@ body {
 }
 
 
-
-
-
-
-/*! LAYOUT COMPONENT */
-.full-page-layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.content-wrapper {
-  display: flex;
-  flex: 1;
-}
-
-.content-wrapper {
-  margin: 10px;
-}
-
-
-
-.main-content {
-  flex: 1;
-  margin-left: 5px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
-  margin-right: 5px; /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
-}
-
-.main-content {
-  /* border: 2px solid red; */
-  min-width: 416px;
-  background-color: #121212;
-  border-radius: 15px;
-}
-
-/* Small */
-@media screen and (max-width: 938px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
-  .main-content {
-      margin-right: 0px;
-  }
-}
-
-/* Mobile */
-@media screen and (max-width: 641px) {
-  .main-content {
-    margin-right: 0px;
-  }
-}
-
-/*! --------------- */
-
-
 /** styles just to see what im doing for now **/
 
 p {
   color: grey;
-}
-
-.header {
-  border: 2px solid yellow;
-  background-color: #121212;
-  border-radius: 15px;
-}
-.library-sidebar {
-  border: 2px solid blue;
-  background-color: #121212;
-}
-.now-playing-sidebar {
-  border: 2px solid purple;
-  background-color: #121212;
-}
-.footer {
-  height: 87px;
-  background-color: #000000;
 }

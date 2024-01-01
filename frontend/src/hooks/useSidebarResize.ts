@@ -25,13 +25,13 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
                 return
             }
 
-            const windowWidth = handleWindowWidth()
+            const windowWidth = handleWindowWidth() // this, along with the css constraints, limit max-width of sidebars depending on screen size
             switch(windowWidth) {
                 case 'LARGE':
                     setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.52));
                     return
                 case 'MEDIUM':
-                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.33));
+                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.27));
                     return
                 case 'SMALL':
                     setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.33));
@@ -45,15 +45,17 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
         }
     }
 
-    const handleWindowWidth = () => {
+    console.log("WINDOW", window.innerWidth)
+
+    const handleWindowWidth = () => { // width of sidebar depends on screen size
         const windowWidth = window.innerWidth
         if(windowWidth >= 1431) {
             // large
             return 'LARGE'
-        } else if(windowWidth < 1431 && windowWidth >= 939) {
+        } else if(windowWidth < 1430 && windowWidth >= 1024) {
             // medium
             return 'MEDIUM'
-        } else if(windowWidth <= 938 && windowWidth > 641) {
+        } else if(windowWidth <= 1023 && windowWidth > 641) {
             // small
             return 'SMALL'
         } else {

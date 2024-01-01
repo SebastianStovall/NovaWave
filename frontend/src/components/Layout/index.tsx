@@ -1,5 +1,6 @@
 // Layout.tsx
 import React from "react";
+import layoutStyling from './layout.module.css'
 import { LibrarySidebar } from "../LibrarySidebar/libaray-sidebar";
 import { NowPlayingSidebar } from "../NowPlayingSidebar/now-playing-sidebar";
 import { Header } from "../Header/header";
@@ -15,12 +16,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isPlayViewSidebarActive = useAppSelector(state => state.sidebar.active)
 
   return (
-    <div className="full-page-layout">
+    <div className={layoutStyling.fullPageLayout}>
 
-      <div className="content-wrapper">
+      <div className={layoutStyling.contentWrapper}>
         <LibrarySidebar />
 
-        <div className="main-content main-border">
+        <div className={layoutStyling.mainContent}>
           <Header />
           {children}
         </div>

@@ -8,22 +8,25 @@
 .resizableSidebar {
     flex: 0 0 auto;
     overflow: hidden;
-    border-right: 1px solid #ddd;
+    /* border-right: 1px solid #ddd; */
     min-width: 80px;
     max-width: 52vw;
-}
-.resizableSidebar:focus {
-    border-right: 1px solid #ddd;
 }
 
 .resizebar {
     cursor: ew-resize;
-    width: 3px;
+    width: 6px;
     height: 100%;
-    color: white;
 }
+
 .resizebar:hover {
-    background-color: rgb(69, 68, 68);
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:active {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:focus {
+    background-color: rgb(123, 122, 122);
 }
 
 
@@ -46,14 +49,14 @@
 }
 
 /* Medium */
-@media screen and (max-width: 1430px) and (min-width: 939px) {
+@media screen and (max-width: 1430px) and (min-width: 1024px) {
     .resizableSidebar {
-        max-width: 33vw;
+        max-width: 27vw;
     }
 }
 
 /* Small */
-@media screen and (max-width: 938px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
+@media screen and (max-width: 1023px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
     .resizableSidebar {
         max-width: 33vw;
     }
