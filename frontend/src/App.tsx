@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { Dashboard } from "./pages/Dashboard";
+import { Dashboard } from "./pages/Dashboard/dashboard";
 import { Auth } from "./pages/Auth";
 
 import { Layout } from "./components/Layout";

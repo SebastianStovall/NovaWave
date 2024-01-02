@@ -1,6 +1,7 @@
 .footer {
-    min-height: 78px;
+    min-height: 88px;
     background-color: #000000;
     margin-top: auto; /* Make the footer stick to the bottom */
+    text-align: center;
     /* border: 2px solid red; */
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-// import dashboardStyle from './dashboard.module.css'
 
 export const Dashboard: React.FC = () => {
     const [data, setData] = useState<any>(null)
@@ -21,7 +20,7 @@ export const Dashboard: React.FC = () => {
     };
 
     return (
-        <div style={{maxHeight: '90vh', overflowX: 'hidden'}}>
+        <div>
             <p>App</p>
             <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" width={'300px'} height={'200px'} />
 
