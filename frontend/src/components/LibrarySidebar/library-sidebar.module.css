@@ -78,44 +78,49 @@
 
 /** ---------------- SIDEBAR CONTENT -------------------- **/
 
-.mainLibrary {
+.main {
     padding: 15px 30px;
+    height: 100%;
+
+    overflow: auto;
+    overflow-x: hidden;
+    transition: --var1 .5s;
 }
 
-.mainLibrary div:first-child {
+.yourLibrary {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.mainLibrary div:first-child a {
+.main div:first-child a {
     color: #b3b3b3;
     text-decoration: none;
     font-weight: bold;
     font-size: 13px;
 }
 
-.mainLibrary div:first-child a span:first-child {
+.main div:first-child a span:first-child {
     font-size: 22px;
     margin-right: 20px;
 }
-.mainLibrary div:first-child a:hover,
-.mainLibrary div:first-child a:active,
-.mainLibrary div:first-child a:focus {
+.main div:first-child a:hover,
+.main div:first-child a:active,
+.main div:first-child a:focus {
     color: #ffffff;
 }
-.mainLibrary div:first-child a:hover .fa,
-.mainLibrary div:first-child a:active .fa,
-.mainLibrary div:first-child a:focus .fa {
+.main div:first-child a:hover .fa,
+.main div:first-child a:active .fa,
+.main div:first-child a:focus .fa {
     color: #b3b3b3;
 }
-.mainLibrary div:first-child a:hover .fa:hover,
-.mainLibrary div:first-child a:hover .fa:active,
-.mainLibrary div:first-child a:hover .fa:focus {
+.main div:first-child a:hover .fa:hover,
+.main div:first-child a:hover .fa:active,
+.main div:first-child a:hover .fa:focus {
     color: #ffffff;
 }
 
-.mainLibrary div:first-child div {
+.addPlaylistPlus {
     font-size: 16px;
     font-weight: lighter;
     color: #b3b3b3;
@@ -124,10 +129,93 @@
     transition: box-shadow 0.5s ease;
 }
 
-.mainLibrary div:first-child div:hover {
+.addPlaylistPlus:hover {
     box-shadow: 0px 0px 1px 9px rgb(46, 46, 46, 0.5);
     border-radius: 50px;
     color: #ffffff;
+}
+
+
+.collection {
+    margin-top: 25px;
+}
+
+.collectionHeadings {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #323232;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.collectionHeadings p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #a5a5a5;
+}
+
+
+.userPlaylists {
+    /* border: 2px solid red; */
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: space-around;
+    gap: 10px;
+}
+
+.userPlaylists div img {
+    height: 48px;
+    width: 48px;
+    border-radius: 4px;
+}
+
+.playlistItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+.plMainInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.plMainInfo p {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 145px;
+}
+.plMainInfo p:first-child {
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+}
+.plMainInfo p:last-child {
+    font-size: 13px;
+}
+
+.dateAdded {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+}
+
+.played {
+    font-size: 14px;
+}
+
+
+
+
+#hideMainPadding {
+    padding: 0px;
+    margin-left: 15px;
+}
+
+#hideBookMargin {
+    margin-top: 10px;
+    margin-left: 15px;
 }
 
 /** --------------------------------------- **/
@@ -152,6 +240,9 @@
     .resizableSidebar {
         max-width: 33vw;
     }
+    #hidden {
+        display: none;
+    }
 }
 
 /* Mobile */
@@ -162,12 +253,59 @@
     #narrowMedia {
         display: none;
     }
+    .narrowMedia {
+        display: none;
+    }
+    .main {
+        padding: 0;
+        margin-left: 15px;
+    }
+    #hideBookMar {
+        margin-top: 10px;
+        margin-left: 15px;
+    }
 }
 
-/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 80px ---  */
+/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS MOBILE / 80px ---  */
 
 .narrowSpan {
     display: none;
 }
 
-/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 80px ---  */
+/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS MOBILE / 80px ---  */
+
+
+/* TODO --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 584px OR LARGER ---  */
+/* TODO --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 584px OR LARGER ---  */
+
+
+
+
+@property --var1 {  /* Needed For Fade In Transition Of Scrollbars. Cannot do transitions for scrollbars default */
+    syntax: "<color>";
+    inherits: true;
+    initial-value: transparent;
+  }
+
+  .main:hover {    /* For Scrollbar Fade-in when navigating to container */
+    --var1: rgba(147, 145, 145, 0.6);
+  }
+
+
+  .main::-webkit-scrollbar {
+    background: transparent;
+    width: 13px;
+  }
+
+  .main::-webkit-scrollbar-thumb {
+    background: var(--var1);
+    height: 200px;
+    border-radius: 1px;
+  }
+
+  .main::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(230, 226, 226, 0.6);
+  }
+  .main::-webkit-scrollbar-thumb:active {
+    background-color: rgba(220, 217, 217, 0.8);
+  }

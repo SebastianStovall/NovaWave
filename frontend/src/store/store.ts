@@ -1,11 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import sessionReducer from './session'
+import sessionReducer from './session';
 import sidebarReducer from './sidebar';
+import playlistReducer from './playlists';
 
 const rootReducer = combineReducers({ // combine reducers here
     session: sessionReducer,
-    sidebar: sidebarReducer
+    sidebar: sidebarReducer,
+    playlists: playlistReducer
 });
 
 
