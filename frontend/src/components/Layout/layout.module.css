@@ -24,8 +24,8 @@
   transition: --var1 .5s;
 
 
-  margin-left: 9px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
-  margin-right: 9px;
+  margin-left: 6px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS THIS ONE IS LESS DUE TO LIBARY RESIZE BAR */
+  margin-right: 9px; /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
 
   padding-top: 15px;
   padding-left: 20px;
@@ -33,7 +33,7 @@
 
   min-width: 416px;
   background-color: #121212;
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
 

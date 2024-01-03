@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export const useSidebarResize = (direction: string) => { // this hook handles the logic for sidebar resizing, used in sidebar components
     const [isResizing, setIsResizing] = useState(false);
-    const [sidebarWidth, setSidebarWidth] = useState(direction === 'left' ? 200 : 300);
+    const [sidebarWidth, setSidebarWidth] = useState(direction === 'left' ? 240 : 300);
     const [initialX, setInitialX] = useState(0); // initial X coordinate
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => { // when user presses down on mouse, setIsResizing(true)
@@ -25,16 +25,17 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
                 return
             }
 
+
             const windowWidth = handleWindowWidth() // this, along with the css constraints, limit max-width of sidebars depending on screen size
             switch(windowWidth) {
                 case 'LARGE':
-                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.52));
+                    handleLeftScrolling(e, newWidth, 0.52)
                     return
                 case 'MEDIUM':
-                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.27));
+                    handleLeftScrolling(e, newWidth, 0.27)
                     return
                 case 'SMALL':
-                    setSidebarWidth(Math.min(newWidth, window.innerWidth * 0.33));
+                    handleLeftScrolling(e, newWidth, 0.33)
                     return
                 case 'MOBILE':
                     setSidebarWidth(80);
@@ -44,8 +45,6 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
             }
         }
     }
-
-    console.log("WINDOW", window.innerWidth)
 
     const handleWindowWidth = () => { // width of sidebar depends on screen size
         const windowWidth = window.innerWidth
@@ -61,6 +60,16 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
         } else {
             //mobile
             return 'MOBILE'
+        }
+    }
+
+    const handleLeftScrolling = (e: MouseEvent, newWidth: number, portionOfScreen: number) => { // refactored conditional logic of resizing into its own function
+        if(e.clientX < 160) {
+            setSidebarWidth(80)
+        } else if(e.clientX > 160 && e.clientX <= 240) {
+            setSidebarWidth(240)
+        } else {
+            setSidebarWidth(Math.min(newWidth, window.innerWidth * portionOfScreen));
         }
     }
 

@@ -1,8 +1,10 @@
+/*? CSS STYLING FOR SCROLLING */
+
 .resizableSidebarContainer {
     display: flex;
     height: 100%;
     background-color: #121212;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .resizableSidebar {
@@ -15,7 +17,7 @@
 
 .resizebar {
     cursor: ew-resize;
-    width: 6px;
+    width: 3px;
     height: 100%;
 }
 
@@ -29,16 +31,106 @@
     background-color: rgb(123, 122, 122);
 }
 
+/*? ---------------------------------------- */
 
 
-/* 1431 max safe at 53vw */
-/* 939 max safe at 33vw */
-/* 938 and below = no right sidebar */  /* max-width 33vw */
-/* mobile view starts at 641px */  /* max-width 80px */
+.topNav {
+    display: flex;
+    height: 87px;
+    padding: 8px 28px;
+    border-bottom: 8px solid black;
+}
 
-/*  at 1635 width and above, no dissapear             (max-width 53vw)  */
-/*  between 1634 and 1298 --> make dissapear at 0.44  (max-width 44vw)  */
-/*  below 1297 width, make dissapear at 0.33          (max-width 33vw)  */
+
+.topNav ul {
+    list-style: none;
+}
+.topNav ul li {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.topNav ul li a {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.topNav ul li a span:first-child {
+    font-size: 22px;
+    margin-right: 20px;
+}
+.topNav ul li a:hover,
+.topNav ul li a:active,
+.topNav ul li a:focus {
+    color: #ffffff;
+}
+.topNav ul li a:hover .fa,
+.topNav ul li a:active .fa,
+.topNav ul li a:focus .fa {
+    color: #b3b3b3;
+}
+.topNav ul li a:hover .fa:hover,
+.topNav ul li a:hover .fa:active,
+.topNav ul li a:hover .fa:focus {
+    color: #ffffff;
+}
+
+/** ---------------- SIDEBAR CONTENT -------------------- **/
+
+.mainLibrary {
+    padding: 15px 30px;
+}
+
+.mainLibrary div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mainLibrary div:first-child a {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.mainLibrary div:first-child a span:first-child {
+    font-size: 22px;
+    margin-right: 20px;
+}
+.mainLibrary div:first-child a:hover,
+.mainLibrary div:first-child a:active,
+.mainLibrary div:first-child a:focus {
+    color: #ffffff;
+}
+.mainLibrary div:first-child a:hover .fa,
+.mainLibrary div:first-child a:active .fa,
+.mainLibrary div:first-child a:focus .fa {
+    color: #b3b3b3;
+}
+.mainLibrary div:first-child a:hover .fa:hover,
+.mainLibrary div:first-child a:hover .fa:active,
+.mainLibrary div:first-child a:hover .fa:focus {
+    color: #ffffff;
+}
+
+.mainLibrary div:first-child div {
+    font-size: 16px;
+    font-weight: lighter;
+    color: #b3b3b3;
+    margin-top: 5px;
+    box-sizing: border-box;
+    transition: box-shadow 0.5s ease;
+}
+
+.mainLibrary div:first-child div:hover {
+    box-shadow: 0px 0px 1px 9px rgb(46, 46, 46, 0.5);
+    border-radius: 50px;
+    color: #ffffff;
+}
+
+/** --------------------------------------- **/
 
 
 /* Large */
@@ -67,4 +159,15 @@
     .resizableSidebar {
         max-width: 80px;
     }
+    #narrowMedia {
+        display: none;
+    }
 }
+
+/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 80px ---  */
+
+.narrowSpan {
+    display: none;
+}
+
+/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 80px ---  */
