@@ -1,29 +1,8 @@
-import { ILoginUser } from "../pages/Auth";
+import { ILoginUser, IRegisterUser } from "../../pages/Auth";
+import { ActionTypes, VerifiedUser, SetUserAction, RemoveUserAction, SessionState } from './sessionTypes'
 
-// Define Our Action Types with enum
-enum ActionTypes {
-  SET_USER = "api/auth/login",
-  REMOVE_USER = "api/auth/logout",
-}
+// ACTIONS ---> ( returns an action interface )
 
-// define possible payloads
-interface VerifiedUser {
-  id: string;
-  username: string;
-  email: string;
-}
-
-// Define interfaces for our Actions
-interface SetUserAction {
-  type: ActionTypes.SET_USER;
-  payload: VerifiedUser;
-}
-
-interface RemoveUserAction {
-  type: ActionTypes.REMOVE_USER;
-}
-
-// Create action functions ---> ( returns an action interface )
 const setUser = (user: VerifiedUser): SetUserAction => {
   return {
     type: ActionTypes.SET_USER,
@@ -37,17 +16,10 @@ const removeUser = (): RemoveUserAction => {
   };
 };
 
-//! -------------------------------------------------- THESE WILL BE MOVED AND IMPORTED
-// Define user interfaces
-interface RegisterUser {
-  email: string;
-  password: string;
-  username: string;
-}
-//! -------------------------------------------------- THESE WILL BE MOVED AND IMPORTED
 
-// Export action creators
-export const signup = (user: RegisterUser) => async (dispatch: Function) => {
+// THUNKS
+
+export const signup = (user: IRegisterUser) => async (dispatch: Function) => {
   try {
     const response = await fetch("/api/auth/register", {
       method: "POST",
@@ -117,14 +89,10 @@ export const restoreUser = () => async (dispatch: Function) => {
   }
 };
 
-// Define an initial state
-interface SessionState {
-  user: VerifiedUser | null;
-}
-
+// INITIAL STATE
 const initialState: SessionState = { user: null };
 
-// Define session reducer
+// SESSION REDUCER
 const sessionReducer = (
   state: SessionState = initialState,
   action: SetUserAction | RemoveUserAction
@@ -144,4 +112,5 @@ const sessionReducer = (
   }
 };
 
+// export const getSessionState = (state: RootState) => state.session;
 export default sessionReducer;

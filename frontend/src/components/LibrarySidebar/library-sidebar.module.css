@@ -2,17 +2,18 @@
 
 .resizableSidebarContainer {
     display: flex;
-    height: 100%;
     background-color: #121212;
     border-radius: 10px;
 }
 
 .resizableSidebar {
     flex: 0 0 auto;
-    overflow: hidden;
-    /* border-right: 1px solid #ddd; */
+    overflow: auto;
+    overflow-x: hidden;
+
     min-width: 80px;
     max-width: 52vw;
+    transition: --var1 .5s;
 }
 
 .resizebar {
@@ -80,11 +81,6 @@
 
 .main {
     padding: 15px 30px;
-    height: 100%;
-
-    overflow: auto;
-    overflow-x: hidden;
-    transition: --var1 .5s;
 }
 
 .yourLibrary {
@@ -127,6 +123,7 @@
     margin-top: 5px;
     box-sizing: border-box;
     transition: box-shadow 0.5s ease;
+    cursor: pointer;
 }
 
 .addPlaylistPlus:hover {
@@ -170,28 +167,32 @@
     border-radius: 4px;
 }
 
-.playlistItem {
+.item {
     display: flex;
     justify-content: space-between;
 }
+.item:hover {
+    background-color: rgb(29, 29, 29);
+    cursor: pointer;
+    box-shadow: 0 0 0 100vmax rgb(29, 29, 29);  /* extend bakground color beyond its container */
+    clip-path: inset(0 -100vmax);
+}
 
-.plMainInfo {
+.mainInfo {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-.plMainInfo p {
+
     white-space: nowrap;
-    text-overflow: ellipsis;
     overflow: hidden;
-    width: 145px;
+    text-overflow: ellipsis;
 }
-.plMainInfo p:first-child {
+.mainInfo p:first-child {
     color: white;
     font-weight: 500;
     font-size: 15px;
 }
-.plMainInfo p:last-child {
+.mainInfo p:last-child {
     font-size: 13px;
 }
 
@@ -287,25 +288,25 @@
     initial-value: transparent;
   }
 
-  .main:hover {    /* For Scrollbar Fade-in when navigating to container */
+  .resizableSidebar:hover {    /* For Scrollbar Fade-in when navigating to container */
     --var1: rgba(147, 145, 145, 0.6);
   }
 
 
-  .main::-webkit-scrollbar {
+  .resizableSidebar::-webkit-scrollbar {
     background: transparent;
-    width: 13px;
+    width: 7px;
   }
 
-  .main::-webkit-scrollbar-thumb {
+  .resizableSidebar::-webkit-scrollbar-thumb {
     background: var(--var1);
-    height: 200px;
+    max-height: 10px;
     border-radius: 1px;
   }
 
-  .main::-webkit-scrollbar-thumb:hover {
+  .resizableSidebar::-webkit-scrollbar-thumb:hover {
     background-color: rgba(230, 226, 226, 0.6);
   }
-  .main::-webkit-scrollbar-thumb:active {
+  .resizableSidebar::-webkit-scrollbar-thumb:active {
     background-color: rgba(220, 217, 217, 0.8);
   }

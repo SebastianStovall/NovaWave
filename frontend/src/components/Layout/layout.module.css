@@ -10,7 +10,7 @@
 .contentWrapper {
   display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: hidden;   /* VERY IMPORTANT FOR OVERFLOW */
   margin-top: 10px;
   margin-left: 10px;
   margin-right: 10px;
@@ -19,8 +19,8 @@
 .mainContent {
   flex: 1;
 
-  overflow: auto;
-  overflow-x: hidden;
+  overflow: auto;      /* VERY IMPORTANT FOR OVERFLOW */
+  overflow-x: hidden;  /* VERY IMPORTANT FOR OVERFLOW */
   transition: --var1 .5s;
 
 

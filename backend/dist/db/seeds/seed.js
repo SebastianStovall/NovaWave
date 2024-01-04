@@ -91,14 +91,18 @@ async function seedDatabase() {
                 artist: artistRefs[0],
                 yearReleased: 2023,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/I-No-Longer-Fear-The-Razor-Guarding-My-Heel-Album-1.jfif', // AWS
-                length: '7 min 34 sec'
+                length: '7 min 34 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             { title: 'YIN YANG TAPES: Spring Season (1989-1990)',
                 artistName: '$uicideboy$',
                 artist: artistRefs[0],
                 yearReleased: 2023,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif', // AWS
-                length: '10 min'
+                length: '10 min',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             // Kanye West
             { title: 'Graduation',
@@ -106,14 +110,18 @@ async function seedDatabase() {
                 artist: artistRefs[1],
                 yearReleased: 2007,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif', // AWS
-                length: '54 min 29 sec'
+                length: '54 min 29 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             { title: '808s & Heartbreak',
                 artistName: 'Kanye West',
                 artist: artistRefs[1],
                 yearReleased: 2008,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif', // AWS
-                length: '52 min 5 sec'
+                length: '52 min 5 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             // Eminem
             { title: 'Recovery',
@@ -121,14 +129,18 @@ async function seedDatabase() {
                 artist: artistRefs[2],
                 yearReleased: 2010,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Recovery-Album-5.jfif', // AWS
-                length: '1hr 17min'
+                length: '1hr 17min',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             { title: 'The Marshall Mathers LP2',
                 artistName: 'Eminem',
                 artist: artistRefs[2],
                 yearReleased: 2013,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif', // AWS
-                length: '1hr 42 min'
+                length: '1hr 42 min',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             // Hensonn
             { title: 'Fear',
@@ -136,14 +148,18 @@ async function seedDatabase() {
                 artist: artistRefs[3],
                 yearReleased: 2023,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Fear-Album-7.jfif', // AWS
-                length: '2 min 11 sec'
+                length: '2 min 11 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             { title: 'Sahara',
                 artistName: 'Hensonn',
                 artist: artistRefs[3],
                 yearReleased: 2021,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif', // AWS
-                length: '2 min 51 sec'
+                length: '2 min 51 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             // fkbambam
             { title: 'KILLKA',
@@ -151,14 +167,18 @@ async function seedDatabase() {
                 artist: artistRefs[4],
                 yearReleased: 2021,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/KILLKA-Album-9.jfif', // AWS
-                length: '14 min 29 sec'
+                length: '14 min 29 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             { title: 'VACATION',
                 artistName: 'fkbambam',
                 artist: artistRefs[4],
                 yearReleased: 2020,
                 image: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/VACATION-Album-10.jfif', // AWS
-                length: '1 min 56 sec'
+                length: '1 min 56 sec',
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
         ];
         await db.collection("albums").insertMany(albums);
@@ -1149,7 +1169,9 @@ async function seedDatabase() {
                     },
                 ],
                 length: '14:26',
-                isPrivate: false
+                isPrivate: false,
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             {
                 owner: userRefs[1],
@@ -1175,7 +1197,9 @@ async function seedDatabase() {
                     },
                 ],
                 length: '20:04',
-                isPrivate: false
+                isPrivate: false,
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             {
                 owner: userRefs[2],
@@ -1201,7 +1225,9 @@ async function seedDatabase() {
                     },
                 ],
                 length: '16:53',
-                isPrivate: false
+                isPrivate: false,
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
         ];
         await db.collection("playlists").insertMany(playlists);

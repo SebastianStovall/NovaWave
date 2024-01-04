@@ -7,7 +7,7 @@ import { Auth } from "./pages/Auth";
 import { Layout } from "./components/Layout";
 
 import { useAppDispatch } from "./hooks";
-import { restoreUser } from "./store/session";
+import { restoreUser } from "./store/session/session";
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +22,15 @@ const App: React.FC = () => {
     <div>
       {isLoaded && (
         <Routes>
-          <Route path="/" element={<Layout> <Dashboard /> </Layout>} />
+          <Route
+            path="/"
+            element={
+              <Layout>
+                {" "}
+                <Dashboard />{" "}
+              </Layout>
+            }
+          />
           <Route path="/auth" element={<Auth />} />
         </Routes>
       )}

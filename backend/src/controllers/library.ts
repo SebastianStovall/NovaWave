@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { addToLibrary, removeFromLibrary } from "../db/actions/playlist-actions";
+import { populateUserLibrary } from "../db/actions/user-actions";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
@@ -65,3 +66,23 @@ export const removeEntityFromLibrary: RequestHandler = async(req, res, next) => 
         next(e)
     }
 }
+
+
+export const retreiveUserLibrary: RequestHandler = async (req, res, next) => {
+    try {
+        const userId = get(req, "identity._id") as unknown as string
+        const populatedUser = await populateUserLibrary(userId)
+
+        if(!populatedUser) {
+            throw new CustomError(
+                "Query Population Error",
+                "Something went wrong populating User Data",
+                500
+            )
+        }
+
+        return res.status(200).json({message: 'Success', userLibrary: {playlists: populatedUser.playlists, albums: populatedUser.albums, artists: populatedUser.artists} })
+    } catch (e: any) {
+        next(e)
+    }
+};
