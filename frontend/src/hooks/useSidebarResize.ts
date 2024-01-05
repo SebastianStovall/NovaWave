@@ -5,7 +5,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
     const [sidebarWidth, setSidebarWidth] = useState(direction === 'left' ? 240 : 300);
     const [initialX, setInitialX] = useState(0); // initial X coordinate
 
-    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => { // when user presses down on mouse, setIsResizing(true)
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => { // when user presses down on mouse, setIsResizing(true)
         e.preventDefault();
         setIsResizing(true);
         setInitialX(e.clientX); // Store the initial X-coordinate
@@ -24,7 +24,6 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
                 setSidebarWidth(Math.min(sidebarWidth + offsetX, 450))
                 return
             }
-
 
             const windowWidth = handleWindowWidth() // this, along with the css constraints, limit max-width of sidebars depending on screen size
             switch(windowWidth) {
@@ -64,13 +63,15 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
     }
 
     const handleLeftScrolling = (e: MouseEvent, newWidth: number, portionOfScreen: number) => { // refactored conditional logic of resizing into its own function
-        if(e.clientX < 160) {
-            setSidebarWidth(80)
-        } else if(e.clientX > 160 && e.clientX <= 240) {
-            setSidebarWidth(240)
-        } else {
-            setSidebarWidth(Math.min(newWidth, window.innerWidth * portionOfScreen));
-        }
+        setSidebarWidth((prevWidth) => {
+            if (e.clientX < 160) {
+                return 80;
+            } else if (e.clientX > 160 && e.clientX <= 240) {
+                return 240;
+            } else {
+                return Math.min(newWidth, window.innerWidth * portionOfScreen);
+            }
+        });
     }
 
     useEffect(() => {
@@ -87,7 +88,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
             window.removeEventListener('mouseup', handleMouseUp);
         };
         // eslint-disable-next-line
-    }, [isResizing, sidebarWidth]);
+    }, [isResizing]);
 
-    return { isResizing, sidebarWidth, handleMouseDown };
+    return { sidebarWidth, handleMouseDown };
 };

@@ -4,7 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import { Dashboard } from "./pages/Dashboard/dashboard";
 import { Auth } from "./pages/Auth";
 
-import { Layout } from "./components/Layout";
+import { Test } from "./pages/Test/resize";
+
+import { Layout } from "./components/Layout/layout";
 
 import { useAppDispatch } from "./hooks";
 import { restoreUser } from "./store/session/session";
@@ -22,16 +24,9 @@ const App: React.FC = () => {
     <div>
       {isLoaded && (
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Layout>
-                {" "}
-                <Dashboard />{" "}
-              </Layout>
-            }
-          />
+          <Route path="/" element={ <Layout> <Dashboard /> </Layout> } />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       )}
     </div>

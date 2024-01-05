@@ -11,6 +11,8 @@
     overflow: auto;
     overflow-x: hidden;
 
+    resize: horizontal;
+
     min-width: 80px;
     max-width: 52vw;
     transition: --var1 .5s;
@@ -223,6 +225,7 @@
 
 
 /* Large */
+
 @media screen and (min-width: 1431px) {
     .resizableSidebar {
         max-width: 52vw;
@@ -230,6 +233,7 @@
 }
 
 /* Medium */
+
 @media screen and (max-width: 1430px) and (min-width: 1024px) {
     .resizableSidebar {
         max-width: 27vw;
@@ -237,6 +241,7 @@
 }
 
 /* Small */
+
 @media screen and (max-width: 1023px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
     .resizableSidebar {
         max-width: 33vw;
@@ -247,8 +252,9 @@
 }
 
 /* Mobile */
+
 @media screen and (max-width: 641px) {
-    .resizableSidebar {
+    /* .resizableSidebar {
         max-width: 80px;
     }
     #narrowMedia {
@@ -264,7 +270,7 @@
     #hideBookMar {
         margin-top: 10px;
         margin-left: 15px;
-    }
+    } */
 }
 
 /*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS MOBILE / 80px ---  */
@@ -295,7 +301,7 @@
 
   .resizableSidebar::-webkit-scrollbar {
     background: transparent;
-    width: 7px;
+    width: px;
   }
 
   .resizableSidebar::-webkit-scrollbar-thumb {
