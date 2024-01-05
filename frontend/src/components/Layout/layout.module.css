@@ -1,0 +1,91 @@
+
+/*! LAYOUT COMPONENT ------------------------------------------------------------------------ */
+
+.fullPageLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.contentWrapper {
+  display: flex;
+  flex: 1;
+  overflow: hidden;   /* VERY IMPORTANT FOR OVERFLOW */
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.mainContent {
+  flex: 1;
+
+  overflow: auto;      /* VERY IMPORTANT FOR OVERFLOW */
+  overflow-x: hidden;  /* VERY IMPORTANT FOR OVERFLOW */
+  transition: --var1 .5s;
+
+
+  margin-left: 6px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS THIS ONE IS LESS DUE TO LIBARY RESIZE BAR */
+  margin-right: 9px; /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
+
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  min-width: 416px;
+  background-color: #121212;
+  border-radius: 10px;
+}
+
+
+/* Small  THESE MEDIA QUERIES SOLVE ISSUE WITH MARGIN SPACING WITH HITTING SMALL SIZE */
+@media screen and (max-width: 1023px) and (min-width: 642px) {
+  .mainContent {
+    margin-right: 0px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 641px) {
+  .mainContent {
+    margin-right: 0px;
+  }
+}
+
+/*! ------------------------------------------------------ */
+
+
+
+
+
+/*? SCROLLBAR LOGIC IN MAIN CONTAINER  */
+
+@property --var1 {  /* Needed For Fade In Transition Of Scrollbars. Cannot do transitions for scrollbars default */
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+.mainContent:hover {    /* For Scrollbar Fade-in when navigating to container */
+  --var1: rgba(147, 145, 145, 0.6);
+}
+
+
+.mainContent::-webkit-scrollbar {
+  background: transparent;
+  width: 13px;
+}
+
+.mainContent::-webkit-scrollbar-thumb {
+  background: var(--var1);
+  height: 200px;
+  border-radius: 1px;
+}
+
+.mainContent::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(230, 226, 226, 0.6);
+}
+.mainContent::-webkit-scrollbar-thumb:active {
+  background-color: rgba(220, 217, 217, 0.8);
+}
+
+/*? ----------------------------------------------------------------- */

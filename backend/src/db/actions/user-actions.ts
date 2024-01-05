@@ -56,3 +56,15 @@ export const deleteUserById = async (id: string) => {
     );
   }
 };
+
+export const populateUserLibrary = async (userId: string) => {
+  try {
+    const user = await getUserById(userId)
+    if(user) {
+      const populatedUser = await user.populate('playlists albums artists')
+      return populatedUser
+    }
+  } catch(e) {
+    throw e
+  }
+}

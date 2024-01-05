@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserById = exports.updateUserById = exports.createUser = exports.getUserById = exports.getUserBySessionToken = exports.getUserByEmail = exports.getUsers = void 0;
+exports.populateUserLibrary = exports.deleteUserById = exports.updateUserById = exports.createUser = exports.getUserById = exports.getUserBySessionToken = exports.getUserByEmail = exports.getUsers = void 0;
 const User_1 = require("../models/User");
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 // helper actions for User (used in controller functions)
@@ -54,3 +54,16 @@ const deleteUserById = async (id) => {
     }
 };
 exports.deleteUserById = deleteUserById;
+const populateUserLibrary = async (userId) => {
+    try {
+        const user = await (0, exports.getUserById)(userId);
+        if (user) {
+            const populatedUser = await user.populate('playlists albums artists');
+            return populatedUser;
+        }
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.populateUserLibrary = populateUserLibrary;

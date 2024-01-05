@@ -1,0 +1,318 @@
+/*? CSS STYLING FOR SCROLLING */
+
+.resizableSidebarContainer {
+    display: flex;
+    background-color: #121212;
+    border-radius: 10px;
+}
+
+.resizableSidebar {
+    flex: 0 0 auto;
+    overflow: auto;
+    overflow-x: hidden;
+
+    resize: horizontal;
+
+    min-width: 80px;
+    max-width: 52vw;
+    transition: --var1 .5s;
+}
+
+.resizebar {
+    cursor: ew-resize;
+    width: 3px;
+    height: 100%;
+}
+
+.resizebar:hover {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:active {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:focus {
+    background-color: rgb(123, 122, 122);
+}
+
+/*? ---------------------------------------- */
+
+
+.topNav {
+    display: flex;
+    height: 87px;
+    padding: 8px 28px;
+    border-bottom: 8px solid black;
+}
+
+
+.topNav ul {
+    list-style: none;
+}
+.topNav ul li {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.topNav ul li a {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.topNav ul li a span:first-child {
+    font-size: 22px;
+    margin-right: 20px;
+}
+.topNav ul li a:hover,
+.topNav ul li a:active,
+.topNav ul li a:focus {
+    color: #ffffff;
+}
+.topNav ul li a:hover .fa,
+.topNav ul li a:active .fa,
+.topNav ul li a:focus .fa {
+    color: #b3b3b3;
+}
+.topNav ul li a:hover .fa:hover,
+.topNav ul li a:hover .fa:active,
+.topNav ul li a:hover .fa:focus {
+    color: #ffffff;
+}
+
+/** ---------------- SIDEBAR CONTENT -------------------- **/
+
+.main {
+    padding: 15px 30px;
+}
+
+.yourLibrary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main div:first-child a {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.main div:first-child a span:first-child {
+    font-size: 22px;
+    margin-right: 20px;
+}
+.main div:first-child a:hover,
+.main div:first-child a:active,
+.main div:first-child a:focus {
+    color: #ffffff;
+}
+.main div:first-child a:hover .fa,
+.main div:first-child a:active .fa,
+.main div:first-child a:focus .fa {
+    color: #b3b3b3;
+}
+.main div:first-child a:hover .fa:hover,
+.main div:first-child a:hover .fa:active,
+.main div:first-child a:hover .fa:focus {
+    color: #ffffff;
+}
+
+.addPlaylistPlus {
+    font-size: 16px;
+    font-weight: lighter;
+    color: #b3b3b3;
+    margin-top: 5px;
+    box-sizing: border-box;
+    transition: box-shadow 0.5s ease;
+    cursor: pointer;
+}
+
+.addPlaylistPlus:hover {
+    box-shadow: 0px 0px 1px 9px rgb(46, 46, 46, 0.5);
+    border-radius: 50px;
+    color: #ffffff;
+}
+
+
+.collection {
+    margin-top: 25px;
+}
+
+.collectionHeadings {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #323232;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.collectionHeadings p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #a5a5a5;
+}
+
+
+.userPlaylists {
+    /* border: 2px solid red; */
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: space-around;
+    gap: 10px;
+}
+
+.userPlaylists div img {
+    height: 48px;
+    width: 48px;
+    border-radius: 4px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+}
+.item:hover {
+    background-color: rgb(29, 29, 29);
+    cursor: pointer;
+    box-shadow: 0 0 0 100vmax rgb(29, 29, 29);  /* extend bakground color beyond its container */
+    clip-path: inset(0 -100vmax);
+}
+
+.mainInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mainInfo p:first-child {
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+}
+.mainInfo p:last-child {
+    font-size: 13px;
+}
+
+.dateAdded {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+}
+
+.played {
+    font-size: 14px;
+}
+
+
+
+
+#hideMainPadding {
+    padding: 0px;
+    margin-left: 15px;
+}
+
+#hideBookMargin {
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+/** --------------------------------------- **/
+
+
+/* Large */
+
+@media screen and (min-width: 1431px) {
+    .resizableSidebar {
+        max-width: 52vw;
+    }
+}
+
+/* Medium */
+
+@media screen and (max-width: 1430px) and (min-width: 1024px) {
+    .resizableSidebar {
+        max-width: 27vw;
+    }
+}
+
+/* Small */
+
+@media screen and (max-width: 1023px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
+    .resizableSidebar {
+        max-width: 33vw;
+    }
+    #hidden {
+        display: none;
+    }
+}
+
+/* Mobile */
+
+@media screen and (max-width: 641px) {
+    /* .resizableSidebar {
+        max-width: 80px;
+    }
+    #narrowMedia {
+        display: none;
+    }
+    .narrowMedia {
+        display: none;
+    }
+    .main {
+        padding: 0;
+        margin-left: 15px;
+    }
+    #hideBookMar {
+        margin-top: 10px;
+        margin-left: 15px;
+    } */
+}
+
+/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS MOBILE / 80px ---  */
+
+.narrowSpan {
+    display: none;
+}
+
+/*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS MOBILE / 80px ---  */
+
+
+/* TODO --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 584px OR LARGER ---  */
+/* TODO --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS 584px OR LARGER ---  */
+
+
+
+
+@property --var1 {  /* Needed For Fade In Transition Of Scrollbars. Cannot do transitions for scrollbars default */
+    syntax: "<color>";
+    inherits: true;
+    initial-value: transparent;
+  }
+
+  .resizableSidebar:hover {    /* For Scrollbar Fade-in when navigating to container */
+    --var1: rgba(147, 145, 145, 0.6);
+  }
+
+
+  .resizableSidebar::-webkit-scrollbar {
+    background: transparent;
+    width: px;
+  }
+
+  .resizableSidebar::-webkit-scrollbar-thumb {
+    background: var(--var1);
+    max-height: 10px;
+    border-radius: 1px;
+  }
+
+  .resizableSidebar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(230, 226, 226, 0.6);
+  }
+  .resizableSidebar::-webkit-scrollbar-thumb:active {
+    background-color: rgba(220, 217, 217, 0.8);
+  }

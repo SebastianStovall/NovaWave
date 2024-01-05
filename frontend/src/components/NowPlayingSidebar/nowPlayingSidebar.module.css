@@ -1,0 +1,37 @@
+.resizableSidebarContainer {
+    display: flex;
+    height: 100%;
+    background-color: #121212;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.resizableSidebar {
+    flex: 0 0 auto;
+    min-width: 300px;
+    max-width: 430px;
+}
+
+.resizebar {
+    cursor: ew-resize;
+    width: 3px;
+    height: 100%;
+}
+
+.resizebar:hover {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:active {
+    background-color: rgb(123, 122, 122);
+}
+.resizebar:focus {
+    background-color: rgb(123, 122, 122);
+}
+
+
+/* Small */
+@media screen and (max-width: 1023px) and (min-width: 642px) {  /* 1023 and below = no right sidebar available */
+    .resizableSidebarContainer {
+        display: none;
+    }
+}

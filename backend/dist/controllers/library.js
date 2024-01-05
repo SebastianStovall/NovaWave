@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeEntityFromLibrary = exports.addEntityToLibrary = void 0;
+exports.retreiveUserLibrary = exports.removeEntityFromLibrary = exports.addEntityToLibrary = void 0;
 const playlist_actions_1 = require("../db/actions/playlist-actions");
+const user_actions_1 = require("../db/actions/user-actions");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const lodash_1 = require("lodash");
 // Adds a playlist or album or artist to user's library
@@ -52,3 +53,17 @@ const removeEntityFromLibrary = async (req, res, next) => {
     }
 };
 exports.removeEntityFromLibrary = removeEntityFromLibrary;
+const retreiveUserLibrary = async (req, res, next) => {
+    try {
+        const userId = (0, lodash_1.get)(req, "identity._id");
+        const populatedUser = await (0, user_actions_1.populateUserLibrary)(userId);
+        if (!populatedUser) {
+            throw new CustomError_1.default("Query Population Error", "Something went wrong populating User Data", 500);
+        }
+        return res.status(200).json({ message: 'Success', userLibrary: { playlists: populatedUser.playlists, albums: populatedUser.albums, artists: populatedUser.artists } });
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.retreiveUserLibrary = retreiveUserLibrary;
