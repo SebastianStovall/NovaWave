@@ -67,7 +67,8 @@ export interface GetUserLibraryAction {
 // INITIAL STATE INTERFACE
 
 export interface LibraryState {
-    playlists: { [key: string]: Playlist },
-    albums: { [key: string]: Album },
+    playlists: { [key: string]: Playlist }
+    albums: { [key: string]: Album }
     artists: { [key: string]: Artist }
+    isLoaded: Boolean
 }

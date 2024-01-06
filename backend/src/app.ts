@@ -58,7 +58,8 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => { // cenertalized error handling if no routes are hit or middleware errors
   // handle errors
-  console.log("IN GLOBAL ERROR HANDLING MIDDLEWARE")
+  console.log(`SOME ERROR OCCURED WHILE PERFORMING THIS REQUEST ----> ${req.url}`)
+  console.error(`\nERROR MESSAGE ----> ${req.url}`, err.message)
   if(err instanceof CustomError) {
     return res.status(err.code).json({ message: err.name, error: err.message });
   } else {

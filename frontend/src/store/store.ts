@@ -1,19 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
 import sessionReducer from "./session/session";
-import sidebarReducer from "./sidebar";
 import libraryReducer from "./library/library";
 
-const rootReducer = combineReducers({
-  // combine reducers here
-  session: sessionReducer,
-  sidebar: sidebarReducer,
-  library: libraryReducer,
-});
 
 const store = configureStore({
   // configure store with the reducer here, toolkit should come with redux-thunk middlewaree by default
-  reducer: rootReducer,
+  reducer: {
+    session: sessionReducer,
+    library: libraryReducer,
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware(); // Thunk middleware is included by default
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>; // Infer the `RootState` and `AppDispatch` types from the store itself

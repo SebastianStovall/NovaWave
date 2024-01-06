@@ -67,7 +67,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 app.use((err, req, res, next) => {
     // handle errors
-    console.log("IN GLOBAL ERROR HANDLING MIDDLEWARE");
+    console.log(`SOME ERROR OCCURED WHILE PERFORMING THIS REQUEST ----> ${req.url}`);
+    console.error(`\nERROR MESSAGE ----> ${req.url}`, err.message);
     if (err instanceof CustomError_1.default) {
         return res.status(err.code).json({ message: err.name, error: err.message });
     }

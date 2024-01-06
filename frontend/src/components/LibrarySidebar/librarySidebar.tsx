@@ -1,26 +1,28 @@
 import React, {useEffect} from "react"
 import styles from "./librarySidebar.module.css";
 import { useSidebarResize } from "../../hooks/useSidebarResize";
+import { convertTimestampToFormattedDate } from "../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getUserLibraryThunk } from "../../store/library/library";
-import { convertTimestampToFormattedDate } from "../../utils/dateUtils";
 
 export const LibrarySidebar: React.FC = () => {
     const { sidebarWidth, handleMouseDown } = useSidebarResize("left");
+    const userLibrary = useAppSelector((state) => state.library )
     const dispatch = useAppDispatch()
 
-    const userPlaylists = useAppSelector(rootState => rootState.library.playlists);
-    const userAlbums = useAppSelector(rootState => rootState.library.albums);
-    const userArtists = useAppSelector(rootState => rootState.library.artists);
+    useEffect(() => {
+        console.log("DISPATCH ACTION TO RETREIVE DATA")
+        dispatch(getUserLibraryThunk());
+    }, [dispatch]);
+
+    if(!userLibrary.isLoaded) {
+        console.log("RETURN... NO DATA AVAILABLE")
+        return <p>...Loading</p>
+    }
+
 
     const isMobileView = sidebarWidth === 80;  //! NEEDED FOR STYLE CHANGES WHEN USER RE-SIZE SIDEBAR (media queries only for window resize)
     const is584OrLarger = sidebarWidth >= 584; //! NEEDED FOR STYLE CHANGES WHEN USER RE-SIZE SIDEBAR (media queries only for window resize)
-
-    console.log("RE RENDER")
-
-    useEffect(() => {
-        dispatch(getUserLibraryThunk());
-    }, [dispatch]);
 
     return (
         <>
@@ -34,14 +36,14 @@ export const LibrarySidebar: React.FC = () => {
                             <li>
                                 <a href="/">
                                     <span className="fa fa-home"></span>
-                                    <span id={styles.narrowMedia} className={isMobileView ? `${styles.narrowSpan}` : ``}>Home</span>
+                                    {!isMobileView && <span>Home</span>}
                                 </a>
                             </li>
 
                             <li>
                                 <a href="/">
                                     <span className="fa fa-search"></span>
-                                    <span id={styles.narrowMedia} className={isMobileView ? `${styles.narrowSpan}` : ``}>Search</span>
+                                    {!isMobileView && <span>Search</span>}
                                 </a>
                             </li>
                         </ul>
@@ -50,10 +52,10 @@ export const LibrarySidebar: React.FC = () => {
                     <div id={isMobileView ? `${styles.hideMainPadding}` : ''} className={styles.main}>
                         <div className={styles.yourLibrary}>
                             <a href="/">
-                                <span id={isMobileView ? `${styles.hideBookMargin}` : `${styles.hideBookMar}`} className="fa fa-book"></span>
-                                <span id={styles.narrowMedia} className={isMobileView ? `${styles.narrowSpan}` : `${styles.narrowMedia}`}>Your Library</span>
+                                <span id={isMobileView ? `${styles.hideBookMargin}` : ``} className="fa fa-book"></span>
+                                {!isMobileView && <span>Your Library</span>}
                             </a>
-                            {!isMobileView && <div id={styles.narrowMedia} className={`${styles.addPlaylistPlus} fa fa-plus`}></div>}
+                            {!isMobileView && <div className={`${styles.addPlaylistPlus} fa fa-plus`}></div>}
                         </div>
 
                         <div className={styles.collection}>
@@ -63,7 +65,7 @@ export const LibrarySidebar: React.FC = () => {
                             </div>}
 
                             <div className={styles.userPlaylists}>
-                                {Object.values(userPlaylists).map(playlist => (
+                                {Object.values(userLibrary.playlists).map(playlist => (
                                     <div key={playlist._id} className={styles.item}>
                                         <div className={styles.mainInfo}>
                                             <img src="https://misc.scdn.co/liked-songs/liked-songs-300.png" alt="playlistPhoto"/>
@@ -76,7 +78,7 @@ export const LibrarySidebar: React.FC = () => {
                                     </div>
                                 ))}
 
-                                {Object.values(userAlbums).map(album => (
+                                {Object.values(userLibrary.albums).map(album => (
                                     <div key={album._id} className={styles.item}>
                                         <div className={styles.mainInfo}>
                                             <img src={album.image} alt="AlbumPhoto"/>
@@ -89,7 +91,7 @@ export const LibrarySidebar: React.FC = () => {
                                     </div>
                                 ))}
 
-                                {Object.values(userArtists).map(artist => (
+                                {Object.values(userLibrary.artists).map(artist => (
                                     <div key={artist._id} className={styles.item}>
                                         <div className={styles.mainInfo}>
                                             <img src={artist.aboutImage} alt="ArtistPhoto"/>
