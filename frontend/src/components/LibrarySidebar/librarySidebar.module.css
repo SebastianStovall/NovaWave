@@ -11,8 +11,6 @@
     overflow: auto;
     overflow-x: hidden;
 
-    resize: horizontal;
-
     min-width: 80px;
     max-width: 52vw;
     transition: --var1 .5s;
@@ -196,12 +194,14 @@
 }
 .mainInfo p:last-child {
     font-size: 13px;
+    color: #b3b3b3;
 }
 
 .dateAdded {
     display: flex;
     justify-content: flex-start;
     font-size: 14px;
+    color: #7a7878;
 }
 
 .played {
@@ -242,35 +242,16 @@
 
 /* Small */
 
-@media screen and (max-width: 1023px) and (min-width: 642px) {  /* 938 and below = no right sidebar */
+@media screen and (max-width: 1023px) and (min-width: 642px) {
     .resizableSidebar {
         max-width: 33vw;
-    }
-    #hidden {
-        display: none;
     }
 }
 
 /* Mobile */
 
 @media screen and (max-width: 641px) {
-    /* .resizableSidebar {
-        max-width: 80px;
-    }
-    #narrowMedia {
-        display: none;
-    }
-    .narrowMedia {
-        display: none;
-    }
-    .main {
-        padding: 0;
-        margin-left: 15px;
-    }
-    #hideBookMar {
-        margin-top: 10px;
-        margin-left: 15px;
-    } */
+/* TODO */
 }
 
 /*! --- CHANGE STYLING OF LIBRARY SCROLLBAR SAFELY WHEN WIDTH IS MOBILE / 80px ---  */

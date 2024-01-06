@@ -62,7 +62,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
         }
     }
 
-    const handleLeftScrolling = (e: MouseEvent, newWidth: number, portionOfScreen: number) => { // refactored conditional logic of resizing into its own function
+    const handleLeftScrolling = (e: MouseEvent, newWidth: number, portionOfScreen: number) => { // refactored conditiona logic of resizing into its own function
         setSidebarWidth((prevWidth) => {
             if (e.clientX < 160) {
                 return 80;
