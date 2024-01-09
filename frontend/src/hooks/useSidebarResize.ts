@@ -2,8 +2,16 @@ import { useState, useEffect } from "react";
 
 export const useSidebarResize = (direction: string) => { // this hook handles the logic for sidebar resizing, used in sidebar components
     const [isResizing, setIsResizing] = useState(false);
-    const [sidebarWidth, setSidebarWidth] = useState(direction === 'left' ? 240 : 300);
+    const [sidebarWidth, setSidebarWidth] =
+    useState(
+        direction === 'left' ?
+        JSON.parse(localStorage.getItem('librarySidebarWidth') || '240')
+        :
+        JSON.parse(localStorage.getItem('nowPlayingSidebarWidth') || '300')
+    );
     const [initialX, setInitialX] = useState(0); // initial X coordinate
+
+
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => { // when user presses down on mouse, setIsResizing(true)
         e.preventDefault();
@@ -21,6 +29,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
             const newWidth = direction === 'left' ? e.clientX : Math.min(sidebarWidth + offsetX, 450);
 
             if(direction === 'right') {
+                localStorage.setItem('nowPlayingSidebarWidth', JSON.stringify(Math.min(sidebarWidth + offsetX, 450)))
                 setSidebarWidth(Math.min(sidebarWidth + offsetX, 450))
                 return
             }
@@ -63,12 +72,15 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
     }
 
     const handleLeftScrolling = (e: MouseEvent, newWidth: number, portionOfScreen: number) => { // refactored conditiona logic of resizing into its own function
-        setSidebarWidth((prevWidth) => {
+        setSidebarWidth((prevWidth: any) => {
             if (e.clientX < 160) {
+                localStorage.setItem('librarySidebarWidth', JSON.stringify(80))
                 return 80;
             } else if (e.clientX > 160 && e.clientX <= 240) {
+                localStorage.setItem('librarySidebarWidth', JSON.stringify(240))
                 return 240;
             } else {
+                localStorage.setItem('librarySidebarWidth', JSON.stringify(Math.min(newWidth, window.innerWidth * portionOfScreen)))
                 return Math.min(newWidth, window.innerWidth * portionOfScreen);
             }
         });

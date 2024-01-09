@@ -11,13 +11,11 @@ export const LibrarySidebar: React.FC = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log("DISPATCH ACTION TO RETREIVE DATA")
         dispatch(getUserLibraryThunk());
     }, [dispatch]);
 
     if(!userLibrary.isLoaded) {
-        console.log("RETURN... NO DATA AVAILABLE")
-        return <p>...Loading</p>
+        return null
     }
 
 

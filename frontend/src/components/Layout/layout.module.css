@@ -24,13 +24,27 @@
   transition: --var1 .5s;
 
 
-  margin-left: 6px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS THIS ONE IS LESS DUE TO LIBARY RESIZE BAR */
+  margin-left: 6px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
   margin-right: 9px; /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
 
   padding-top: 15px;
   padding-left: 20px;
   padding-right: 20px;
 
+  min-width: 416px;
+  background-color: #121212;
+  border-radius: 10px;
+}
+
+.mainContentNoRightSidebar {
+  flex: 1;
+  overflow: auto;      /* VERY IMPORTANT FOR OVERFLOW */
+  overflow-x: hidden;  /* VERY IMPORTANT FOR OVERFLOW */
+  transition: --var1 .5s;
+  margin-left: 6px;
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
   min-width: 416px;
   background-color: #121212;
   border-radius: 10px;
