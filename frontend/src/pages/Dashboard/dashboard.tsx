@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import styles from './dashboard.module.css'
 
 export const Dashboard: React.FC = () => {
     const [data, setData] = useState<any>(null)
@@ -20,8 +21,8 @@ export const Dashboard: React.FC = () => {
     };
 
     return (
-        <div>
-            <p>App</p>
+        <div className={styles.testThis}>
+            <h1 className={styles.welcomeMessage}>Good evening</h1>
             <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" width={'300px'} height={'200px'} />
 
             <audio controls>

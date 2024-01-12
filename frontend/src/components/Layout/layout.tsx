@@ -21,10 +21,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className={styles.fullPageLayout}>
 
-      <div className={styles.contentWrapper}>
+      <div className={styles.contentWrapper} id={ !isSidebarActive ? styles.NoRightSidebar : ''}>
         <LibrarySidebar />
 
-        <div className={isSidebarActive ? styles.mainContent : styles.mainContentNoRightSidebar}>
+        <div className={styles.mainContent}>
           <Header />
           {children}
         </div>

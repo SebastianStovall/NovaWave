@@ -282,7 +282,7 @@
 
   .resizableSidebar::-webkit-scrollbar {
     background: transparent;
-    width: px;
+    width: 5px;
   }
 
   .resizableSidebar::-webkit-scrollbar-thumb {

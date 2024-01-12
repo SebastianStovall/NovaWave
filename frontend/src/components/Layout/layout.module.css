@@ -11,43 +11,30 @@
   display: flex;
   flex: 1;
   overflow: hidden;   /* VERY IMPORTANT FOR OVERFLOW */
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-top: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .mainContent {
   flex: 1;
+  position: relative;
+  overflow: scroll;      /* MUST BE SET FOR THE CONTAINER WITH SCROLLBAR */
+  overflow-x: hidden;  /* MUST BE SET FOR THE CONTAINER WITH SCROLLBAR */
+  transition: --var1 .5s; /* MUST BE SET FOR THE CONTAINER WITH SCROLLBAR */
 
-  overflow: auto;      /* VERY IMPORTANT FOR OVERFLOW */
-  overflow-x: hidden;  /* VERY IMPORTANT FOR OVERFLOW */
-  transition: --var1 .5s;
 
-
-  margin-left: 6px;  /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
-  margin-right: 9px; /* SPACING BETWEEN MAIN LAYOUT COMPONENTS */
-
-  padding-top: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
-
-  min-width: 416px;
-  background-color: #121212;
-  border-radius: 10px;
+  margin-left: 5px;
+  background: #121212;
+  min-width: 460px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 23px;
+  border-bottom-right-radius: 23px;
 }
 
-.mainContentNoRightSidebar {
-  flex: 1;
-  overflow: auto;      /* VERY IMPORTANT FOR OVERFLOW */
-  overflow-x: hidden;  /* VERY IMPORTANT FOR OVERFLOW */
-  transition: --var1 .5s;
-  margin-left: 6px;
-  padding-top: 15px;
-  padding-left: 20px;
-  padding-right: 20px;
-  min-width: 416px;
-  background-color: #121212;
-  border-radius: 10px;
+#NoRightSidebar {
+  margin-right: 0px;
 }
 
 
@@ -86,7 +73,11 @@
 
 .mainContent::-webkit-scrollbar {
   background: transparent;
-  width: 13px;
+  width: 8px;
+}
+
+.mainContent::-webkit-scrollbar-track {  /* had issues with track gutter width moving header styling, so I'm having the track be part of the background */
+  background-color: #000000;
 }
 
 .mainContent::-webkit-scrollbar-thumb {
