@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { handleGridView } from "../utils/handleGridDisplay";
 
 export const useSidebarResize = (direction: string) => { // this hook handles the logic for sidebar resizing, used in sidebar components
     const [isResizing, setIsResizing] = useState(false);
@@ -25,8 +26,10 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
 
     const handleMouseMove = (e: MouseEvent) => { // sets the new width of sidebar based on x-coordinate of mouse (CSS properties limit the range of the sidebar)
         if (isResizing) {
+            handleGridView() // handles grid view on top of dashboard component
             const offsetX = initialX - e.clientX;
             const newWidth = direction === 'left' ? e.clientX : Math.min(sidebarWidth + offsetX, 450);
+
 
             if(direction === 'right') {
                 localStorage.setItem('nowPlayingSidebarWidth', JSON.stringify(Math.min(sidebarWidth + offsetX, 450)))
@@ -43,7 +46,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
                     handleLeftScrolling(e, newWidth, 0.27)
                     return
                 case 'SMALL':
-                    handleLeftScrolling(e, newWidth, 0.33)
+                    handleLeftScrolling(e, newWidth, 0.27)
                     return
                 case 'MOBILE':
                     setSidebarWidth(80);
