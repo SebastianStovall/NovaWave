@@ -1,9 +1,3 @@
-// ACTION TYPES
-export enum ActionTypes {
-    SET_USER = "api/auth/login",
-    REMOVE_USER = "api/auth/logout",
-}
-
 // PAYLOADS
 export interface VerifiedUser {
     id: string;
@@ -11,14 +5,9 @@ export interface VerifiedUser {
     email: string;
 }
 
-// ACTION INTERFACES
-export interface SetUserAction {
-    type: ActionTypes.SET_USER;
-    payload: VerifiedUser;
-}
-
-export interface RemoveUserAction {
-    type: ActionTypes.REMOVE_USER;
+export interface NoUserPayload {
+    message: string;
+    isLoggedIn: boolean;
 }
 
 

@@ -1,10 +1,3 @@
-
-// ACTION TYPES
-export enum ActionTypes {
-    GET_USER_LIBRARY = '/api/library/'
-}
-
-
 // PAYLOADS
 export interface Track {
     track: string
@@ -48,19 +41,13 @@ export interface Artist {
     disography: string[]
 }
 
-export interface LibraryPayload {
+export interface UserLibrary {
     message: string
     userLibrary: {
-        playlists: Playlist[]
-        albums: Album[]
+        playlists: Playlist[],
+        albums: Album[],
         artists: Artist[]
     }
-}
-
-// ACTION INTERFACES
-export interface GetUserLibraryAction {
-    type: ActionTypes.GET_USER_LIBRARY
-    payload: LibraryPayload
 }
 
 

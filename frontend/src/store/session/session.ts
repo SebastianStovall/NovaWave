@@ -1,26 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-interface LoginUser {
-  email: string
-  password: string
-}
+import { ILoginUser, IRegisterUser } from '../../pages/Auth';
 
 // Thunk to handle user signup
-export const signup = createAsyncThunk('session/signup', async (user, thunkAPI) => {
+export const signup = createAsyncThunk('session/signup', async (user: IRegisterUser, thunkAPI) => {
   try {
     const response = await fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify(user),
     });
-    const data = await response.json();
-    return data.user;
-  } catch (error) {
-    throw error;
+    if(response.ok) {
+      const data = await response.json();
+      return data.user;
+    } else {
+      const error = await response.json();
+      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      return thunkAPI.rejectWithValue(error);
+    }
+  } catch (e: any) {
+    console.error("There was an issue performing fetch to /api/session/signup")
+    return thunkAPI.rejectWithValue(e.message)
   }
 });
 
 // Thunk to handle user login
-export const login = createAsyncThunk('session/login', async (user: LoginUser, thunkAPI) => {
+export const login = createAsyncThunk('session/login', async (user: ILoginUser, thunkAPI) => {
   try {
     const response = await fetch("/api/auth/login", {
       method: "POST",
@@ -33,10 +36,12 @@ export const login = createAsyncThunk('session/login', async (user: LoginUser, t
       return data.user;
     } else {
       const error = await response.json();
-      throw error;
+      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      return thunkAPI.rejectWithValue(error);
     }
-  } catch (error) {
-    throw error;
+  } catch (e: any) {
+    console.error("There was an issue performing fetch to /api/session/login")
+    return thunkAPI.rejectWithValue(e.message)
   }
 });
 
@@ -48,10 +53,12 @@ export const logout = createAsyncThunk('session/logout', async (_, thunkAPI) => 
       return null;
     } else {
       const error = await response.json();
-      throw error;
+      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      return thunkAPI.rejectWithValue(error);
     }
-  } catch (error) {
-    throw error;
+  } catch (e: any) {
+    console.error("There was an issue performing fetch to /api/session/logout")
+    return thunkAPI.rejectWithValue(e.message)
   }
 });
 
@@ -62,14 +69,16 @@ export const restoreUser = createAsyncThunk('session/restoreUser', async (_, thu
 
     if (response.ok) {
       const data = await response.json();
-      console.log("USER", data.user)
+      data.isLoggedIn ? console.log("USER: ", data.user) : console.log('No Signed In User');
       return data.isLoggedIn ? data.user : null;
     } else {
       const error = await response.json();
-      throw error;
+      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      return thunkAPI.rejectWithValue(error);
     }
-  } catch (error) {
-    throw error;
+  } catch (e: any) {
+    console.error("There was an issue performing fetch to /api/session/restoreUser")
+    return thunkAPI.rejectWithValue(e.message)
   }
 });
 
