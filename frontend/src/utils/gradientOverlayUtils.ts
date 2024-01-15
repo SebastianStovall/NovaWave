@@ -1,3 +1,5 @@
+import React from "react";
+
 export function hexToRgb(hex: string | undefined) {
     // Remove the hash if it's included
     if(hex === undefined) return
@@ -23,3 +25,25 @@ export const imageUrls = [
     'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-_-Heartbreak-Album-4.png',
     'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.png'
 ]
+
+
+
+// mouse event functions
+
+export const handleMouseEnter = (index: number, setHoveredIndex: React.Dispatch<React.SetStateAction<number | null>>, gradientOverlay: HTMLElement | null) => {
+    //* Fade In transition When Mouse Enters a Quick Album on Grid
+    if (gradientOverlay) {
+        gradientOverlay.style.opacity = '0';
+    }
+    setHoveredIndex(index);
+    if (gradientOverlay) {
+        gradientOverlay.style.opacity = '1';
+    }
+};
+
+export const handleMouseLeave = ( gradientOverlay: HTMLElement | null) => {
+    //* Fade Out Transition
+    if (gradientOverlay) {
+        gradientOverlay.style.opacity = '0';
+    }
+};

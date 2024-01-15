@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import styles from './dashboard.module.css';
 import { usePalette } from 'react-palette';
-import { hexToRgb, imageUrls } from "../../utils/handleGradientOverlay";
+import { hexToRgb, imageUrls, handleMouseEnter, handleMouseLeave } from "../../utils/gradientOverlayUtils";
+import { useQuickplayAlbumGridDisplayResize } from "../../hooks/useQuickplayAlbumGridDisplayResize";
 
 export const Dashboard: React.FC = () => {
+    useQuickplayAlbumGridDisplayResize();
     const gradientOverlay: HTMLElement | null = document.querySelector('.dashboard_gradientOverlayForTransition__AEA6r') as HTMLElement;
+
     const [trackdata, setTrackdata] = useState<any>(null);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
     const { data } = usePalette(  /* { data, loading, error } */  /* //! Extracts Prominent Colors from an Image */
         hoveredIndex !== null ? imageUrls[hoveredIndex] : imageUrls[0]
     );
@@ -25,22 +29,6 @@ export const Dashboard: React.FC = () => {
         }
     };
 
-    const handleMouseEnter = (index: number) => {  //* Fade In transition When Mouse Enters a Quick Album on Grid
-        if(gradientOverlay) {
-            gradientOverlay.style.opacity = '0'
-        }
-        setHoveredIndex(index);
-        if(gradientOverlay) {
-            gradientOverlay.style.opacity = '1'
-        }
-    };
-
-    const handleMouseLeave = () => {  //* Fade Out, will revert back to purple (liked songs)
-        if (gradientOverlay) {
-            gradientOverlay.style.opacity = '0';
-        }
-    };
-
 
     return (
         <div className={styles.dashboard}>
@@ -53,14 +41,22 @@ export const Dashboard: React.FC = () => {
                 {Array.from({ length: 6 }, (_, index) => (
                     <div
                         key={index}
-                        onMouseEnter={() => handleMouseEnter(index)}
-                        onMouseLeave={() => handleMouseLeave()}
+                        onMouseEnter={() => handleMouseEnter(index, setHoveredIndex, gradientOverlay)}
+                        onMouseLeave={() => handleMouseLeave(gradientOverlay)}
                     >
                         <img src={imageUrls[index]} alt="album_photo" />
                         <div>
                             <p>Name of Song</p>
                             <div>Play Button</div>
                         </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className={styles.testGrid}>
+                {Array.from({ length: 9 }, (_, index) => (
+                    <div key={index} >
+                        {index}
                     </div>
                 ))}
             </div>
