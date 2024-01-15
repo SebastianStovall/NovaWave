@@ -1,6 +1,44 @@
 .footer {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     min-height: 88px;
-    background-color: #000000;
+    animation: bg-animation 5s infinite alternate;
+}
+
+
+
+/* Styles for footer when no signed in user */
+
+@keyframes bg-animation {
+    0% {background-position: left}
+    100% {background-position: right}
+}
+
+.previewText {
+    margin-left: 20px;
+}
+.previewText h6 {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.previewText p {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+.previewText + button {
+    height: 60%;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-right: 20px;
 }

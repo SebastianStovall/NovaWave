@@ -228,7 +228,7 @@
 
 @media screen and (min-width: 1431px) {
     .resizableSidebar {
-        max-width: 52vw;
+        max-width: 40vw;
     }
 }
 
@@ -244,7 +244,7 @@
 
 @media screen and (max-width: 1023px) and (min-width: 642px) {
     .resizableSidebar {
-        max-width: 33vw;
+        max-width: 27vw;
     }
 }
 

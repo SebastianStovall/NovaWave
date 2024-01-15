@@ -1,17 +1,22 @@
-import React from "react";
-import { useState } from "react";
-import styles from './dashboard.module.css'
+import React, { useState } from "react";
+import styles from './dashboard.module.css';
+import { usePalette } from 'react-palette';
+import { hexToRgb, imageUrls } from "../../utils/handleGradientOverlay";
 
 export const Dashboard: React.FC = () => {
-    const [data, setData] = useState<any>(null)
+    const gradientOverlay: HTMLElement | null = document.querySelector('.dashboard_gradientOverlayForTransition__AEA6r') as HTMLElement;
+    const [trackdata, setTrackdata] = useState<any>(null);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const { data } = usePalette(  /* { data, loading, error } */  /* //! Extracts Prominent Colors from an Image */
+        hoveredIndex !== null ? imageUrls[hoveredIndex] : imageUrls[0]
+    );
 
     const handleTestBackend = async () => {
         try {
             const response = await fetch('/api/tracks/');
             if (response.ok) {
                 const tracks = await response.json();
-                setData(tracks);
-                // You may choose to return tracks here if needed
+                setTrackdata(tracks);
             } else {
                 console.error('Failed to fetch data:', response.status);
             }
@@ -20,65 +25,52 @@ export const Dashboard: React.FC = () => {
         }
     };
 
+    const handleMouseEnter = (index: number) => {  //* Fade In transition When Mouse Enters a Quick Album on Grid
+        if(gradientOverlay) {
+            gradientOverlay.style.opacity = '0'
+        }
+        setHoveredIndex(index);
+        if(gradientOverlay) {
+            gradientOverlay.style.opacity = '1'
+        }
+    };
+
+    const handleMouseLeave = () => {  //* Fade Out, will revert back to purple (liked songs)
+        if (gradientOverlay) {
+            gradientOverlay.style.opacity = '0';
+        }
+    };
+
+
     return (
-        <div className={styles.testThis}>
-            <h1 className={styles.welcomeMessage}>Good evening</h1>
-
-            <div className={styles.quickplayPlaylists}>
-                
-                <div>
-                    <img src='https://misc.scdn.co/liked-songs/liked-songs-300.png' alt="album_photo"/>
-                    <div>
-                        <p>Name of Song</p>
-                        <div>Play Button</div>
-                    </div>
-                </div>
-                <div>
-                    <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif' alt="album_photo"/>
-                    <div>
-                        <p>Name of Song</p>
-                        <div>Play Button</div>
-                    </div>
-                </div>
-                <div>
-                    <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif' alt="album_photo"/>
-                    <div>
-                        <p>Name of Song</p>
-                        <div>Play Button</div>
-                    </div>
-                </div>
-                <div>
-                    <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Fear-Album-7.jfif' alt="album_photo"/>
-                    <div>
-                        <p>Name of Song</p>
-                        <div>Play Button</div>
-                    </div>
-                </div>
-                <div>
-                    <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif' alt="album_photo"/>
-                    <div>
-                        <p>Name of Song</p>
-                        <div>Play Button</div>
-                    </div>
-                </div>
-                <div>
-                    <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif' alt="album_photo"/>
-                    <div>
-                        <p>Name of Song</p>
-                        <div>Play Button</div>
-                    </div>
-                </div>
-
+        <div className={styles.dashboard}>
+            <div className={styles.gradientOverlayForTransition}  /* ACTS AS '.dashboard::before' for Gradient Transition */
+                style={{background: `linear-gradient(to bottom, rgba(${hexToRgb(data.darkVibrant)}) 64px, #121212 300px, #121212)`}}>
             </div>
 
-            {/* <img src={"https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/%24B-Banner-Artist.jfif"} alt="$B Banner" width={'300px'} height={'200px'} />
+            <h1 className={styles.welcomeMessage}>Good evening</h1>
+            <div className={styles.quickplayPlaylists}>
+                {Array.from({ length: 6 }, (_, index) => (
+                    <div
+                        key={index}
+                        onMouseEnter={() => handleMouseEnter(index)}
+                        onMouseLeave={() => handleMouseLeave()}
+                    >
+                        <img src={imageUrls[index]} alt="album_photo" />
+                        <div>
+                            <p>Name of Song</p>
+                            <div>Play Button</div>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-            <audio controls>
+            {/* <audio controls>
                 <source src="https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+KILLKA.mp3" type="audio/mp3" />
             </audio> */}
 
             <button onClick={handleTestBackend}>TEST BACKEND</button>
-            { data && <p>{JSON.stringify(data)}</p> }
+            { trackdata && <p>{JSON.stringify(trackdata)}</p> }
         </div>
     );
 };

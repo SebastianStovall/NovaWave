@@ -40,7 +40,7 @@ export const useSidebarResize = (direction: string) => { // this hook handles th
             const windowWidth = handleWindowWidth() // this, along with the css constraints, limit max-width of sidebars depending on screen size
             switch(windowWidth) {
                 case 'LARGE':
-                    handleLeftScrolling(e, newWidth, 0.52)
+                    handleLeftScrolling(e, newWidth, 0.40)
                     return
                 case 'MEDIUM':
                     handleLeftScrolling(e, newWidth, 0.27)
