@@ -12,7 +12,7 @@ import { connectToMongoDB } from "./db/connect";
 
 const app = express();
 
-app.use(cors())
+app.use(cors({origin: ['http://localhost:3000', 'https://novawave.onrender.com']}))
 
 app.use(json());
 app.use(compression());

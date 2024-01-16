@@ -19,14 +19,12 @@ export function hexToRgb(hex: string | undefined) {
 
 export const imageUrls = [
     'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.png',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.png',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Fear-Album-7.png',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-_-Heartbreak-Album-4.png',
-    'https://assets.stickpng.com/images/584df3ad6a5ae41a83ddee08.png'
+    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif',
+    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
+    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Fear-Album-7.jfif',
+    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
+    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif'
 ]
-
-// 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.png'
 
 
 // mouse event functions
