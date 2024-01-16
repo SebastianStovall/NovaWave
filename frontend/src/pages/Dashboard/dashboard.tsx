@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './dashboard.module.css';
 import { usePalette } from 'react-palette';
 import { hexToRgb, imageUrls, handleMouseEnter, handleMouseLeave } from "../../utils/gradientOverlayUtils";
-import { useQuickplayAlbumGridDisplayResize } from "../../hooks/useQuickplayAlbumGridDisplayResize";
+import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylings";
 
 export const Dashboard: React.FC = () => {
-    useQuickplayAlbumGridDisplayResize();
+    useDashboardResizeStylings();
     const gradientOverlay: HTMLElement | null = document.querySelector('.dashboard_gradientOverlayForTransition__AEA6r') as HTMLElement;
 
-    const [trackdata, setTrackdata] = useState<any>(null);
+    const [albumData, setAlbumData] = useState<any>(null);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     const { data } = usePalette(  /* { data, loading, error } */  /* //! Extracts Prominent Colors from an Image */
         hoveredIndex !== null ? imageUrls[hoveredIndex] : imageUrls[0]
     );
 
-    const handleTestBackend = async () => {
+    const grabRecommendedPlaylists = async () => {
         try {
-            const response = await fetch('/api/tracks/');
+            const response = await fetch('/api/tracks/albums');
             if (response.ok) {
-                const tracks = await response.json();
-                setTrackdata(tracks);
+                const albums = await response.json();
+                setAlbumData(albums);
             } else {
                 console.error('Failed to fetch data:', response.status);
             }
@@ -29,6 +29,12 @@ export const Dashboard: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        async function execute() {
+            await grabRecommendedPlaylists()
+        }
+        execute()
+    }, [])
 
     return (
         <div className={styles.dashboard}>
@@ -47,26 +53,32 @@ export const Dashboard: React.FC = () => {
                         <img src={imageUrls[index]} alt="album_photo" />
                         <div>
                             <p>Name of Song</p>
-                            <div>Play Button</div>
+                            <div>
+                                <span>&#9654;</span>
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className={styles.testGrid}>
-                {Array.from({ length: 9 }, (_, index) => (
-                    <div key={index} >
-                        {index}
-                    </div>
-                ))}
+            <h2 className={styles.recommended}>Recommended For Today</h2>
+            <div className={styles.mainGridSection}>
+                    {Array.from({ length: 9 }, (_, index) => (
+                        <div key={index} >
+                            <img src={ albumData && albumData[index].image} alt="playlist_album_photo" />
+                            <div className={styles.playButton}>
+                                <span className="fa fa-play" id={styles.playFa}></span>
+                            </div>
+                            <h4>{ albumData && albumData[index].artistName}</h4>
+                            <p>{ albumData && albumData[index].title}</p>
+                        </div>
+                    ))}
             </div>
 
             {/* <audio controls>
                 <source src="https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+KILLKA.mp3" type="audio/mp3" />
             </audio> */}
 
-            <button onClick={handleTestBackend}>TEST BACKEND</button>
-            { trackdata && <p>{JSON.stringify(trackdata)}</p> }
         </div>
     );
 };

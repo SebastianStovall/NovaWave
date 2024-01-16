@@ -19,11 +19,9 @@ const App: React.FC = () => {
     setIsLoaded(true)
   }, [dispatch]);
 
-  if(!isLoaded) return null
-
   return (
     <div>
-      { (
+      { isLoaded && (
         <Routes>
           <Route path="/" element={ <Layout><Dashboard /></Layout> } />
           <Route path="/auth" element={<Auth />} />
