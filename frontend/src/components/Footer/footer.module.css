@@ -42,3 +42,183 @@
     cursor: pointer;
     margin-right: 20px;
 }
+
+
+
+/* Styles for footer when user is signed in */
+
+
+/* .musicPlayer {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+
+.musicPlayer {
+    --primary-color: #ddd;
+    --secondary-color: #999;
+    --novawave-blue: #26f7fd;
+    --padding: 1em;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: var(--primary-color);
+}
+i{
+    color: var(--secondary-color);
+}
+i:hover{
+    color: var(--primary-color);
+}
+.songBar {
+    position: absolute;
+    left: var(--padding);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    width: 25%;
+}
+
+.songInfo {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+.imageContainer {
+    --size: 3.5em;
+    flex-shrink: 0;
+    width: var(--size);
+    height: var(--size);
+}
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.songDescription p {
+    margin: 0.2em;
+}
+.title,
+.artist {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+.title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.title:hover,
+.artist:hover {
+    text-decoration: underline;
+}
+.artist{
+    color: var(--secondary-color);
+    font-size: 11px;
+    font-weight: 600;
+}
+.icons{
+    display: flex;
+    gap: 1em;
+}
+.progressController{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: var(--secondary-color);
+}
+.controlButtons{
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    margin-bottom: 7px;
+}
+.playPause {
+    display: inline-block;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #000000;
+    border-radius: 50%;
+}
+
+.playPause:before {
+    padding-left: 2px;
+}
+
+.playPause:hover{
+    transform: scale(1.1);
+    color: #000000;
+}
+.progressContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+.progressContainer span{
+    font-size: 12px;
+    font-weight: 600;
+}
+.progressBar{
+    height: 4px;
+    border-radius: 10px;
+    width: 24%;
+    background-color: #ccc4;
+}
+.progress{
+    position: relative;
+    height: 100%;
+    width: 30%;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+}
+.progressBar:hover .progress{
+    background-color: var(--novawave-blue);
+}
+.progressBar:hover .progress::after{
+    content: "";
+    position: absolute;
+    --size: 1em;
+    width: var(--size);
+    height: var(--size);
+    right: 0;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    transform: translate(50%, calc(2px - 50%));
+}
+.otherFeatures{
+    position: absolute;
+    right: var(--padding);
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    gap: 1em;
+}
+.volumeBar{
+    display: flex;
+    align-items: center;
+    gap: .7em;
+}
+.volumeBar .progressBar{
+    width: 6em;
+}
+.volumeBar .progressBar:hover .progress::after{
+    --size: .8em;
+}

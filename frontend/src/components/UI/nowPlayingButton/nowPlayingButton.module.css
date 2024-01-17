@@ -1,5 +1,12 @@
 .nowPlayingSVG {
+    display: flex;
     width: 15px;
     height: 15px;
     fill: #b3b3b3;
+}
+
+.nowPlayingSVG:hover {
+    width: 16px;
+    height: 16px;
+    fill: #26f7fd;
 }
