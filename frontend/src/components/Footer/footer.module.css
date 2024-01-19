@@ -47,16 +47,6 @@
 
 /* Styles for footer when user is signed in */
 
-
-/* .musicPlayer {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-} */
-
-
 .musicPlayer {
     --primary-color: #ddd;
     --secondary-color: #999;
@@ -69,10 +59,10 @@
     position: relative;
     color: var(--primary-color);
 }
-i{
+.musicPlayer i{
     color: var(--secondary-color);
 }
-i:hover{
+.musicPlayer i:hover{
     color: var(--primary-color);
 }
 .songBar {

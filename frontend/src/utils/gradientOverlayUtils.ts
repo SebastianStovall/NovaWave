@@ -14,7 +14,7 @@ export function hexToRgb(hex: string | undefined) {
     const b = bigint & 255;
 
     // Return the result as an object
-    return `${r}, ${g}, ${b}, 0.8`
+    return `${r}, ${g}, ${b}`
 }
 
 export const imageUrls = [

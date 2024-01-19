@@ -1,0 +1,209 @@
+.mediaView {
+    border: none;
+    --primary-color: #ddd;
+    --secondary-color: #999;
+    --novawave-blue: #26f7fd;
+}
+
+/* Top Section Header */
+
+.mediaContent {
+    min-height: 250px;
+    max-height: 383px;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    padding-left: 24px;
+    padding-right: 24px;
+
+}
+
+.mediaContent > div {
+    margin-bottom: 20px;
+}
+
+.coverImg {
+    width: 232px;
+    height: 232px;
+    border-radius: 4px;
+    box-shadow: 1px 2px 48px -2px rgba(0,0,0,0.67);
+    -webkit-box-shadow: 1px 2px 48px -2px rgba(0,0,0,0.67);
+    -moz-box-shadow: 1px 2px 48px -2px rgba(0,0,0,0.67);
+    transition: transform 0.2s ease;
+}
+
+.coverImg:hover {
+    transform: scale(1.02);
+}
+
+.topCoverInfo {
+    color: white;
+    padding-left: 20px;
+    padding-bottom: 7px;
+}
+.type {
+    font-size: 12px;
+    font-weight: 600;
+}
+.title {
+    overflow-x: hidden;
+    white-space: nowrap;
+    font-size: 96px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+}
+
+.stats img {
+    position: relative;
+    top: 0px;
+    border-radius: 50%;
+}
+.stats span {
+    font-weight: 400;
+}
+.stats span:first-of-type {
+    font-weight: 600;
+}
+
+
+
+/* Song List Container (top) */
+
+.songsContainer {
+    height: 60vh;  /* For now, just to see what gradient will end up looking like */
+}
+
+.controlButtons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px;
+}
+
+.leftButtons,
+.rightButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resumeAndPause {
+    background-color: #26f7fd;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transform: transform ease 0.2;
+}
+.resumeAndPause:hover {
+    transform: scale(1.05);
+}
+
+.favoriteAndUnfavorite, .moreOptions {
+    margin-left: 30px;
+    font-size: 30px;
+    color: var(--secondary-color);
+}
+.favoriteAndUnfavorite:hover, .listView:hover, .moreOptions:hover {
+    cursor: pointer;
+    fill: var(--primary-color);
+    color: var(--primary-color);
+    transform: scale(1.02)
+}
+.moreOptions {
+    width: 32px;
+    height: 32px;
+    fill: var(--secondary-color);
+}
+.listView {
+    color: var(--secondary-color);
+}
+
+
+/* Song List (main) */
+
+
+.flexGrid {
+    padding-left: 24px;
+    padding-right: 24px;
+
+    /* border: 1px solid purple; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gridItem {
+    display: grid;
+    height: 56px;
+    width: 100%;
+    align-items: center;
+
+    grid-template-columns: 32px 1fr 78px;
+    grid-template-rows: 56px;
+    /* border: 1px solid blue; */
+    border-radius: 5px;
+}
+
+.gridItem div:first-child {
+    display: flex;
+    /* border: 1px solid salmon; */
+    justify-content: center;
+}
+
+.song {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 32px;
+}
+
+.song i {
+    color: var(--secondary-color);
+    margin-top: 1px;
+    opacity: 0;
+}
+
+.song div {
+    display: flex;
+    flex-direction: column;
+}
+
+.gridItem div:last-child {
+    display: flex;
+    /* border: 1px solid chartreuse; */
+    justify-content: space-around;
+    align-items: center;
+    color: var(--secondary-color);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.moreOptionsflexGrid {
+    width: 25px;
+    height: 25px;
+    fill: #999;
+    opacity: 0;
+}
+
+.gridItem:hover {
+    background-color: #3A3227;
+}
+.gridItem:hover .moreOptionsflexGrid,
+.gridItem:hover .song i {
+    opacity: 1;
+    cursor: pointer;
+}

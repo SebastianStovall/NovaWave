@@ -11,6 +11,11 @@ export const Dashboard: React.FC = () => {
     const [albumData, setAlbumData] = useState<any>(null);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+    // import { useHistory } from 'react-router-dom';
+    // const history = useHistory();
+    // <div onClick={() => history.push('/other-page')}>
+
+
     const { data } = usePalette(  /* { data, loading, error } */  /* //! Extracts Prominent Colors from an Image */
         hoveredIndex !== null ? imageUrls[hoveredIndex] : imageUrls[0]
     );
@@ -39,7 +44,7 @@ export const Dashboard: React.FC = () => {
     return (
         <div className={styles.dashboard}>
             <div className={styles.gradientOverlayForTransition}  /* ACTS AS '.dashboard::before' for Gradient Transition */
-                style={{background: `linear-gradient(to bottom, rgba(${hexToRgb(data.darkVibrant)}) 64px, #121212 300px, #121212)`}}>
+                style={{background: `linear-gradient(to bottom, rgba(${hexToRgb(data.darkVibrant)}, 0.8) 64px, #121212 300px, #121212)`}}>
             </div>
 
             <h1 className={styles.welcomeMessage}>Good evening</h1>
