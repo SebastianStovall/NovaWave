@@ -27,10 +27,17 @@ export const Header: React.FC = () => {
                     // MEDIA VIEW PAGE
                     const steps = Math.min(Math.floor((scrollPosition - 179) / 5), 12);
                     bgOpacity = Math.min(steps * 0.05, 0.6);
-                    if(scrollPosition > 380) {
-                        console.log("YES")
+
+                    const playButtonContainer = document.querySelector('.mediaView_mediaContent__9MFyo') as HTMLDivElement;
+                    const headerPlayButton = document.querySelector('.mediaView_resumeAndPause__hK21k') as HTMLDivElement;
+                    const headerMediaText = document.querySelector('.header_headerMediaText__u3IHJ') as HTMLDivElement;
+
+                    if(scrollPosition >= (playButtonContainer.scrollHeight + 10)) {
+                        headerPlayButton.style.opacity = '1'
+                        headerMediaText.style.opacity = '1'
                     } else {
-                        console.log("NO")
+                        headerPlayButton.style.opacity = '0'
+                        headerMediaText.style.opacity = '0'
                     }
                 }
 
@@ -56,9 +63,9 @@ export const Header: React.FC = () => {
     return (
         <div className={styles.header}>
             <div>
-                <div>
-                    <div>
-                        <button >
+                <div className={styles.headerLeftSection}>
+                    <div className={styles.prevAndForwardPageControl}>
+                        <button>
                             <svg aria-hidden="true" width="15px" height='18px' viewBox="0 0 16 16"> <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path></svg>
                         </button>
                         <button >
@@ -68,7 +75,7 @@ export const Header: React.FC = () => {
 
                     {headerState && headerState.media && (
                     <div className={styles.headerMediaContainer}>
-                        <div className={mediaViewStyles.resumeAndPause} style={{width: '48px', height: '48px'}}>
+                        <div className={mediaViewStyles.resumeAndPause} style={{width: '48px', height: '48px', opacity: '0', transition: 'opacity 0.5s ease'}}>
                             <div className={`fas fa-play`}></div>
                         </div>
                     </div>
@@ -78,13 +85,13 @@ export const Header: React.FC = () => {
 
 
                 {user ?
-                    <div>
+                    <div className={styles.profileIconContainer}>
                         <button>
                             <img src='https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg' alt="pf-pic" />
                         </button>
                     </div>
                 :
-                    <ul>
+                    <ul className={styles.headerAuthRedirect}>
                         <li>
                             <a href="/">Sign up</a>
                         </li>

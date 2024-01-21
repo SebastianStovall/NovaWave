@@ -10,8 +10,6 @@
     background: transparent;
 }
 
-
-
 /* Prev - Forward Buttons */
 
 .header > div {
@@ -22,7 +20,7 @@
     padding: 0px 24px;
 }
 
-.header > div > div:first-child {
+.headerLeftSection {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -32,7 +30,7 @@
     text-overflow: ellipsis;
 }
 
-.header > div > div:first-child > div > button > svg {
+.prevAndForwardPageControl button > svg {
     fill: white;
     size: 5px;
 }
@@ -41,12 +39,12 @@
 
 /* Profile Icon (when signed in) */
 
-.header > div > div:first-child > div {
+.prevAndForwardPageControl, .headerMediaContainer  {
     display: flex;
     gap: 10px;
 }
 
-.header > div > div:first-child > div button {
+.prevAndForwardPageControl > button:first-child, .prevAndForwardPageControl > button:last-child {
     width: 32px;
     height: 32px;
     border: none;
@@ -55,12 +53,12 @@
     padding: 5px;
     border-radius: 50%;
 }
-.header > div > div > button > img {
+.profileIconContainer > button > img {
     width: 28px;
     height: 28px;
     border-radius: 50%;
 }
-.header > div > div button {
+.profileIconContainer button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,12 +69,12 @@
     border-radius: 50%;
     cursor: pointer;
 }
-.header > div > div > button:hover {
+.profileIconContainer button:hover {
     width: 39px;
     height: 39px;
     background: rgba(0,0,0,.9);
 }
-.header > div > div > button:hover img {
+.profileIconContainer button:hover img {
     width: 29px;
     height: 29px;
 }
@@ -127,6 +125,9 @@
 /* Header Media (conditionally rendered with state) */
 
 .headerMediaText {
+    transition: opacity 0.5s ease;
+    opacity: 0;
+
     color: var(--primary);
     font-size: 21px;
     font-weight: 700;
