@@ -1,14 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sessionReducer from "./session/session";
 import libraryReducer from "./library/library";
-import sidebarReducer from './sidebar/sidebar'
+import sidebarReducer from "./sidebar/sidebar";
+import headerReducer from "./header/header";
 
 const store = configureStore({
   // configure store with the reducer here, toolkit should come with redux-thunk middlewaree by default
   reducer: {
     session: sessionReducer,
     library: libraryReducer,
-    sidebar: sidebarReducer
+    sidebar: sidebarReducer,
+    header: headerReducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware(); // Thunk middleware is included by default

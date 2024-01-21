@@ -48,22 +48,19 @@
 /* Styles for footer when user is signed in */
 
 .musicPlayer {
-    --primary-color: #ddd;
-    --secondary-color: #999;
-    --novawave-blue: #26f7fd;
     --padding: 1em;
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
     position: relative;
-    color: var(--primary-color);
+    color: var(--primary-color-icon);
 }
 .musicPlayer i{
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
 }
 .musicPlayer i:hover{
-    color: var(--primary-color);
+    color: var(--primary-color-icon);
 }
 .songBar {
     position: absolute;
@@ -114,7 +111,7 @@
     text-decoration: underline;
 }
 .artist{
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
     font-size: 11px;
     font-weight: 600;
 }
@@ -128,7 +125,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
 }
 .controlButtons{
     display: flex;
@@ -142,7 +139,7 @@
     width: 15px;
     height: 15px;
     padding: 10px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color-icon);
     color: #000000;
     border-radius: 50%;
 }
@@ -177,7 +174,7 @@
     height: 100%;
     width: 30%;
     border-radius: 10px;
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color-icon);
 }
 .progressBar:hover .progress{
     background-color: var(--novawave-blue);
@@ -190,7 +187,7 @@
     height: var(--size);
     right: 0;
     border-radius: 50%;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color-icon);
     transform: translate(50%, calc(2px - 50%));
 }
 .otherFeatures{

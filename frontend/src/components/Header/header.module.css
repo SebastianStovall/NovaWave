@@ -8,7 +8,6 @@
     border-top-left-radius: 10px;
 
     background: transparent;
-    transition: background 0.6s ease;
 }
 
 
@@ -22,11 +21,18 @@
     align-items: center;
     padding: 0px 24px;
 }
+
 .header > div > div:first-child {
     display: flex;
+    align-items: center;
     gap: 10px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
-.header > div > div:first-child > button > svg {
+
+.header > div > div:first-child > div > button > svg {
     fill: white;
     size: 5px;
 }
@@ -35,7 +41,12 @@
 
 /* Profile Icon (when signed in) */
 
-.header > div > div:first-child > button {
+.header > div > div:first-child > div {
+    display: flex;
+    gap: 10px;
+}
+
+.header > div > div:first-child > div button {
     width: 32px;
     height: 32px;
     border: none;
@@ -44,28 +55,28 @@
     padding: 5px;
     border-radius: 50%;
 }
-.header > div > button > img {
+.header > div > div > button > img {
     width: 28px;
     height: 28px;
     border-radius: 50%;
 }
-.header > div > button {
+.header > div > div button {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 38px;
     height: 38px;
     border: none;
-    background-color: rgba(0,0,0,.7);
+    background: rgba(0,0,0,.7);
     border-radius: 50%;
     cursor: pointer;
 }
-.header > div > button:hover {
+.header > div > div > button:hover {
     width: 39px;
     height: 39px;
-    background-color: rgba(0,0,0,.9);
+    background: rgba(0,0,0,.9);
 }
-.header > div > button:hover img {
+.header > div > div > button:hover img {
     width: 29px;
     height: 29px;
 }
@@ -95,7 +106,6 @@
     color: #ffffff;
     font-size: 15px;
 }
-
 .header div > ul button {
     background-color: #ffffff;
     color: #000000;
@@ -107,9 +117,21 @@
     cursor: pointer;
     margin-left: 20px;
 }
-
 .header div > ul button:hover,
 .header div > ul button:active,
 .header div > ul button:focus {
     background-color: #f2f2f2;
+}
+
+
+/* Header Media (conditionally rendered with state) */
+
+.headerMediaText {
+    color: var(--primary);
+    font-size: 21px;
+    font-weight: 700;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

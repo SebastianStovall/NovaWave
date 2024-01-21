@@ -1,8 +1,5 @@
 .mediaView {
     border: none;
-    --primary-color: #ddd;
-    --secondary-color: #999;
-    --novawave-blue: #26f7fd;
 }
 
 /* Top Section Header */
@@ -17,7 +14,6 @@
 
     padding-left: 24px;
     padding-right: 24px;
-
 }
 
 .mediaContent > div {
@@ -39,7 +35,7 @@
 }
 
 .topCoverInfo {
-    color: white;
+    color: var(--primary);
     padding-left: 20px;
     padding-bottom: 7px;
 }
@@ -80,7 +76,7 @@
 /* Song List Container (top) */
 
 .songsContainer {
-    height: 60vh;  /* For now, just to see what gradient will end up looking like */
+    height: 2000px;  /* For now, just to see what gradient will end up looking like */
 }
 
 .controlButtons {
@@ -115,21 +111,21 @@
 .favoriteAndUnfavorite, .moreOptions {
     margin-left: 30px;
     font-size: 30px;
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
 }
 .favoriteAndUnfavorite:hover, .listView:hover, .moreOptions:hover {
     cursor: pointer;
-    fill: var(--primary-color);
-    color: var(--primary-color);
+    fill: var(--primary-color-icon);
+    color: var(--primary-color-icon);
     transform: scale(1.02)
 }
 .moreOptions {
     width: 32px;
     height: 32px;
-    fill: var(--secondary-color);
+    fill: var(--secondary-color-icon);
 }
 .listView {
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
 }
 
 
@@ -160,7 +156,7 @@
 
 .gridItem div:first-child {
     display: flex;
-    /* border: 1px solid salmon; */
+    color: var(--secondary);
     justify-content: center;
 }
 
@@ -171,8 +167,18 @@
     margin-right: 32px;
 }
 
+.song p:first-child {
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 500;
+}
+.song p:last-child {
+    color: var(--secondary);
+    font-size: 14px;
+}
+
 .song i {
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
     margin-top: 1px;
     opacity: 0;
 }
@@ -187,7 +193,7 @@
     /* border: 1px solid chartreuse; */
     justify-content: space-around;
     align-items: center;
-    color: var(--secondary-color);
+    color: var(--secondary-color-icon);
     font-weight: 500;
     font-size: 14px;
 }
@@ -195,15 +201,42 @@
 .moreOptionsflexGrid {
     width: 25px;
     height: 25px;
-    fill: #999;
+    fill: var(--secondary-color-icon);
     opacity: 0;
 }
 
 .gridItem:hover {
-    background-color: #3A3227;
+    background-color: hsla(0,0%,100%,.14);
 }
 .gridItem:hover .moreOptionsflexGrid,
 .gridItem:hover .song i {
     opacity: 1;
     cursor: pointer;
+}
+
+#stickyHead {
+    border-bottom: 1px solid hsla(0,0%,100%,.1);
+    height: 36px;
+    position: sticky;
+    top: 63px;
+    margin-bottom: 10px;
+    border-radius: 0px;
+}
+#stickyHead p {
+    color: var(--secondary);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+#stickyHead p:first-child {
+    margin-left: 12px;
+}
+#stickyHead p:nth-child(2) {
+    margin-left: 0px;
+}
+#stickyHead svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--secondary);
+    margin-bottom: 20px;
+    margin-left: 13px;
 }

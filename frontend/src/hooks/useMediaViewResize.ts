@@ -4,8 +4,22 @@ export function useMediaViewResize() {
 useEffect(() => {
     const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
     const mediaContent = document.querySelector('.mediaView_mediaContent__9MFyo') as HTMLElement;
+
     const coverImage = document.querySelector('.mediaView_coverImg__dpy4n') as HTMLImageElement;
     const titleText = document.querySelector('.mediaView_title__HNM8j') as HTMLDivElement;
+
+    const stickyHeader = document.getElementById('mediaView_stickyHead__lD+DR') as HTMLDivElement; // sticky header part of .flexGrid
+
+    function handleStickyStyling() {
+        if( stickyHeader.offsetTop - mainContent.scrollTop <= 63) { // 63 since thats the offset from top of sticky header  (position: sticky; top: 63;)
+            stickyHeader.style.backgroundColor = '#1A1A1A';
+            stickyHeader.style.boxShadow = '0 -1px 0 0 #181818';
+        } else {
+            stickyHeader.style.backgroundColor = 'transparent';
+            stickyHeader.style.boxShadow = 'none';
+        }
+
+    }
 
     const calculateContainerHeight = (currentWidth: number, container: string) => { // FLUID WIDTH/HEIGHT CHANGE FOR BACKGROUND CONTAINER AND MEDIA IMAGE
         const minWidth = 867;   // if mainContent width dips below this threshold, content will have reached is minimum height possible
@@ -91,9 +105,11 @@ useEffect(() => {
     });
 
     resizeObserver.observe(mainContent);
+    mainContent.addEventListener('scroll', handleStickyStyling );
 
     return () => {
         resizeObserver.unobserve(mainContent);
+        mainContent.removeEventListener('scroll', handleStickyStyling );
     };
 
 }, [])
