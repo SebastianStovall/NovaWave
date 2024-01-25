@@ -2,6 +2,8 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { login, logout } from "../../store/session/session";
 
+import { getQuickplayGridThunk } from "../../store/dashboard/dashboard";
+
 export interface ILoginUser {
   // TODO ----> Refactor interfaces to a file for User interfaces
   email: string;
@@ -24,7 +26,10 @@ export const Auth: React.FC = () => {
       email: "sebastianstovall@gmail.com",
       password: "password",
     };
-    dispatch(login(sebassUser));
+    const payload = await dispatch(login(sebassUser));
+    if(payload.type === 'session/login/fulfilled') { // getQuickplayGridThunk only called once per session. Data is persisted with redux-persist
+      await dispatch(getQuickplayGridThunk())
+    }
   };
 
   const logoutUser = async () => {

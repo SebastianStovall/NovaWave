@@ -17,15 +17,6 @@ export function hexToRgb(hex: string | undefined) {
     return `${r}, ${g}, ${b}`
 }
 
-export const imageUrls = [
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/The-Marshall-Mathers-LP2-Album-6.jfif',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Fear-Album-7.jfif',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/808s-%26-Heartbreak-Album-4.jfif',
-    'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif'
-]
-
 
 // mouse event functions
 

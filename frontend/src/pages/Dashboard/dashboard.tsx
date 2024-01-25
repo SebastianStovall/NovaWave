@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import { usePalette } from "react-palette";
-import { hexToRgb, imageUrls, handleMouseEnter, handleMouseLeave } from "../../utils/gradientOverlayUtils";
+import { hexToRgb, handleMouseEnter, handleMouseLeave } from "../../utils/gradientOverlayUtils";
 import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylings";
 
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { changeGradient, changeMediaInfo } from "../../store/header/header";
+
+import {ArtistDocument, AlbumDocument, PlaylistDocument} from '../../../../backend/src/db/models/modelTypes';
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard: React.FC = () => {
   useDashboardResizeStylings();
+  const navigate = useNavigate()
+  const [albumData, setAlbumData] = useState<any>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const dispatch = useAppDispatch();
+  const quickplayPersitantState: (AlbumDocument | ArtistDocument | PlaylistDocument)[] = useAppSelector((state) => state.dashboard.quickplayGrid)
+
   const gradientOverlay: HTMLElement | null = document.querySelector(
     ".dashboard_gradientOverlayForTransition__AEA6r"
   ) as HTMLElement;
 
-  const [albumData, setAlbumData] = useState<any>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const dispatch = useAppDispatch();
-
-  // import { useHistory } from 'react-router-dom';
-  // const history = useHistory();
-  // <div onClick={() => history.push('/other-page')}>
-
+  const hoveredItem = hoveredIndex !== null ? quickplayPersitantState[hoveredIndex] : null
   const { data } = usePalette(
     /* { data, loading, error } */ /* //! Extracts Prominent Colors from an Image */
-    hoveredIndex !== null ? imageUrls[hoveredIndex] : imageUrls[0]
+    hoveredIndex !== null && hoveredItem !== null ? ( 'image' in hoveredItem ? hoveredItem.image as string : 'aboutImage' in hoveredItem ? hoveredItem.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png' ) : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'
   );
 
   const grabRecommendedPlaylists = async () => {
@@ -42,8 +44,8 @@ export const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    changeGradient("33, 17, 95"); // liked songs playlist purple
-    changeMediaInfo('')
+    dispatch(changeGradient('33, 17, 95')); // liked songs playlist purple
+    dispatch(changeMediaInfo(''));
   }, [dispatch]);
 
   useEffect(() => {
@@ -68,17 +70,26 @@ export const Dashboard: React.FC = () => {
 
       <h1 className={styles.welcomeMessage}>Good evening</h1>
       <div className={styles.quickplayPlaylists}>
-        {Array.from({ length: 6 }, (_, index) => (
+        {quickplayPersitantState.map((item, index) => (
           <div
             key={index}
             onMouseEnter={() =>
               handleMouseEnter(index, setHoveredIndex, gradientOverlay)
             }
             onMouseLeave={() => handleMouseLeave(gradientOverlay)}
+            onClick={
+              'image' in item ?
+              () => navigate(`/album/${item._id}`) :
+              'name' in item ?
+              () => navigate(`/artist/${item._id}`) :
+              () => navigate(`/playlist/${(item as any)._id}`)
+            }
           >
-            <img src={imageUrls[index]} alt="album_photo" />
+            <div className={styles.imageContainer}>
+              <img src={ 'image' in item ? item.image as string : 'aboutImage' in item ? item.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'} alt="media_image" />
+            </div>
             <div>
-              <p>Name of Song</p>
+              <p>{ 'title' in item ? item.title as string : 'name' in item ? item.name as string : 'Liked Songs'}</p>
               <div>
                 <span>&#9654;</span>
               </div>

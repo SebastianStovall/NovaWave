@@ -2,40 +2,40 @@ import { ObjectId } from "mongodb"
 
 export interface AlbumDocument {
     _id: ObjectId
-    title: String
-    artistName: String
+    title: string
+    artistName: string
     artist: ObjectId
-    yearReleased: Number
-    image: String
-    tracks: String
-    length: String
+    yearReleased: number
+    image: string
+    tracks: string
+    length: string
 }
 
 export interface ArtistDocument {
     _id: ObjectId
-    name: String
-    bannerImage: String
-    aboutImage: String
-    monthlyListeners: Number
-    description: String
+    name: string
+    bannerImage: string
+    aboutImage: string
+    monthlyListeners: number
+    description: string
     discography: ObjectId[]
 }
 
 export interface PlaylistDocument {
     _id: ObjectId
     owner: ObjectId
-    likes: Number
-    title: String
-    desc: String
+    likes: number
+    title: string
+    desc: string
     tracks: {track: ObjectId, date: Date}
-    length: String
+    length: string
     isPrivate: boolean
 }
 
 export interface UserDocument {
     _id: ObjectId
-    username: String
-    email: String
+    username: string
+    email: string
     playlists: ObjectId[]
     albums: ObjectId[]
     artists: ObjectId[]
@@ -46,8 +46,8 @@ export interface UserDocument {
 
 export interface UserDocumentPopulatedWithLikedSongs {
     _id: ObjectId
-    username: String
-    email: String
+    username: string
+    email: string
     playlists: ObjectId[]
     albums: ObjectId[]
     artists: ObjectId[]

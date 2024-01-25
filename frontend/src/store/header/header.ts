@@ -8,7 +8,7 @@ interface HeaderState {
 const initialState: HeaderState = { color: '33, 17, 95', media: '' };
 
 const gradientSlice = createSlice({
-    name: 'sidebar',
+    name: 'header',
     initialState,
     reducers: {
         changeGradient: (state, action: PayloadAction<string>) => {

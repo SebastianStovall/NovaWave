@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Thunk to handle getting randomized quickplayGridInfo on user signup/login
 
+// Thunk to handle getting randomized quickplayGridInfo on user signup/login
 export const getQuickplayGridThunk = createAsyncThunk(
   "dashboard/quickplay",
   async (_, thunkAPI) => {
@@ -37,7 +37,6 @@ const dashboardSlice = createSlice({
     extraReducers: (builder) => {
     builder
         .addCase(getQuickplayGridThunk.fulfilled, (state, action) => {
-            console.log("WE SETTING TO THIS ---> ", action.payload)
             state.quickplayGrid = action.payload;
         })
     },
