@@ -8,7 +8,7 @@ import styles from './mediaView.module.css'
 
 export const MediaView: React.FC = () => {
     useMediaViewResize();
-    const { data } = usePalette('https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif');
+    const { data } = usePalette('https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif');
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -21,7 +21,7 @@ export const MediaView: React.FC = () => {
 
             <div className={styles.mediaContent}>
                 <div className={styles.topCover}>
-                    <img className={styles.coverImg} src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif' alt='media-cover' />
+                    <img className={styles.coverImg} src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif' alt='media-cover' />
                 </div>
                 <div className={styles.topCoverInfo}>
                     <div className={styles.type}>Album/Playlist (refactor)</div>

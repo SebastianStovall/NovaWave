@@ -3,6 +3,7 @@ import sessionReducer from "./session/session";
 import libraryReducer from "./library/library";
 import sidebarReducer from "./sidebar/sidebar";
 import headerReducer from "./header/header";
+import dashboardReducer from './dashboard/dashboard'
 
 const store = configureStore({
   // configure store with the reducer here, toolkit should come with redux-thunk middlewaree by default
@@ -11,6 +12,7 @@ const store = configureStore({
     library: libraryReducer,
     sidebar: sidebarReducer,
     header: headerReducer,
+    dashboard: dashboardReducer
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware(); // Thunk middleware is included by default

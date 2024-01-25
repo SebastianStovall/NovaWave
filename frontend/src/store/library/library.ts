@@ -51,10 +51,10 @@ const libraySlice = createSlice({ //! You CAN mutate state in the reducer due to
     reducers: {}, //! If thunk middleware is not needed, you need to create your own ActionType + ActionCreatorFunction and handle the logic here instead of extraReducers
     extraReducers: (builder) => {
         builder.addCase(getUserLibraryThunk.pending, (state) => {  //* pending state doesnt 'need' to be defined here, but can be useful for debugging
-            console.log("Promise returned by createAsyncThunk is in a pending state...")
+            // console.log("Promise returned by createAsyncThunk is in a pending state...")
         })
         builder.addCase(getUserLibraryThunk.fulfilled, (state, action) => {
-            console.log("Promise returned by createAsyncThunk has been successfully resolved")
+            // console.log("Promise returned by createAsyncThunk has been successfully resolved")
             const actionPayload = action.payload as LibraryState
 
             state.isLoaded = true

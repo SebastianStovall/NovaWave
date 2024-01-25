@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import { usePalette } from "react-palette";
-import {
-  hexToRgb,
-  imageUrls,
-  handleMouseEnter,
-  handleMouseLeave,
-} from "../../utils/gradientOverlayUtils";
+import { hexToRgb, imageUrls, handleMouseEnter, handleMouseLeave } from "../../utils/gradientOverlayUtils";
 import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylings";
 
 import { useAppDispatch } from "../../hooks";

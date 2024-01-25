@@ -19,7 +19,7 @@ export const Auth: React.FC = () => {
   const sessionUser = useAppSelector((state) => state.session.user);
   const dispatch = useAppDispatch();
 
-  const logInUser = () => {
+  const logInUser = async () => {
     const sebassUser: ILoginUser = {
       email: "sebastianstovall@gmail.com",
       password: "password",
