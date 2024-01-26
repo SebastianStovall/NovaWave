@@ -4,11 +4,13 @@ export interface AlbumDocument {
     _id: ObjectId
     title: string
     artistName: string
-    artist: ObjectId
+    artist?: ObjectId | null | undefined
     yearReleased: number
-    image: string
-    tracks: string
+    image?: string | null | undefined
+    tracks: ObjectId[]
     length: string
+    createdAt: Date
+    updatedAt: Date
 }
 
 export interface ArtistDocument {
@@ -19,6 +21,12 @@ export interface ArtistDocument {
     monthlyListeners: number
     description: string
     discography: ObjectId[]
+    createdAt: Date
+    updatedAt: Date
+}
+
+interface Track {
+    track: ObjectId, date: Date
 }
 
 export interface PlaylistDocument {
@@ -27,9 +35,11 @@ export interface PlaylistDocument {
     likes: number
     title: string
     desc: string
-    tracks: {track: ObjectId, date: Date}
+    tracks: Track[]
     length: string
     isPrivate: boolean
+    createdAt: Date
+    updatedAt: Date
 }
 
 export interface UserDocument {

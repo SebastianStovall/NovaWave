@@ -3,7 +3,8 @@ import sessionReducer from "./session/session";
 import libraryReducer from "./library/library";
 import sidebarReducer from "./sidebar/sidebar";
 import headerReducer from "./header/header";
-import dashboardReducer from './dashboard/dashboard'
+import dashboardReducer from './dashboard/dashboard';
+import persistantReducer from './persist/persist'
 
 import storage from "redux-persist/lib/storage"; // PERSIST
 import { persistReducer } from "redux-persist"; // PERSIST
@@ -13,15 +14,16 @@ const reducer = combineReducers({
     library: libraryReducer,
     sidebar: sidebarReducer,
     header: headerReducer,
-    dashboard: dashboardReducer
+    dashboard: dashboardReducer,
+    persist: persistantReducer
 })
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['dashboard'], // Add the reducers you want to persist here
-  blacklist: ['sidebar', 'library', 'session', 'header'] // exclude reducers from persist here
+  whitelist: ['persist'], // Add the reducers you want to persist here
+  blacklist: ['sidebar', 'library', 'session', 'header', 'dashboard'] // exclude reducers from persist here
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)
