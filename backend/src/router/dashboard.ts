@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { generateQuickplayGrid, retreiveRecommendedForToday } from '../controllers/dashboard'
 import { isAuthenticated } from '../middleware'
+import { buildQuickplayGrid, addEntityToRecentlyViewed } from '../controllers/dashboard'
 
 export default (router: Router) => { // include all req methods here and import their respective controller func, wire this router to index.ts
-    router.post('/dashboard/quickplay/generate', isAuthenticated, generateQuickplayGrid)
-    router.get('/dashboard/recommended', isAuthenticated, retreiveRecommendedForToday)
+    router.get('/dashboard/quickplay', isAuthenticated, buildQuickplayGrid)
+    router.get('/dashboard/addToRecents', isAuthenticated, addEntityToRecentlyViewed)
 }

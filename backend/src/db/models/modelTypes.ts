@@ -49,7 +49,8 @@ export interface UserDocument {
     playlists: ObjectId[]
     albums: ObjectId[]
     artists: ObjectId[]
-    likedSongsPlaylistId: ObjectId
+    likedSongsPlaylistId?: ObjectId | null | undefined
+    recentlyViewed: ObjectId[]
     createdAt: Date
     updatedAt: Date
 }

@@ -37,7 +37,8 @@ const UserSchema = new mongoose_1.Schema({
     playlists: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Playlist' }], // all playlists (user created, user liked, and liked songs playlist)
     albums: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Album' }], // all albums in user's collection
     artists: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Artist' }], // all artists in user's collection
-    likedSongsPlaylistId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Playlist' } // specifically reference likedSongs playlist for 0(1) lookup when favoriting songs
+    likedSongsPlaylistId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Playlist' }, // specifically reference likedSongs playlist for 0(1) lookup when favoriting songs
+    recentlyViewed: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Album' }]
 }, { timestamps: true });
 initLikedSongsPlaylist();
 exports.UserModel = mongoose_1.default.model('User', UserSchema); // turn this schema into a table/collection

@@ -1,4 +1,4 @@
-import express, { Router } from 'express'
+import { Router } from 'express'
 import authentication from './authentication' // name router whatever you want
 import users from './users'
 import playlists from './playlists'

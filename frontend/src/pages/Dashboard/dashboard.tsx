@@ -6,7 +6,6 @@ import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylin
 
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { changeGradient, changeMediaInfo } from "../../store/header/header";
-import { generateQuickplayGridThunk } from "../../store/dashboard/dashboard";
 
 import {ArtistDocument, AlbumDocument, PlaylistDocument} from '../../../../backend/src/db/models/modelTypes';
 import { useNavigate } from "react-router-dom";
@@ -47,7 +46,6 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     dispatch(changeGradient('33, 17, 95')); // liked songs playlist purple
     dispatch(changeMediaInfo(''));
-    dispatch(generateQuickplayGridThunk());
   }, [dispatch]);
 
   useEffect(() => {

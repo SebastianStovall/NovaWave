@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const dashboard_1 = require("../controllers/dashboard");
 const middleware_1 = require("../middleware");
+const dashboard_1 = require("../controllers/dashboard");
 exports.default = (router) => {
-    router.post('/dashboard/quickplay/generate', middleware_1.isAuthenticated, dashboard_1.generateQuickplayGrid);
-    router.get('/dashboard/recommended', middleware_1.isAuthenticated, dashboard_1.retreiveRecommendedForToday);
+    router.get('/dashboard/quickplay', middleware_1.isAuthenticated, dashboard_1.buildQuickplayGrid);
+    router.get('/dashboard/addToRecents', middleware_1.isAuthenticated, dashboard_1.addEntityToRecentlyViewed);
 };

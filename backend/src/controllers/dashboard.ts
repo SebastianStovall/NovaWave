@@ -1,45 +1,33 @@
 import { RequestHandler } from "express";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
-import { getThreeRandomAlbums, getTwoRandomArtists, getUserLikedSongsPlaylist, getRecommendedAlbums } from "../db/actions/dashboard-actions";
-import { AlbumDocument, ArtistDocument } from "../db/models/modelTypes";
-import { ObjectId } from "mongodb";
+import { getQuickplayDocuments } from "../db/actions/dashboard-actions";
+import { addEntityToRecents } from "../db/actions/dashboard-actions";
 
-// Generates randomized quickplay grid on user sign in
-export const generateQuickplayGrid: RequestHandler = async(req, res, next) => {
+
+export const addEntityToRecentlyViewed: RequestHandler = async (req, res, next) => {
     try {
-        const currentUserId = (get(req, "identity._id") as unknown as string); // key into identify and grab ._id field
-        if(!currentUserId) {
+        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
+        const { entityId, entityType } = req.body;
+
+        if(!entityId || !entityType) {
             throw new CustomError(
                 "Bad Request",
-                "Entity information is missing (currentUserId)",
+                "Entity information is missing in the request body",
                 400
             );
         }
 
-        if(!req.body.albums || !req.body.artists) {
+        if(entityType !== 'artist' && entityType !== 'album' && entityType !== 'playlist') {
             throw new CustomError(
                 "Bad Request",
-                "Entity information is missing (albums and artist info)",
+                `Entity type ${entityType} is invalid`,
                 400
             );
         }
 
-        const albums = req.body.albums.split(',')
-        const artists = req.body.artists.split(',')
-
-        let quickplayGrid: (AlbumDocument | ArtistDocument | { _id: ObjectId })[] = []
-
-        // Populate User Quickplay Grid
-        const userLikedSongsPlaylist = await getUserLikedSongsPlaylist(currentUserId)
-        const randomizedAlbumArray = await getThreeRandomAlbums()
-        const randomizedArtistArray = await getTwoRandomArtists()
-
-        quickplayGrid.push(userLikedSongsPlaylist)
-        quickplayGrid = quickplayGrid.concat(randomizedAlbumArray, randomizedArtistArray);
-
-
-        res.status(200).json({message: 'Quickplay Grid Successfully Generated for User', quickplayGrid})
+        await addEntityToRecents(currentUserId, entityId, entityType)
+        return res.status(200).json({ message: `${entityType} has been added to user's recently viewed`});
 
     } catch(e) {
         next(e)
@@ -47,12 +35,15 @@ export const generateQuickplayGrid: RequestHandler = async(req, res, next) => {
 }
 
 
-export const retreiveRecommendedForToday: RequestHandler = async(req, res, next) => {
+export const buildQuickplayGrid: RequestHandler = async (req, res, next) => {
     try {
-        const recommendedAlbums = await getRecommendedAlbums()
-        res.status(200).json({message: 'Recommended Albums For Today', data: recommendedAlbums})
+        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
 
-    } catch(e) {
+        const gridItems = await getQuickplayDocuments(currentUserId)
+
+        res.status(200).json({message: 'Quickplay grid successfully created', data: gridItems})
+
+    } catch (e) {
         next(e)
     }
-}
+};

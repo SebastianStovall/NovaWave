@@ -1,9 +1,8 @@
 import { RequestHandler } from "express";
-import { createUser, getUserByEmail, getUserBySessionToken } from "../db/actions/user-actions";
+import { createUser, getUserByEmail } from "../db/actions/user-actions";
 import { random, authentication } from "../helpers/auth";
 import CustomError from "../utils/CustomError";
-import { get, merge } from 'lodash';
-import { isAuthenticated } from "../middleware";
+import { get } from 'lodash';
 
 export const register: RequestHandler = async (req, res, next) => {
   try {
