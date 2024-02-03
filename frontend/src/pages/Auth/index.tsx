@@ -25,10 +25,6 @@ export const Auth: React.FC = () => {
       password: "password",
     };
     await dispatch(login(sebassUser));
-    // if (payload.type === "session/login/fulfilled") {
-    //   // getQuickplayGridThunk only called once per session. Data is persisted with redux-persist
-    //   dispatch(generateQuickplayGridValues());
-    // }
   };
 
   const logoutUser = async () => {

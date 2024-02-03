@@ -5,6 +5,7 @@ import playlists from './playlists'
 import library from './library'
 import tracks from './track'
 import dashboard from './dashboard'
+import media from './media'
 
 const router = Router()
 
@@ -15,6 +16,7 @@ export default (): Router => { // wire all routers to single router to be used i
     library(router);
     tracks(router);
     dashboard(router);
+    media(router);
 
     return router
 }

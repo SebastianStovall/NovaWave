@@ -72,25 +72,6 @@ export const Dashboard: React.FC = () => {
 
       <h1 className={styles.welcomeMessage}>Good evening</h1>
       <div className={styles.quickplayPlaylists}>
-
-        {/* <div
-            onMouseEnter={() =>
-              handleMouseEnter(0, setHoveredIndex, gradientOverlay)
-            }
-            onMouseLeave={() => handleMouseLeave(gradientOverlay)}
-            onClick={ () => navigate(`/collection/tracks`) }
-          >
-            <div className={styles.imageContainer}>
-              <img src={'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'} alt="media_image" />
-            </div>
-            <div>
-              <p>{'Liked Songs'}</p>
-              <div>
-                <span>&#9654;</span>
-              </div>
-            </div>
-        </div> */}
-
         {userQuickplayGrid.map((item, index) => (
           <div
             key={index}
@@ -103,6 +84,8 @@ export const Dashboard: React.FC = () => {
               () => navigate(`/album/${item._id}`) :
               'name' in item ?
               () => navigate(`/artist/${item._id}`) :
+              index === 0 ?
+              () => navigate(`/collection/tracks`) :
               () => navigate(`/playlist/${(item as any)._id}`)
             }
           >
