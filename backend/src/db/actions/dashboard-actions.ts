@@ -5,6 +5,7 @@ import { PlaylistModel } from "../models/Playlist";
 import CustomError from "../../utils/CustomError";
 import { UserDocumentPopulatedWithLikedSongs, AlbumDocument, ArtistDocument, UserDocument, PlaylistDocument } from "../models/modelTypes";
 import { getUserById } from "./user-actions";
+import { ObjectId } from "mongodb";
 
 export const getUserLikedSongsPlaylist = async(userId: string) => {
     try {
@@ -79,7 +80,7 @@ export const getQuickplayDocuments = async(userId: string) => {
         }
 
         // One spot will always be liked songs in quickplay grid, so only 5 documents are needed
-        if(userDocument.recentlyViewed.length < 5) { // if less than 5 items in recentlyViewed populate it
+        if(userDocument.recentlyViewed.length < 5) { // if less than 5 items in recentlyViewed populate it (this will be for new users only)
             const nineRandomAlbums = await getRandomAlbums()
             userDocument.recentlyViewed = userDocument.recentlyViewed.concat(nineRandomAlbums);
 
@@ -87,8 +88,7 @@ export const getQuickplayDocuments = async(userId: string) => {
             return userDocument.recentlyViewed
 
         } else {
-            const populated = await userDocument.populate('recentlyViewed')
-            console.log("POP? --> ", populated)
+            await userDocument.populate('recentlyViewed')
             return userDocument.recentlyViewed
         }
 
@@ -105,6 +105,16 @@ export const getQuickplayDocuments = async(userId: string) => {
 
 export const addEntityToRecents = async(userId: string, entityId: string, entityType: string) => {
     try {
+
+        const userDocument = await getUserById(userId)
+        if(!userDocument) {
+            throw new CustomError(
+                "Query Error",
+                "User Document was not found with the provided ObjectId",
+                500
+            );
+        }
+
         if(entityType === 'album') {
             const album: AlbumDocument | null = await AlbumModel.findById(entityId);
             if(!album) {
@@ -140,10 +150,20 @@ export const addEntityToRecents = async(userId: string, entityId: string, entity
             );
         }
 
-        await UserModel.findByIdAndUpdate(
-            userId,
-            { $push: { recentlyViewed: entityId } },
-        );
+
+        if (userDocument.recentlyViewed.includes((entityId as unknown as ObjectId))) {
+            // If entityId is already in the recentlyViewed array, no need to modify the array
+            return 'already in recents'
+        }
+
+        if (userDocument.recentlyViewed.length >= 10) {
+            // If the array has 10 or more elements, remove the last element
+            userDocument.recentlyViewed.pop();
+        }
+
+        userDocument.recentlyViewed.unshift((entityId as unknown as ObjectId)); // Add the new entityId to the beginning of the array
+        await userDocument.save(); // Save the updated user document
+        return 'added to recents'
 
     } catch(e: any) {
         throw e

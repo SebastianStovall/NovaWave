@@ -26,8 +26,13 @@ export const addEntityToRecentlyViewed: RequestHandler = async (req, res, next) 
             );
         }
 
-        await addEntityToRecents(currentUserId, entityId, entityType)
-        return res.status(200).json({ message: `${entityType} has been added to user's recently viewed`});
+        const wasAdded = await addEntityToRecents(currentUserId, entityId, entityType)
+
+        if(wasAdded === 'added to recents') {
+            return res.status(200).json({ message: `${entityType} has been added to user's recently viewed`});
+        } else {
+            return res.status(200).json({ message: `${entityType} is already in user's recently viewed.`});
+        }
 
     } catch(e) {
         next(e)

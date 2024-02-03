@@ -66,15 +66,14 @@ const getQuickplayDocuments = async (userId) => {
             throw new CustomError_1.default("Query Error", "User Document was not found with the provided ObjectId", 500);
         }
         // One spot will always be liked songs in quickplay grid, so only 5 documents are needed
-        if (userDocument.recentlyViewed.length < 5) { // if less than 5 items in recentlyViewed populate it
+        if (userDocument.recentlyViewed.length < 5) { // if less than 5 items in recentlyViewed populate it (this will be for new users only)
             const nineRandomAlbums = await (0, exports.getRandomAlbums)();
             userDocument.recentlyViewed = userDocument.recentlyViewed.concat(nineRandomAlbums);
             await userDocument.save();
             return userDocument.recentlyViewed;
         }
         else {
-            const populated = await userDocument.populate('recentlyViewed');
-            console.log("POP? --> ", populated);
+            await userDocument.populate('recentlyViewed');
             return userDocument.recentlyViewed;
         }
     }
@@ -85,6 +84,10 @@ const getQuickplayDocuments = async (userId) => {
 exports.getQuickplayDocuments = getQuickplayDocuments;
 const addEntityToRecents = async (userId, entityId, entityType) => {
     try {
+        const userDocument = await (0, user_actions_1.getUserById)(userId);
+        if (!userDocument) {
+            throw new CustomError_1.default("Query Error", "User Document was not found with the provided ObjectId", 500);
+        }
         if (entityType === 'album') {
             const album = await Album_1.AlbumModel.findById(entityId);
             if (!album) {
@@ -106,7 +109,17 @@ const addEntityToRecents = async (userId, entityId, entityType) => {
         else {
             throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 500);
         }
-        await User_1.UserModel.findByIdAndUpdate(userId, { $push: { recentlyViewed: entityId } });
+        if (userDocument.recentlyViewed.includes(entityId)) {
+            // If entityId is already in the recentlyViewed array, no need to modify the array
+            return 'already in recents';
+        }
+        if (userDocument.recentlyViewed.length >= 10) {
+            // If the array has 10 or more elements, remove the last element
+            userDocument.recentlyViewed.pop();
+        }
+        userDocument.recentlyViewed.unshift(entityId); // Add the new entityId to the beginning of the array
+        await userDocument.save(); // Save the updated user document
+        return 'added to recents';
     }
     catch (e) {
         throw e;
