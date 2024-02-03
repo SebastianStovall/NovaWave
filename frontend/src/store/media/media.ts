@@ -1,8 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { MediaThunkRequestBody } from "./mediaTypes";
+import { MediaThunkRequestBody, Safeuser } from "./mediaTypes";
+import { RootState } from "../store";
 
 // Thunk to update media info
 export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async (mediaInfo: MediaThunkRequestBody, thunkAPI) => {
+  
+  if(mediaInfo.mediaType === 'playlist') { // if playlist, change mediaId to user likedSongsPlaylistId
+    const state = (thunkAPI.getState() as RootState)!
+    const user = (state.session.user as unknown as Safeuser)
+    mediaInfo.mediaId = user.likedSongsPlaylistId
+  }
+
   try {
     const response = await fetch("/api/media/update", {
       method: "PATCH",
@@ -12,7 +20,7 @@ export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async 
 
     if (response.ok) {
       const data = await response.json();
-      return data.media
+      return data
     } else {
       const error = await response.json();
       console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
@@ -28,12 +36,18 @@ export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async 
 // Create a slice for the session state
 const mediaSlice = createSlice({
   name: "media",
-  initialState: { current: {} },
+  initialState: { albumData: null, playlistData: null, artistData: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(updateCurrentMedia.fulfilled, (state, action) => {
-        state.current = action.payload;
+        if(action.payload.type === 'album') {
+          state.albumData = action.payload.media
+        } else if (action.payload.type === 'playlist') {
+          state.playlistData = action.payload.media
+        } else if (action.payload.type === 'artist') {
+          state.artistData = action.payload.media
+        }
       })
   },
 });

@@ -59,7 +59,7 @@ const login = async (req, res, next) => {
         }); // store session token as cookie
         res
             .status(200)
-            .json({ message: "Successfully Logged In User", user: { id: user._id, email: user.email, username: user.username } });
+            .json({ message: "Successfully Logged In User", user: { id: user._id, email: user.email, username: user.username, likedSongsId: user.likedSongsPlaylistId } });
     }
     catch (e) {
         next(e);
@@ -80,7 +80,7 @@ exports.logout = logout;
 const restoreUser = async (req, res, next) => {
     try {
         const user = (0, lodash_1.get)(req, "identity");
-        return res.status(200).json({ message: 'User Logged In', isLoggedIn: true, user: { id: user._id, email: user.email, username: user.username } });
+        return res.status(200).json({ message: 'User Logged In', isLoggedIn: true, user: { id: user._id, email: user.email, username: user.username, likedSongsPlaylistId: user.likedSongsPlaylistId } });
     }
     catch (e) {
         next(e);

@@ -90,7 +90,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username} });
+      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username, likedSongsId: user.likedSongsPlaylistId} });
   } catch (e: any) {
     next(e)
   }
@@ -114,10 +114,11 @@ export const restoreUser: RequestHandler = async (req, res, next) => {
       _id: string,
       email: string
       username: string
+      likedSongsPlaylistId: string
     }
 
     const user = get(req, "identity") as unknown as SafeUser
-    return res.status(200).json({message: 'User Logged In', isLoggedIn: true, user: {id: user._id, email: user.email, username: user.username }})
+    return res.status(200).json({message: 'User Logged In', isLoggedIn: true, user: {id: user._id, email: user.email, username: user.username, likedSongsPlaylistId: user.likedSongsPlaylistId }})
 
   } catch (e: any) {
     next(e)

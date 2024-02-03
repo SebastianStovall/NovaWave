@@ -12,16 +12,23 @@ import styles from './mediaView.module.css'
 export const MediaView: React.FC = () => {
     useMediaViewResize();
     const location = useLocation();
+    const mediaType = location.pathname.split('/')[1]
+    const mediaId = location.pathname.split('/')[2]
+
 
     const dispatch = useAppDispatch();
-    const currentMedia = useAppSelector((state) => state.media.current);
-    console.log("CURRENT MEDIA ---> ", currentMedia)
+    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
+    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
+    const user: any = useAppSelector((state) => state.session.user);
 
-    const { data } = usePalette('https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif');
+    const { data } = usePalette(mediaType === 'album' ? currentAlbumMedia?.image : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
 
     useEffect(() => {
-        const locationParams = location.pathname.split('/')
-        const mediaInfo = {mediaType: locationParams[1], mediaId: locationParams[2]}
+        let mediaInfo = {mediaType, mediaId}
+        if(mediaInfo.mediaType === 'collection') {
+            mediaInfo.mediaType = 'playlist'
+            mediaInfo.mediaId = user?.likedSongsPlaylistId
+        }
         dispatch(updateCurrentMedia(mediaInfo))
 
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
@@ -33,19 +40,19 @@ export const MediaView: React.FC = () => {
 
             <div className={styles.mediaContent}>
                 <div className={styles.topCover}>
-                    <img className={styles.coverImg} src='https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif' alt='media-cover' />
+                    <img className={styles.coverImg} src={mediaType === 'album' ? currentAlbumMedia?.image : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'} alt='media-cover' />
                 </div>
                 <div className={styles.topCoverInfo}>
-                    <div className={styles.type}>Album/Playlist (refactor)</div>
+                    <div className={styles.type}>{mediaType === 'album' ? 'Album' : 'Playlist'}</div>
                     <div className={styles.title}>
-                        YIN YANG TAPES: Summer Season (1989-1990)
+                    {mediaType === 'album' ? currentAlbumMedia?.title : 'Liked Songs'}
                     </div>
                     <div className={styles.stats}>
                         <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif' width='24px' height='24px' alt='artist/owner' />
-                        <span>Artist ·</span>
-                        <span>YEAR ·</span>
-                        <span># songs ,</span>
-                        <span>__ min __ sec </span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.yearReleased}` : ''}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia?.length : `${currentPlaylistMedia?.length}`}</span>
                     </div>
                 </div>
             </div>

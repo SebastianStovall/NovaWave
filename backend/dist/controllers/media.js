@@ -16,7 +16,7 @@ const updateCurrentMedia = async (req, res, next) => {
             throw new CustomError_1.default("Bad Request", `Media type ${mediaType} is invalid`, 400);
         }
         const mediaInfo = await (0, media_actions_1.getMediaInfo)(mediaId, mediaType);
-        return res.status(200).json({ message: `Successfully Retreived ${mediaType} info from backend database`, media: mediaInfo });
+        return res.status(200).json({ message: `Successfully Retreived ${mediaType} info from backend database`, media: mediaInfo, type: mediaType });
     }
     catch (e) {
         next(e);
