@@ -74,7 +74,28 @@ const getQuickplayDocuments = async (userId) => {
         else {
             await userDocument.populate('recentlyViewed');
         }
-        return userDocument.recentlyViewed.slice(0, 5);
+        //! Refactor start --------
+        const likedSongsPlaylistId = userDocument.likedSongsPlaylistId;
+        if (userDocument.recentlyViewed.includes(likedSongsPlaylistId)) {
+            // Find the index of likedSongsPlaylistId in the array
+            const index = userDocument.recentlyViewed.indexOf(likedSongsPlaylistId);
+            if (index !== 0) {
+                // Remove it from its current position
+                userDocument.recentlyViewed.splice(index, 1);
+                // Add it to the front of the array
+                const likedSongsInfo = (await userDocument.populate('likedSongsPlaylistId')).likedSongsPlaylistId;
+                const userQuickplayGrid = userDocument.recentlyViewed.slice(0, 5);
+                userQuickplayGrid.unshift(likedSongsInfo);
+                return userQuickplayGrid;
+            }
+        }
+        else {
+            const likedSongsInfo = (await userDocument.populate('likedSongsPlaylistId')).likedSongsPlaylistId;
+            const userQuickplayGrid = userDocument.recentlyViewed.slice(0, 5);
+            userQuickplayGrid.unshift(likedSongsInfo);
+            return userQuickplayGrid;
+        }
+        //! Refactor end --------
     }
     catch (e) {
         throw new CustomError_1.default("Query Error", "Error While Fetching User Document", 500);
