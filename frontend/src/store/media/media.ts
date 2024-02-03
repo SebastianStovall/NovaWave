@@ -6,6 +6,7 @@ export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async 
   try {
     const response = await fetch("/api/media/update", {
       method: "PATCH",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(mediaInfo),
     })
 

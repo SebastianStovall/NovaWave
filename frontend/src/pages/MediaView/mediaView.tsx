@@ -3,18 +3,30 @@ import { changeGradient, changeMediaInfo } from '../../store/header/header'
 import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
-import { useAppDispatch } from '../../hooks'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { updateCurrentMedia } from '../../store/media/media'
+import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
+
 
 export const MediaView: React.FC = () => {
     useMediaViewResize();
-    const { data } = usePalette('https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif');
+    const location = useLocation();
+
     const dispatch = useAppDispatch();
+    const currentMedia = useAppSelector((state) => state.media.current);
+    console.log("CURRENT MEDIA ---> ", currentMedia)
+
+    const { data } = usePalette('https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Sahara-Album-8.jfif');
 
     useEffect(() => {
+        const locationParams = location.pathname.split('/')
+        const mediaInfo = {mediaType: locationParams[1], mediaId: locationParams[2]}
+        dispatch(updateCurrentMedia(mediaInfo))
+
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
         dispatch(changeMediaInfo(`Yin Yang Tapes: Summer Season (1989-1990)`))
-    }, [dispatch, data.muted])
+    }, [dispatch, data.muted, location.pathname])
 
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
