@@ -6,6 +6,7 @@ import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylin
 
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { changeGradient, changeMediaInfo } from "../../store/header/header";
+import { getQuickplayGridThunk } from "../../store/dashboard/dashboard";
 
 import {ArtistDocument, AlbumDocument, PlaylistDocument} from '../../../../backend/src/db/models/modelTypes';
 import { useNavigate } from "react-router-dom";
@@ -16,14 +17,14 @@ export const Dashboard: React.FC = () => {
   const [albumData, setAlbumData] = useState<any>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const dispatch = useAppDispatch();
-  const quickplayPersitantState: (AlbumDocument | ArtistDocument | PlaylistDocument)[] = useAppSelector((state) => state.dashboard.quickplayGrid)
+  const userQuickplayGrid: (AlbumDocument | ArtistDocument | PlaylistDocument)[] = useAppSelector((state) => state.dashboard.quickplayGrid)
 
   const gradientOverlay: HTMLElement | null = document.querySelector(
     ".dashboard_gradientOverlayForTransition__AEA6r"
   ) as HTMLElement;
 
 
-  const hoveredItem = hoveredIndex !== null ? quickplayPersitantState[hoveredIndex] : null
+  const hoveredItem = hoveredIndex !== null ? userQuickplayGrid[hoveredIndex] : null
   const { data } = usePalette(
     /* { data, loading, error } */ /* //! Extracts Prominent Colors from an Image */
     hoveredIndex !== null && hoveredItem !== null ? ( 'image' in hoveredItem ? hoveredItem.image as string : 'aboutImage' in hoveredItem ? hoveredItem.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png' ) : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'
@@ -46,6 +47,7 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     dispatch(changeGradient('33, 17, 95')); // liked songs playlist purple
     dispatch(changeMediaInfo(''));
+    dispatch(getQuickplayGridThunk())
   }, [dispatch]);
 
   useEffect(() => {
@@ -70,7 +72,26 @@ export const Dashboard: React.FC = () => {
 
       <h1 className={styles.welcomeMessage}>Good evening</h1>
       <div className={styles.quickplayPlaylists}>
-        {quickplayPersitantState.map((item, index) => (
+
+        {/* <div
+            onMouseEnter={() =>
+              handleMouseEnter(0, setHoveredIndex, gradientOverlay)
+            }
+            onMouseLeave={() => handleMouseLeave(gradientOverlay)}
+            onClick={ () => navigate(`/collection/tracks`) }
+          >
+            <div className={styles.imageContainer}>
+              <img src={'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'} alt="media_image" />
+            </div>
+            <div>
+              <p>{'Liked Songs'}</p>
+              <div>
+                <span>&#9654;</span>
+              </div>
+            </div>
+        </div> */}
+
+        {userQuickplayGrid.map((item, index) => (
           <div
             key={index}
             onMouseEnter={() =>

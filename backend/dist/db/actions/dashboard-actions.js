@@ -70,12 +70,11 @@ const getQuickplayDocuments = async (userId) => {
             const nineRandomAlbums = await (0, exports.getRandomAlbums)();
             userDocument.recentlyViewed = userDocument.recentlyViewed.concat(nineRandomAlbums);
             await userDocument.save();
-            return userDocument.recentlyViewed;
         }
         else {
             await userDocument.populate('recentlyViewed');
-            return userDocument.recentlyViewed;
         }
+        return userDocument.recentlyViewed.slice(0, 5);
     }
     catch (e) {
         throw new CustomError_1.default("Query Error", "Error While Fetching User Document", 500);
@@ -109,8 +108,9 @@ const addEntityToRecents = async (userId, entityId, entityType) => {
         else {
             throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 500);
         }
-        if (userDocument.recentlyViewed.includes(entityId)) {
+        if (userDocument.recentlyViewed.includes(entityId) || entityId === userDocument.likedSongsPlaylistId) {
             // If entityId is already in the recentlyViewed array, no need to modify the array
+            // likedSongs playlist will always be in user recents
             return 'already in recents';
         }
         if (userDocument.recentlyViewed.length >= 10) {

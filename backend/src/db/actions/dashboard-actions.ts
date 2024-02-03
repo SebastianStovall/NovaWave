@@ -83,15 +83,13 @@ export const getQuickplayDocuments = async(userId: string) => {
         if(userDocument.recentlyViewed.length < 5) { // if less than 5 items in recentlyViewed populate it (this will be for new users only)
             const nineRandomAlbums = await getRandomAlbums()
             userDocument.recentlyViewed = userDocument.recentlyViewed.concat(nineRandomAlbums);
-
             await userDocument.save();
-            return userDocument.recentlyViewed
 
         } else {
             await userDocument.populate('recentlyViewed')
-            return userDocument.recentlyViewed
         }
 
+        return userDocument.recentlyViewed.slice(0, 5);
 
     } catch(e: any) {
         throw new CustomError(
@@ -151,8 +149,9 @@ export const addEntityToRecents = async(userId: string, entityId: string, entity
         }
 
 
-        if (userDocument.recentlyViewed.includes((entityId as unknown as ObjectId))) {
+        if (userDocument.recentlyViewed.includes((entityId as unknown as ObjectId)) || (entityId as unknown as ObjectId) === userDocument.likedSongsPlaylistId) {
             // If entityId is already in the recentlyViewed array, no need to modify the array
+            // likedSongs playlist will always be in user recents
             return 'already in recents'
         }
 

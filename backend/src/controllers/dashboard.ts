@@ -46,7 +46,7 @@ export const buildQuickplayGrid: RequestHandler = async (req, res, next) => {
 
         const gridItems = await getQuickplayDocuments(currentUserId)
 
-        res.status(200).json({message: 'Quickplay grid successfully created', data: gridItems})
+        res.status(200).json({message: 'Quickplay grid successfully created', quickplayGrid: gridItems})
 
     } catch (e) {
         next(e)

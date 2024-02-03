@@ -35,7 +35,7 @@ const buildQuickplayGrid = async (req, res, next) => {
     try {
         const currentUserId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
         const gridItems = await (0, dashboard_actions_1.getQuickplayDocuments)(currentUserId);
-        res.status(200).json({ message: 'Quickplay grid successfully created', data: gridItems });
+        res.status(200).json({ message: 'Quickplay grid successfully created', quickplayGrid: gridItems });
     }
     catch (e) {
         next(e);
