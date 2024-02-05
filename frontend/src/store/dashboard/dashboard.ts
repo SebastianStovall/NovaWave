@@ -23,11 +23,12 @@ export const getQuickplayGridThunk = createAsyncThunk('dashboard/getQuickplayGri
 // Create a slice for the session state
 const dashboardSlice = createSlice({
   name: "dashboard",
-  initialState: { quickplayGrid: [], recommendedForToday: [], freshFinds: [] },
+  initialState: { quickplayGrid: [], recommendedForToday: [], freshFinds: [], isLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getQuickplayGridThunk.fulfilled, (state, action) => {
+        state.isLoading = false
         state.quickplayGrid = action.payload;
       })
   },

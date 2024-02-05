@@ -12,18 +12,19 @@ import {ArtistDocument, AlbumDocument, PlaylistDocument} from '../../../../backe
 import { useNavigate } from "react-router-dom";
 
 export const Dashboard: React.FC = () => {
-  useDashboardResizeStylings();
   const navigate = useNavigate()
   const [albumData, setAlbumData] = useState<any>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const dispatch = useAppDispatch();
   const userQuickplayGrid: (AlbumDocument | ArtistDocument | PlaylistDocument)[] = useAppSelector((state) => state.dashboard.quickplayGrid)
+  const isLoading: boolean = useAppSelector((state) => state.dashboard.isLoading)
 
   const gradientOverlay: HTMLElement | null = document.querySelector(
     ".dashboard_gradientOverlayForTransition__AEA6r"
-  ) as HTMLElement;
+    ) as HTMLElement;
 
 
+    useDashboardResizeStylings([dispatch]);
   const hoveredItem = hoveredIndex !== null ? userQuickplayGrid[hoveredIndex] : null
   const { data } = usePalette(
     /* { data, loading, error } */ /* //! Extracts Prominent Colors from an Image */
@@ -56,6 +57,10 @@ export const Dashboard: React.FC = () => {
     }
     execute();
   }, []);
+
+  if(isLoading) {
+    return <p>...Loading</p>
+  }
 
   return (
     <div className={styles.dashboard}>

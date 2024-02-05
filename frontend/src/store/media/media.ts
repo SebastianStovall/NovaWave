@@ -4,7 +4,6 @@ import { RootState } from "../store";
 
 // Thunk to update media info
 export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async (mediaInfo: MediaThunkRequestBody, thunkAPI) => {
-  
   if(mediaInfo.mediaType === 'playlist') { // if playlist, change mediaId to user likedSongsPlaylistId
     const state = (thunkAPI.getState() as RootState)!
     const user = (state.session.user as unknown as Safeuser)
@@ -36,11 +35,12 @@ export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async 
 // Create a slice for the session state
 const mediaSlice = createSlice({
   name: "media",
-  initialState: { albumData: null, playlistData: null, artistData: null },
+  initialState: { albumData: null, playlistData: null, artistData: null, isLoading: false },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(updateCurrentMedia.fulfilled, (state, action) => {
+        state.isLoading = false
         if(action.payload.type === 'album') {
           state.albumData = action.payload.media
         } else if (action.payload.type === 'playlist') {

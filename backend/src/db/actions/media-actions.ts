@@ -36,7 +36,7 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
                     500
                 );
             }
-            return playlist
+            return await (playlist as Document).populate({path: 'tracks'})
         } else {
             throw new CustomError(
                 "Bad Request",
@@ -44,7 +44,6 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
                 500
             );
         }
-
     } catch(e: any) {
         throw e
     }

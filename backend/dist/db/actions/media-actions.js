@@ -29,7 +29,7 @@ const getMediaInfo = async (entityId, entityType) => {
             if (!playlist) {
                 throw new CustomError_1.default("Query Error", `${entityType} document could not be found`, 500);
             }
-            return playlist;
+            return await playlist.populate({ path: 'tracks' });
         }
         else {
             throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 500);
