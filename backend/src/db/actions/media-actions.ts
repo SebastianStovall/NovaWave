@@ -3,6 +3,7 @@ import { ArtistDocument, AlbumDocument, PlaylistDocument } from "../models/model
 import { ArtistModel } from "../models/Artist";
 import { AlbumModel } from "../models/Album";
 import { PlaylistModel } from "../models/Playlist";
+import { Document } from "mongodb";
 
 export const getMediaInfo = async(entityId: string, entityType: string) => {
     try {
@@ -15,7 +16,7 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
                     500
                 );
             }
-            return album
+            return await (album as Document).populate({path: 'tracks'})
         } else if (entityType === 'artist') {
             const artist: ArtistDocument | null = await ArtistModel.findById(entityId);
             if(!artist) {

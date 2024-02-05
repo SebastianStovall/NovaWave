@@ -15,7 +15,7 @@ const getMediaInfo = async (entityId, entityType) => {
             if (!album) {
                 throw new CustomError_1.default("Query Error", `${entityType} document could not be found`, 500);
             }
-            return album;
+            return await album.populate({ path: 'tracks' });
         }
         else if (entityType === 'artist') {
             const artist = await Artist_1.ArtistModel.findById(entityId);
