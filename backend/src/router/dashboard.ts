@@ -4,6 +4,6 @@ import { buildQuickplayGrid, addEntityToRecentlyViewed, getDashboardGrids } from
 
 export default (router: Router) => { // include all req methods here and import their respective controller func, wire this router to index.ts
     router.get('/dashboard/quickplay', isAuthenticated, buildQuickplayGrid)
-    router.get('/dashboard/addToRecents', isAuthenticated, addEntityToRecentlyViewed)
+    router.post('/dashboard/addToRecents', isAuthenticated, addEntityToRecentlyViewed)
     router.get('/dashboard/gridInfo', isAuthenticated, getDashboardGrids)
 }

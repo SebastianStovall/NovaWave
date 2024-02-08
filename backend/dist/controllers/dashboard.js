@@ -10,19 +10,19 @@ const dashboard_actions_1 = require("../db/actions/dashboard-actions");
 const addEntityToRecentlyViewed = async (req, res, next) => {
     try {
         const currentUserId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
-        const { entityId, entityType } = req.body;
-        if (!entityId || !entityType) {
+        const { mediaId, mediaType } = req.body;
+        if (!mediaId || !mediaType) {
             throw new CustomError_1.default("Bad Request", "Entity information is missing in the request body", 400);
         }
-        if (entityType !== 'artist' && entityType !== 'album' && entityType !== 'playlist') {
-            throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 400);
+        if (mediaType !== 'artist' && mediaType !== 'album' && mediaType !== 'playlist') {
+            throw new CustomError_1.default("Bad Request", `Entity type ${mediaType} is invalid`, 400);
         }
-        const wasAdded = await (0, dashboard_actions_1.addEntityToRecents)(currentUserId, entityId, entityType);
+        const wasAdded = await (0, dashboard_actions_1.addEntityToRecents)(currentUserId, mediaId, mediaType);
         if (wasAdded === 'added to recents') {
-            return res.status(200).json({ message: `${entityType} has been added to user's recently viewed` });
+            return res.status(200).json({ message: `${mediaType} has been added to user's recently viewed` });
         }
         else {
-            return res.status(200).json({ message: `${entityType} is already in user's recently viewed.` });
+            return res.status(200).json({ message: `${mediaType} is already in user's recently viewed.` });
         }
     }
     catch (e) {

@@ -134,7 +134,7 @@ const addEntityToRecents = async (userId, entityId, entityType) => {
             // likedSongs playlist will always be in user recents
             return 'already in recents';
         }
-        if (userDocument.recentlyViewed.length >= 10) {
+        if (userDocument.recentlyViewed.length >= 9) {
             // If the array has 10 or more elements, remove the last element
             userDocument.recentlyViewed.pop();
         }

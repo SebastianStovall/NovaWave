@@ -7,9 +7,9 @@ import { getQuickplayDocuments, addEntityToRecents, getRecommended, getPopularAr
 export const addEntityToRecentlyViewed: RequestHandler = async (req, res, next) => {
     try {
         const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
-        const { entityId, entityType } = req.body;
+        const { mediaId, mediaType } = req.body;
 
-        if(!entityId || !entityType) {
+        if(!mediaId || !mediaType) {
             throw new CustomError(
                 "Bad Request",
                 "Entity information is missing in the request body",
@@ -17,20 +17,20 @@ export const addEntityToRecentlyViewed: RequestHandler = async (req, res, next) 
             );
         }
 
-        if(entityType !== 'artist' && entityType !== 'album' && entityType !== 'playlist') {
+        if(mediaType !== 'artist' && mediaType !== 'album' && mediaType !== 'playlist') {
             throw new CustomError(
                 "Bad Request",
-                `Entity type ${entityType} is invalid`,
+                `Entity type ${mediaType} is invalid`,
                 400
             );
         }
 
-        const wasAdded = await addEntityToRecents(currentUserId, entityId, entityType)
+        const wasAdded = await addEntityToRecents(currentUserId, mediaId, mediaType)
 
         if(wasAdded === 'added to recents') {
-            return res.status(200).json({ message: `${entityType} has been added to user's recently viewed`});
+            return res.status(200).json({ message: `${mediaType} has been added to user's recently viewed`});
         } else {
-            return res.status(200).json({ message: `${entityType} is already in user's recently viewed.`});
+            return res.status(200).json({ message: `${mediaType} is already in user's recently viewed.`});
         }
 
     } catch(e) {

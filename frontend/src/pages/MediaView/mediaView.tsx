@@ -4,7 +4,7 @@ import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { updateCurrentMedia } from '../../store/media/media'
+import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/media'
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
 
@@ -30,11 +30,13 @@ export const MediaView: React.FC = () => {
             mediaInfo.mediaId = user?.likedSongsPlaylistId
         }
         dispatch(updateCurrentMedia(mediaInfo))
+        dispatch(addMediaToRecentlyViewed(mediaInfo))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
         dispatch(changeMediaInfo(currentAlbumMedia !== null ? currentAlbumMedia.title : (currentPlaylistMedia && currentPlaylistMedia.title) ))
-    }, [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId, currentAlbumMedia, currentPlaylistMedia])
+        // eslint-disable-next-line
+    }, [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId])
 
-    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId, currentAlbumMedia, currentAlbumMedia, currentPlaylistMedia]
+    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
     useMediaViewResize(dependencies);
 
     if(isLoading) {
