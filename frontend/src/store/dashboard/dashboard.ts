@@ -42,7 +42,7 @@ export const getGridInfo = createAsyncThunk('dashboard/gridInfo', async (_, thun
 // Create a slice for the session state
 const dashboardSlice = createSlice({
   name: "dashboard",
-  initialState: { quickplayGrid: [], recommendedForToday: [], popularAlbums: [], popularArtists: [], recentlyPlayed: [], isLoading: true },
+  initialState: { quickplayGrid: [], recommendedForToday: [], popularAlbums: [], popularArtists: [], recentlyViewed: [], isLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -54,6 +54,7 @@ const dashboardSlice = createSlice({
         state.isLoading = false
         state.recommendedForToday = action.payload.recommendedAlbums;
         state.popularArtists = action.payload.popularArtists;
+        state.recentlyViewed = action.payload.recentlyViewed;
       })
   },
 });

@@ -43,9 +43,11 @@ const buildQuickplayGrid = async (req, res, next) => {
 exports.buildQuickplayGrid = buildQuickplayGrid;
 const getDashboardGrids = async (req, res, next) => {
     try {
+        const currentUserId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
         const recommendedAlbums = await (0, dashboard_actions_1.getRecommended)();
         const popularArtists = await (0, dashboard_actions_1.getPopularArtists)();
-        res.status(200).json({ message: 'Grid Info Retreived Successfully', recommendedAlbums, popularArtists });
+        const recentlyViewed = await (0, dashboard_actions_1.getRecentlyViewed)(currentUserId);
+        res.status(200).json({ message: 'Grid Info Retreived Successfully', recommendedAlbums, popularArtists, recentlyViewed });
     }
     catch (e) {
         next(e);

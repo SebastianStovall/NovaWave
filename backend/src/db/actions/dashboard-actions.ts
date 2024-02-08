@@ -214,3 +214,21 @@ export const getPopularArtists = async() => {
         throw e
     }
 }
+
+
+export const getRecentlyViewed = async(userId: string) => {
+    try {
+        const userDocument = await getUserById(userId)
+        if(!userDocument) {
+            throw new CustomError(
+                "Query Error",
+                "User Document was not found with the provided ObjectId",
+                500
+            );
+        }
+        const populatedUser = await userDocument.populate('recentlyViewed')
+        return populatedUser.recentlyViewed
+    } catch(e) {
+        throw e
+    }
+}

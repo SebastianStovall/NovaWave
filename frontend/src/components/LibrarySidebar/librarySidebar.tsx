@@ -4,6 +4,7 @@ import { useSidebarResize } from "../../hooks/useSidebarResize";
 import { convertTimestampToFormattedDate } from "../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getUserLibraryThunk } from "../../store/library/library";
+import { Link } from 'react-router-dom';
 
 export const LibrarySidebar: React.FC = () => {
     const { sidebarWidth, handleMouseDown } = useSidebarResize("left");
@@ -32,10 +33,10 @@ export const LibrarySidebar: React.FC = () => {
                     <div className={styles.topNav}>
                         <ul>
                             <li>
-                                <a href="/">
+                                <Link to="/">
                                     <span className="fa fa-home"></span>
                                     {!isMobileView && <span>Home</span>}
-                                </a>
+                                </Link>
                             </li>
 
                             <li>

@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
-import { getQuickplayDocuments, addEntityToRecents, getRecommended, getPopularArtists } from "../db/actions/dashboard-actions";
+import { getQuickplayDocuments, addEntityToRecents, getRecommended, getPopularArtists, getRecentlyViewed } from "../db/actions/dashboard-actions";
 
 
 export const addEntityToRecentlyViewed: RequestHandler = async (req, res, next) => {
@@ -55,10 +55,13 @@ export const buildQuickplayGrid: RequestHandler = async (req, res, next) => {
 
 export const getDashboardGrids: RequestHandler = async(req, res, next) => {
     try {
+        const currentUserId = get(req, "identity._id") as unknown as string; // key into identify and grab ._id field
+
         const recommendedAlbums = await getRecommended()
         const popularArtists = await getPopularArtists()
+        const recentlyViewed = await getRecentlyViewed(currentUserId)
 
-        res.status(200).json({message: 'Grid Info Retreived Successfully', recommendedAlbums, popularArtists})
+        res.status(200).json({message: 'Grid Info Retreived Successfully', recommendedAlbums, popularArtists, recentlyViewed})
     } catch (e) {
         next(e)
     }

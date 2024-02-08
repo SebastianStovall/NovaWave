@@ -5,5 +5,5 @@ const dashboard_1 = require("../controllers/dashboard");
 exports.default = (router) => {
     router.get('/dashboard/quickplay', middleware_1.isAuthenticated, dashboard_1.buildQuickplayGrid);
     router.get('/dashboard/addToRecents', middleware_1.isAuthenticated, dashboard_1.addEntityToRecentlyViewed);
-    router.get('/dashboard/gridInfo', dashboard_1.getDashboardGrids);
+    router.get('/dashboard/gridInfo', middleware_1.isAuthenticated, dashboard_1.getDashboardGrids);
 };

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPopularArtists = exports.getRecommended = exports.addEntityToRecents = exports.getQuickplayDocuments = exports.getTwoRandomArtists = exports.getRandomAlbums = exports.getUserLikedSongsPlaylist = void 0;
+exports.getRecentlyViewed = exports.getPopularArtists = exports.getRecommended = exports.addEntityToRecents = exports.getQuickplayDocuments = exports.getTwoRandomArtists = exports.getRandomAlbums = exports.getUserLikedSongsPlaylist = void 0;
 const User_1 = require("../models/User");
 const Album_1 = require("../models/Album");
 const Artist_1 = require("../models/Artist");
@@ -169,3 +169,17 @@ const getPopularArtists = async () => {
     }
 };
 exports.getPopularArtists = getPopularArtists;
+const getRecentlyViewed = async (userId) => {
+    try {
+        const userDocument = await (0, user_actions_1.getUserById)(userId);
+        if (!userDocument) {
+            throw new CustomError_1.default("Query Error", "User Document was not found with the provided ObjectId", 500);
+        }
+        const populatedUser = await userDocument.populate('recentlyViewed');
+        return populatedUser.recentlyViewed;
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.getRecentlyViewed = getRecentlyViewed;

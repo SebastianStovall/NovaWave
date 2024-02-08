@@ -19,6 +19,7 @@ export const Dashboard: React.FC = () => {
   const userQuickplayGrid: (AlbumDocument | ArtistDocument | PlaylistDocument)[] = useAppSelector((state) => state.dashboard.quickplayGrid)
   const recommendedAlbums: AlbumDocument[] = useAppSelector((state) => state.dashboard.recommendedForToday)
   const popularArtists = useAppSelector((state) => state.dashboard.popularArtists)
+  const recentlyViewed = useAppSelector((state) => state.dashboard.recentlyViewed)
   const isLoading: boolean = useAppSelector((state) => state.dashboard.isLoading)
 
   const gradientOverlay: HTMLElement | null = document.querySelector(
@@ -107,6 +108,25 @@ export const Dashboard: React.FC = () => {
         ))}
       </div>
 
+      {/* Recently Viewed */}
+      <h2 className={styles.recommended}>Recently Viewed</h2>
+      <div className={styles.mainGridSection}>
+        {recentlyViewed.map((album: any, index) => (
+          <div key={index} onClick={() => navigate(`/album/${album._id}`)}>
+          <img
+            src={album.image as string}
+            alt="playlist_album_photo"
+          />
+          <div className={styles.playButton}>
+            <span className="fa fa-play" id={styles.playFa}></span>
+          </div>
+          <h4>{album.artistName}</h4>
+          <p>{album.title}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Popular Artists */}
       <h2 className={styles.recommended}>Popular Artists</h2>
       <div className={styles.mainGridSection}>
         {popularArtists.map((artist: any, index) => (
