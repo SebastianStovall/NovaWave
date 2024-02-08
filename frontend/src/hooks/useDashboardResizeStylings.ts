@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useDashboardResizeStylings(dependencies: any[]) {
+export function useDashboardResizeStylings(dependencies: any) {
     useEffect(() => {
         const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement | null;
         const quickPlayGrid = document.querySelector('.dashboard_quickplayPlaylists__arYfj') as HTMLElement | null;
@@ -34,5 +34,5 @@ export function useDashboardResizeStylings(dependencies: any[]) {
             }
         };
 
-    }, [...dependencies])
+    }, [dependencies])
 }

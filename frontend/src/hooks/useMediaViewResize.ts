@@ -122,7 +122,7 @@ useEffect(() => {
         resizeObserver.unobserve(mainContent);
         mainContent.removeEventListener('scroll', handleStickyStyling );
     };
-
-}, [...dependencies])
+// eslint-disable-next-line
+}, [...dependencies]) //! NOTE -- disabled linter warnings on this (doesnt want spread in dependencies)
 
 }

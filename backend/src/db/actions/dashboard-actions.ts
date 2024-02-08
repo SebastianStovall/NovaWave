@@ -193,3 +193,24 @@ export const addEntityToRecents = async(userId: string, entityId: string, entity
         throw e
     }
 }
+
+
+export const getRecommended = async() => {
+    try {
+        const recommendedAlbums = await AlbumModel.find({}).limit(9) // grab all albums
+        return recommendedAlbums
+    } catch(e) {
+        throw e
+    }
+}
+
+export const getPopularArtists = async() => {
+    try {
+        const popularArtists = await ArtistModel.find()
+            .sort({ monthlyListeners: -1 }) // Sort by monthlyListeners in descending order
+            .limit(9); // Limit the results to 9 documents
+        return popularArtists
+    } catch(e) {
+        throw e
+    }
+}

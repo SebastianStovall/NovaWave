@@ -3,11 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildQuickplayGrid = exports.addEntityToRecentlyViewed = void 0;
+exports.getDashboardGrids = exports.buildQuickplayGrid = exports.addEntityToRecentlyViewed = void 0;
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const lodash_1 = require("lodash");
 const dashboard_actions_1 = require("../db/actions/dashboard-actions");
-const dashboard_actions_2 = require("../db/actions/dashboard-actions");
 const addEntityToRecentlyViewed = async (req, res, next) => {
     try {
         const currentUserId = (0, lodash_1.get)(req, "identity._id"); // key into identify and grab ._id field
@@ -18,7 +17,7 @@ const addEntityToRecentlyViewed = async (req, res, next) => {
         if (entityType !== 'artist' && entityType !== 'album' && entityType !== 'playlist') {
             throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 400);
         }
-        const wasAdded = await (0, dashboard_actions_2.addEntityToRecents)(currentUserId, entityId, entityType);
+        const wasAdded = await (0, dashboard_actions_1.addEntityToRecents)(currentUserId, entityId, entityType);
         if (wasAdded === 'added to recents') {
             return res.status(200).json({ message: `${entityType} has been added to user's recently viewed` });
         }
@@ -42,3 +41,14 @@ const buildQuickplayGrid = async (req, res, next) => {
     }
 };
 exports.buildQuickplayGrid = buildQuickplayGrid;
+const getDashboardGrids = async (req, res, next) => {
+    try {
+        const recommendedAlbums = await (0, dashboard_actions_1.getRecommended)();
+        const popularArtists = await (0, dashboard_actions_1.getPopularArtists)();
+        res.status(200).json({ message: 'Grid Info Retreived Successfully', recommendedAlbums, popularArtists });
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.getDashboardGrids = getDashboardGrids;

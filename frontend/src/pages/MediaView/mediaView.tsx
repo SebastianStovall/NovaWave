@@ -31,10 +31,10 @@ export const MediaView: React.FC = () => {
         }
         dispatch(updateCurrentMedia(mediaInfo))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
-        dispatch(changeMediaInfo(`Yin Yang Tapes: Summer Season (1989-1990)`))
-    }, [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId])
+        dispatch(changeMediaInfo(currentAlbumMedia !== null ? currentAlbumMedia.title : (currentPlaylistMedia && currentPlaylistMedia.title) ))
+    }, [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId, currentAlbumMedia, currentPlaylistMedia])
 
-    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
+    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId, currentAlbumMedia, currentAlbumMedia, currentPlaylistMedia]
     useMediaViewResize(dependencies);
 
     if(isLoading) {

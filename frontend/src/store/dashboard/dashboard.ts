@@ -19,17 +19,41 @@ export const getQuickplayGridThunk = createAsyncThunk('dashboard/getQuickplayGri
   }
 });
 
+// Thunk to get all grid info
+export const getGridInfo = createAsyncThunk('dashboard/gridInfo', async (_, thunkAPI) => {
+  try {
+    const response = await fetch("/api/dashboard/gridInfo");
+
+    if (response.ok) {
+      const data = await response.json();
+      return data
+    } else {
+      const error = await response.json();
+      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      return thunkAPI.rejectWithValue(error);
+    }
+  } catch (e: any) {
+    console.error("There was an issue performing fetch to /api/dashboard/gridInfo")
+    return thunkAPI.rejectWithValue(e.message)
+  }
+});
+
 
 // Create a slice for the session state
 const dashboardSlice = createSlice({
   name: "dashboard",
-  initialState: { quickplayGrid: [], recommendedForToday: [], freshFinds: [], isLoading: true },
+  initialState: { quickplayGrid: [], recommendedForToday: [], popularAlbums: [], popularArtists: [], recentlyPlayed: [], isLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getQuickplayGridThunk.fulfilled, (state, action) => {
         state.isLoading = false
         state.quickplayGrid = action.payload;
+      })
+      .addCase(getGridInfo.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.recommendedForToday = action.payload.recommendedAlbums;
+        state.popularArtists = action.payload.popularArtists;
       })
   },
 });

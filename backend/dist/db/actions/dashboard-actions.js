@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addEntityToRecents = exports.getQuickplayDocuments = exports.getTwoRandomArtists = exports.getRandomAlbums = exports.getUserLikedSongsPlaylist = void 0;
+exports.getPopularArtists = exports.getRecommended = exports.addEntityToRecents = exports.getQuickplayDocuments = exports.getTwoRandomArtists = exports.getRandomAlbums = exports.getUserLikedSongsPlaylist = void 0;
 const User_1 = require("../models/User");
 const Album_1 = require("../models/Album");
 const Artist_1 = require("../models/Artist");
@@ -147,3 +147,25 @@ const addEntityToRecents = async (userId, entityId, entityType) => {
     }
 };
 exports.addEntityToRecents = addEntityToRecents;
+const getRecommended = async () => {
+    try {
+        const recommendedAlbums = await Album_1.AlbumModel.find({}).limit(9); // grab all albums
+        return recommendedAlbums;
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.getRecommended = getRecommended;
+const getPopularArtists = async () => {
+    try {
+        const popularArtists = await Artist_1.ArtistModel.find()
+            .sort({ monthlyListeners: -1 }) // Sort by monthlyListeners in descending order
+            .limit(9); // Limit the results to 9 documents
+        return popularArtists;
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.getPopularArtists = getPopularArtists;

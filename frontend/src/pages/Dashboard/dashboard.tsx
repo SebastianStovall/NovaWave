@@ -6,17 +6,18 @@ import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylin
 
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { changeGradient, changeMediaInfo } from "../../store/header/header";
-import { getQuickplayGridThunk } from "../../store/dashboard/dashboard";
+import { getQuickplayGridThunk, getGridInfo } from "../../store/dashboard/dashboard";
 
 import {ArtistDocument, AlbumDocument, PlaylistDocument} from '../../../../backend/src/db/models/modelTypes';
 import { useNavigate } from "react-router-dom";
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate()
-  const [albumData, setAlbumData] = useState<any>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   const dispatch = useAppDispatch();
   const userQuickplayGrid: (AlbumDocument | ArtistDocument | PlaylistDocument)[] = useAppSelector((state) => state.dashboard.quickplayGrid)
+  const recommendedAlbums: AlbumDocument[] = useAppSelector((state) => state.dashboard.recommendedForToday)
   const isLoading: boolean = useAppSelector((state) => state.dashboard.isLoading)
 
   const gradientOverlay: HTMLElement | null = document.querySelector(
@@ -24,39 +25,19 @@ export const Dashboard: React.FC = () => {
     ) as HTMLElement;
 
 
-    useDashboardResizeStylings([dispatch]);
+  useDashboardResizeStylings(dispatch);
   const hoveredItem = hoveredIndex !== null ? userQuickplayGrid[hoveredIndex] : null
   const { data } = usePalette(
     /* { data, loading, error } */ /* //! Extracts Prominent Colors from an Image */
     hoveredIndex !== null && hoveredItem !== null ? ( 'image' in hoveredItem ? hoveredItem.image as string : 'aboutImage' in hoveredItem ? hoveredItem.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png' ) : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'
   );
 
-  const grabRecommendedPlaylists = async () => {
-    try {
-      const response = await fetch("/api/tracks/albums");
-      if (response.ok) {
-        const albums = await response.json();
-        setAlbumData(albums);
-      } else {
-        console.error("Failed to fetch data:", response.status);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   useEffect(() => {
     dispatch(changeGradient('33, 17, 95')); // liked songs playlist purple
     dispatch(changeMediaInfo(''));
-    dispatch(getQuickplayGridThunk())
+    dispatch(getQuickplayGridThunk());
+    dispatch(getGridInfo())
   }, [dispatch]);
-
-  useEffect(() => {
-    async function execute() {
-      await grabRecommendedPlaylists();
-    }
-    execute();
-  }, []);
 
   if(isLoading) {
     return <p>...Loading</p>
@@ -107,21 +88,23 @@ export const Dashboard: React.FC = () => {
         ))}
       </div>
 
+      {/* RECOMMENDED FOR TODAY */}
       <h2 className={styles.recommended}>Recommended For Today</h2>
       <div className={styles.mainGridSection}>
-        {Array.from({ length: 9 }, (_, index) => (
+        {recommendedAlbums.map((album, index) => (
           <div key={index}>
             <img
-              src={albumData && albumData[index].image}
+              src={album.image as string}
               alt="playlist_album_photo"
             />
             <div className={styles.playButton}>
               <span className="fa fa-play" id={styles.playFa}></span>
             </div>
-            <h4>{albumData && albumData[index].artistName}</h4>
-            <p>{albumData && albumData[index].title}</p>
+            <h4>{album.artistName}</h4>
+            <p>{album.title}</p>
           </div>
         ))}
+
       </div>
 
       {/* <audio controls>
