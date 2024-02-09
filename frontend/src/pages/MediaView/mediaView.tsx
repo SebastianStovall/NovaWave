@@ -20,8 +20,7 @@ export const MediaView: React.FC = () => {
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
     const isLoading: boolean = useAppSelector((state) => state.media.isLoading)
     const user: any = useAppSelector((state) => state.session.user);
-
-    const { data } = usePalette(mediaType === 'album' ? currentAlbumMedia?.image : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
+    const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -29,12 +28,14 @@ export const MediaView: React.FC = () => {
             mediaInfo.mediaType = 'playlist'
             mediaInfo.mediaId = user?.likedSongsPlaylistId
         }
-        dispatch(updateCurrentMedia(mediaInfo))
         dispatch(addMediaToRecentlyViewed(mediaInfo))
+        dispatch(updateCurrentMedia(mediaInfo))
+    }, [dispatch, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId])
+
+    useEffect(() => {
+        dispatch(changeMediaInfo(mediaType === 'album' ? currentAlbumMedia?.title : currentPlaylistMedia?.title ))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
-        dispatch(changeMediaInfo(currentAlbumMedia !== null ? currentAlbumMedia.title : (currentPlaylistMedia && currentPlaylistMedia.title) ))
-        // eslint-disable-next-line
-    }, [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId])
+    }, [dispatch, currentPlaylistMedia, currentAlbumMedia, data.muted, mediaType])
 
     const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
     useMediaViewResize(dependencies);
@@ -57,10 +58,10 @@ export const MediaView: React.FC = () => {
                     </div>
                     <div className={styles.stats}>
                         <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif' width='24px' height='24px' alt='artist/owner' />
-                        <span>{mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}</span>
-                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.yearReleased}` : ''}</span>
-                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
-                        <span>{mediaType === 'album' ? currentAlbumMedia?.length : `${currentPlaylistMedia?.length}`}</span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia.artistName : user?.username}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia.yearReleased}` : ''}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia.length : `${currentPlaylistMedia?.length}`}</span>
                     </div>
                 </div>
             </div>
@@ -96,7 +97,7 @@ export const MediaView: React.FC = () => {
                     </div>
 
                     {/* If viewing an album */}
-                    {mediaType === 'album' ? ( currentAlbumMedia?.tracks.map((track: any, index: number) => (
+                    {mediaType === 'album' ? ( currentAlbumMedia.tracks.map((track: any, index: number) => (
                         <div className={styles.gridItem} key={track._id}>
                             <div>{index + 1}</div>
                             <div className={styles.song}>
@@ -116,7 +117,7 @@ export const MediaView: React.FC = () => {
                     }
 
                     {/* If viewing a playlist */}
-                    {mediaType === 'playlist' ? ( currentPlaylistMedia?.tracks.map((track: any, index: number) => (
+                    {mediaType === 'playlist' ? ( currentPlaylistMedia.tracks.map((track: any, index: number) => (
                         <div className={styles.gridItem} key={track._id}>
                             <div>{index + 1}</div>
                             <div className={styles.song}>

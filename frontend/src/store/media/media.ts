@@ -59,12 +59,11 @@ export const addMediaToRecentlyViewed = createAsyncThunk('media/addToRecentlyVie
 // Create a slice for the session state
 const mediaSlice = createSlice({
   name: "media",
-  initialState: { albumData: null, playlistData: null, artistData: null, isLoading: false },
+  initialState: { albumData: null, playlistData: null, artistData: null, isLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(updateCurrentMedia.fulfilled, (state, action) => {
-        state.isLoading = false
         if(action.payload.type === 'album') {
           state.albumData = action.payload.media
         } else if (action.payload.type === 'playlist') {
@@ -72,6 +71,7 @@ const mediaSlice = createSlice({
         } else if (action.payload.type === 'artist') {
           state.artistData = action.payload.media
         }
+        state.isLoading = false
       })
       .addCase(addMediaToRecentlyViewed.fulfilled, (state, action) => {
         // no state change for this thunk

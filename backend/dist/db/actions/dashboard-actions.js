@@ -129,9 +129,19 @@ const addEntityToRecents = async (userId, entityId, entityType) => {
         else {
             throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 500);
         }
-        if (userDocument.recentlyViewed.includes(entityId) || entityId === userDocument.likedSongsPlaylistId) {
-            // If entityId is already in the recentlyViewed array, no need to modify the array
+        if (entityId === userDocument.likedSongsPlaylistId) {
             // likedSongs playlist will always be in user recents
+            return 'already in recents';
+        }
+        if (userDocument.recentlyViewed.includes(entityId)) {
+            // If entityId is already in the recentlyViewed array, remove it and shift up its position
+            const index = userDocument.recentlyViewed.indexOf(entityId);
+            if (index !== 0) {
+                // Remove it from its current position
+                userDocument.recentlyViewed.splice(index, 1);
+                userDocument.recentlyViewed.unshift(entityId);
+                await userDocument.save();
+            }
             return 'already in recents';
         }
         if (userDocument.recentlyViewed.length >= 9) {

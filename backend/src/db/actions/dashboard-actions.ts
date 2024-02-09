@@ -173,10 +173,21 @@ export const addEntityToRecents = async(userId: string, entityId: string, entity
             );
         }
 
-
-        if (userDocument.recentlyViewed.includes((entityId as unknown as ObjectId)) || (entityId as unknown as ObjectId) === userDocument.likedSongsPlaylistId) {
-            // If entityId is already in the recentlyViewed array, no need to modify the array
+        if((entityId as unknown as ObjectId) === userDocument.likedSongsPlaylistId) {
             // likedSongs playlist will always be in user recents
+            return 'already in recents'
+        }
+
+        if (userDocument.recentlyViewed.includes((entityId as unknown as ObjectId))) {
+            // If entityId is already in the recentlyViewed array, remove it and shift up its position
+
+            const index = userDocument.recentlyViewed.indexOf((entityId as unknown as ObjectId));
+            if(index !== 0) {
+                // Remove it from its current position
+                userDocument.recentlyViewed.splice(index, 1);
+                userDocument.recentlyViewed.unshift((entityId as unknown as ObjectId))
+                await userDocument.save()
+            }
             return 'already in recents'
         }
 
