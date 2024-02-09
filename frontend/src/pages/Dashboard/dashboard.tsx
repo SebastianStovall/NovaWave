@@ -20,7 +20,8 @@ export const Dashboard: React.FC = () => {
   const recommendedAlbums: AlbumDocument[] = useAppSelector((state) => state.dashboard.recommendedForToday)
   const popularArtists = useAppSelector((state) => state.dashboard.popularArtists)
   const recentlyViewed = useAppSelector((state) => state.dashboard.recentlyViewed)
-  const isLoading: boolean = useAppSelector((state) => state.dashboard.isLoading)
+  const quickplayLoading: boolean = useAppSelector((state) => state.dashboard.quickplayLoading)
+  const gridsLoading: boolean = useAppSelector((state) => state.dashboard.gridsLoading)
 
   const gradientOverlay: HTMLElement | null = document.querySelector(
     ".dashboard_gradientOverlayForTransition__AEA6r"
@@ -41,7 +42,7 @@ export const Dashboard: React.FC = () => {
     dispatch(getGridInfo())
   }, [dispatch]);
 
-  if(isLoading) {
+  if(quickplayLoading || gridsLoading ) {
     return <p>...Loading</p>
   }
 

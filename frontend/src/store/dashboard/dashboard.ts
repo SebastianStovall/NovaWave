@@ -42,16 +42,16 @@ export const getGridInfo = createAsyncThunk('dashboard/gridInfo', async (_, thun
 // Create a slice for the session state
 const dashboardSlice = createSlice({
   name: "dashboard",
-  initialState: { quickplayGrid: [], recommendedForToday: [], popularAlbums: [], popularArtists: [], recentlyViewed: [], isLoading: true },
+  initialState: { quickplayGrid: [], recommendedForToday: [], popularAlbums: [], popularArtists: [], recentlyViewed: [], quickplayLoading: true, gridsLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getQuickplayGridThunk.fulfilled, (state, action) => {
-        state.isLoading = false
+        state.quickplayLoading = false
         state.quickplayGrid = action.payload;
       })
       .addCase(getGridInfo.fulfilled, (state, action) => {
-        state.isLoading = false
+        state.gridsLoading = false
         state.recommendedForToday = action.payload.recommendedAlbums;
         state.popularArtists = action.payload.popularArtists;
         state.recentlyViewed = action.payload.recentlyViewed;

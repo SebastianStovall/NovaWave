@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { changeGradient, changeMediaInfo } from '../../store/header/header'
 import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
@@ -7,12 +7,16 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/media'
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
+import { toggleSidebar } from '../../store/sidebar/sidebar'
 
 
 export const MediaView: React.FC = () => {
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
+
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [isPlaying, setIsPlaying] = useState<boolean>(true)
 
 
     const dispatch = useAppDispatch();
@@ -39,6 +43,15 @@ export const MediaView: React.FC = () => {
 
     const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
     useMediaViewResize(dependencies);
+
+    function togglePause(isPlaying: boolean) {
+        if(isPlaying === false) {
+            setIsPlaying(true)
+        } else {
+            setIsPlaying(false)
+        }
+        console.log("VALUE OF isPlaying --> ", isPlaying)
+    }
 
     if(isLoading) {
         return <p>...Loading</p>
@@ -98,8 +111,13 @@ export const MediaView: React.FC = () => {
 
                     {/* If viewing an album */}
                     {mediaType === 'album' ? ( currentAlbumMedia.tracks.map((track: any, index: number) => (
-                        <div className={styles.gridItem} key={track._id}>
-                            <div>{index + 1}</div>
+                        <div
+                        className={`${styles.gridItem}`}
+                        key={track._id}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                        >
+                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div onClick={() => togglePause(isPlaying)} id={styles.toggleButton}>&#9654;</div>}
                             <div className={styles.song}>
                                 <div>
                                     <p>{track.title}</p>

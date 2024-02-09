@@ -65,10 +65,11 @@
     border-radius: 50%;
 }
 .stats span {
-    font-weight: 400;
+    font-weight: 500;
+    font-size: 13px;
 }
 .stats span:first-of-type {
-    font-weight: 600;
+    font-weight: 700;
 }
 
 
@@ -77,6 +78,15 @@
 
 .songsContainer {
     height: 2000px;  /* For now, just to see what gradient will end up looking like */
+}
+
+/* mediaview_toggleButton__TXyVt */
+#toggleButton {
+    cursor: pointer;
+}
+
+.pause {
+    border: 1px solid purple;
 }
 
 .controlButtons {
