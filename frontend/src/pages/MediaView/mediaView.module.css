@@ -85,7 +85,7 @@
     cursor: pointer;
 }
 
-.pause {
+.togglePause {
     border: 1px solid purple;
 }
 

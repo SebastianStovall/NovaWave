@@ -44,18 +44,34 @@ export const MediaView: React.FC = () => {
     const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
     useMediaViewResize(dependencies);
 
-    function togglePause(isPlaying: boolean) {
-        if(isPlaying === false) {
-            setIsPlaying(true)
-        } else {
-            setIsPlaying(false)
-        }
-        console.log("VALUE OF isPlaying --> ", isPlaying)
-    }
-
     if(isLoading) {
         return <p>...Loading</p>
     }
+
+
+    //! --------------------------------------------------------------------================================================----------------------------------------//
+    type ActiveSongs = {
+        [key: string]: number
+    }
+    const activeSongs: ActiveSongs = {}
+    for(let i = 0; i < currentAlbumMedia.tracks.length; i++) {
+        activeSongs[i.toString()] = 0
+    }
+
+    function isSongPlaying() {
+        for(let index in activeSongs) {
+            if(activeSongs[index] === 1) {
+                activeSongs[index] = 0
+                return true
+            }
+        }
+        return false
+    }
+
+    function togglePause(isPlaying: boolean, index: number) {
+        
+    }
+    //! --------------------------------------------------------------------================================================----------------------------------------//
 
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
@@ -117,7 +133,9 @@ export const MediaView: React.FC = () => {
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                         >
-                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div onClick={() => togglePause(isPlaying)} id={styles.toggleButton}>&#9654;</div>}
+                            {/* // TODO ============================================================ */}
+                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div onClick={() => togglePause(isPlaying, index)} id={styles.toggleButton} className={`${isPlaying ? styles.togglePause : ''}`}>&#9654;</div>}
+                            {/* // TODO ============================================================ */}
                             <div className={styles.song}>
                                 <div>
                                     <p>{track.title}</p>
