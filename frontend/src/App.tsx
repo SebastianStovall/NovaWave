@@ -20,6 +20,8 @@ const App: React.FC = () => {
     setIsLoaded(true)
   }, [dispatch]);
 
+  console.log("PAGE RE-RENDER FROM APP")
+
   return (
     <div>
       { isLoaded && (
