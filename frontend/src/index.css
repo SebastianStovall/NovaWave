@@ -9,4 +9,11 @@ html {
 
 body {
   background-color: #000000;
+
+  --primary: #ffffff;
+  --secondary: #A7A7A7;
+
+  --primary-color-icon: #ddd;
+  --secondary-color-icon: #999;
+  --novawave-blue: #26f7fd;
 }

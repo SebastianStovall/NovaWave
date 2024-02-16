@@ -1,9 +1,8 @@
 import { RequestHandler } from "express";
-import { createUser, getUserByEmail, getUserBySessionToken } from "../db/actions/user-actions";
+import { createUser, getUserByEmail } from "../db/actions/user-actions";
 import { random, authentication } from "../helpers/auth";
 import CustomError from "../utils/CustomError";
-import { get, merge } from 'lodash';
-import { isAuthenticated } from "../middleware";
+import { get } from 'lodash';
 
 export const register: RequestHandler = async (req, res, next) => {
   try {
@@ -91,7 +90,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username} });
+      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username, likedSongsId: user.likedSongsPlaylistId} });
   } catch (e: any) {
     next(e)
   }
@@ -115,10 +114,11 @@ export const restoreUser: RequestHandler = async (req, res, next) => {
       _id: string,
       email: string
       username: string
+      likedSongsPlaylistId: string
     }
 
     const user = get(req, "identity") as unknown as SafeUser
-    return res.status(200).json({message: 'User Logged In', isLoggedIn: true, user: {id: user._id, email: user.email, username: user.username }})
+    return res.status(200).json({message: 'User Logged In', isLoggedIn: true, user: {id: user._id, email: user.email, username: user.username, likedSongsPlaylistId: user.likedSongsPlaylistId }})
 
   } catch (e: any) {
     next(e)

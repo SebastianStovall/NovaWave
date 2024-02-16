@@ -1452,6 +1452,7 @@ async function seedDatabase() {
                 ],
                 length: '14:26',
                 isPrivate: false,
+                coverImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/playlist-photos/PlaylistDefaultPNG.png',
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
@@ -1481,6 +1482,7 @@ async function seedDatabase() {
                 ],
                 length: '20:04',
                 isPrivate: false,
+                coverImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/playlist-photos/PlaylistDefaultPNG.png',
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
@@ -1510,6 +1512,7 @@ async function seedDatabase() {
                 ],
                 length: '16:53',
                 isPrivate: false,
+                coverImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/playlist-photos/PlaylistDefaultPNG.png',
                 createdAt: new Date(),
                 updatedAt: new Date()
             }

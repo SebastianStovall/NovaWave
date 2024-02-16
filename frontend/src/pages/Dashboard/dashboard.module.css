@@ -5,7 +5,7 @@
 
     position: relative;
     z-index: 0;
-    background: linear-gradient(to bottom, #23067d 64px, #121212 300px, #121212)
+    background: linear-gradient(to bottom, rgba(35, 6, 125, 0.6) 64px, #121212 300px, #121212)
 }
 
 .gradientOverlayForTransition {
@@ -24,6 +24,7 @@
     letter-spacing: -1.5px;
     color: white;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Quickplay Albums Grid Stylings */
@@ -40,10 +41,20 @@
     overflow: hidden;
     cursor: pointer;
 }
-.quickplayPlaylists > div > img {
+.imageContainer {
+    display: flex;
+    min-width: 80px;
+    min-height: 80px;
+    max-width: 80px;
+    max-height: 80px;
+}
+.imageContainer img {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     box-shadow: 9px 1px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .quickplayPlaylists > div > :last-child {  /* Everything besides image */
     overflow: hidden;
@@ -51,7 +62,7 @@
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 15px;
 
     background-color: rgb(182, 183, 182, 0.1);
     border-top-right-radius: 5px;
@@ -62,10 +73,8 @@
     background-color: rgb(182, 183, 182, 0.3);
 }
 .quickplayPlaylists > div > div :first-child {  /* TEXT */
-    border: 1px solid yellow;
-    width: 70%;
     color: white;   /* text color */
-    font-weight: 500;
+    font-weight: 600;
     display: -webkit-box;
     -webkit-line-clamp: 3;  /* Limit to 3 lines */
     -webkit-box-orient: vertical;  /* Vertical layout */
@@ -73,9 +82,30 @@
     text-overflow: ellipsis;
 }
 .quickplayPlaylists > div > div :last-child {   /* PLAY BUTTON */
-    border: 1px solid purple;
-    width: 30%;
+    position: relative;
 }
+
+.quickplayPlaylists > div > div :last-child span {
+    width: 20px;
+    position: absolute;
+    right: 5px;
+    top: -5px;
+    padding: 12px;
+    background-color: #26f7fd;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all ease 0s;
+    font-size: 18px;
+    color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.quickplayPlaylists > div:hover > div :last-child span {
+    opacity: 1;
+    transform: translateY(-20px);
+}
+
 
 @media (max-width: 1442px) {
     .quickplayPlaylists {
@@ -85,14 +115,77 @@
 }
 
 
-/* Grid Carousels */
+/* Main Grid Sections */
 
-.testGrid {
+.mainGridSection {
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-rows: auto;
+    grid-auto-rows: 0;
+    column-gap: 20px;
+    overflow: hidden;
 }
 
-.testGrid > div {
-    border: 1px solid red;
+.recommended {
+    color: #ffffff;
+    font-size: 22px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.mainGridSection > div { /* Grid Item */
+    padding: 15px;
+    background-color: #181818;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all ease 0.4s;
+}
+
+.mainGridSection > div:hover { /* Grid Item Hover */
+    background-color: #252525;
+}
+
+.mainGridSection > div img {
+    width: 100%;
+    height: 150px;
+    object-fit: fill;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.mainGridSection > div .playButton {  /* playbutton */
+    position: relative;
+}
+
+.mainGridSection > div .playButton #playFa {  /* playbutton */
+    position: absolute;
+    right: 10px;
+    top: -60px;
+    padding: 18px;
+    background-color: #26f7fd;
+    border-radius: 100%;
+    opacity: 0;
+    transition: all ease 0.4s;
+    font-size: 20px;
+}
+
+.mainGridSection > div:hover .playButton #playFa {  /* playbutton */
+    opacity: 1;
+    transform: translateY(-20px);
+}
+
+.mainGridSection > div h4 {
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mainGridSection > div p {
+    color: #989898;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
 }

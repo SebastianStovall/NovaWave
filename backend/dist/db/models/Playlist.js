@@ -36,6 +36,7 @@ const PlaylistSchema = new mongoose_1.Schema({
     desc: { type: String, required: false, default: '' },
     tracks: [PLTrackSchema], // subdocument
     length: { type: String, required: true, default: '0:00' },
-    isPrivate: { type: Boolean, required: true, default: false } // INDICATES IF THIS PLAYLIST IS SEARCHABLE (when playlist are 'deleted', all that changes is this field)
+    isPrivate: { type: Boolean, required: true, default: false }, // INDICATES IF THIS PLAYLIST IS SEARCHABLE (when playlist are 'deleted', all that changes is this field)
+    coverImage: { type: String, required: false } // AWS
 }, { timestamps: true });
 exports.PlaylistModel = mongoose_1.default.model('Playlist', PlaylistSchema);
