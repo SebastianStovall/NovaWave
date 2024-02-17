@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { login, logout } from "../../store/session/session";
+import { login } from "../../store/session/session";
+import { useNavigate } from "react-router-dom";
 
 export interface ILoginUser {
   // TODO ----> Refactor interfaces to a file for User interfaces
@@ -15,7 +16,8 @@ export interface IRegisterUser {
   username: string;
 }
 
-export const Auth: React.FC = () => {
+export const Signup: React.FC = () => {
+  const navigate = useNavigate()
   const sessionUser = useAppSelector((state) => state.session.user);
   const dispatch = useAppDispatch();
 
@@ -25,22 +27,26 @@ export const Auth: React.FC = () => {
       password: "password",
     };
     await dispatch(login(sebassUser));
-  };
-
-  const logoutUser = async () => {
-    await dispatch(logout());
+    navigate('/')
   };
 
   return (
     <div>
-      <h1>Signup / Login Form</h1>
-      <button onClick={logInUser}>Log In User</button>
-      <button onClick={logoutUser}>Logout User</button>
-      {sessionUser ? (
-        <p>{JSON.stringify(sessionUser)}</p>
-      ) : (
-        <p>No Current User</p>
-      )}
+
+      <div>
+        <h1>Signup to Spotify</h1>
+        <button onClick={logInUser}>Signup User</button>
+        {/* {sessionUser ? (
+          <p>{JSON.stringify(sessionUser)}</p>
+        ) : (
+          <p>No Current User</p>
+        )} */}
+
+        <p>
+          Already a user? <button onClick={() => navigate('/login')}>Login</button>
+        </p>
+      </div>
+
     </div>
   );
 };

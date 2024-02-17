@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ILoginUser, IRegisterUser } from '../../pages/Auth';
+import { ILoginUser, IRegisterUser } from '../../pages/Login';
 
 // Thunk to handle user signup
 export const signup = createAsyncThunk('session/signup', async (user: IRegisterUser, thunkAPI) => {

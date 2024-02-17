@@ -3,12 +3,16 @@ import styles from './header.module.css'
 import { useAppSelector } from "../../hooks";
 import { useLocation } from 'react-router-dom';
 import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../store/session/session";
+import { useAppDispatch } from "../../hooks";
 
 export const Header: React.FC = () => {
-
+    const navigate = useNavigate()
     const user = useAppSelector((state) => state.session.user)
     const headerState = useAppSelector((state) => state.header)
     const location = useLocation();
+    const dispatch = useAppDispatch();
 
     useEffect(() => { /* header component is absolutely positioned with relative container so full width works, however, JS scroll logic is needed to acheieve sticking behavior due to relatively positioned parent */
         const handleScroll = () => {
@@ -55,10 +59,17 @@ export const Header: React.FC = () => {
         const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
         mainContent.addEventListener('scroll', handleScroll); // attach scroll event listener onto mainContent div
 
+
+
         return () => {
             mainContent.removeEventListener('scroll', handleScroll);
         };
     }, [headerState, location.pathname]);
+
+    const logoutUser = async () => {
+        await dispatch(logout());
+        navigate('/')
+      };
 
     return (
         <div className={styles.header}>
@@ -87,15 +98,19 @@ export const Header: React.FC = () => {
                 {user ?
                     <div className={styles.profileIconContainer}>
                         <button>
-                            <img src='https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg' alt="pf-pic" />
+                            <img src='https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg' alt="pf-pic" onClick={logoutUser}/>
                         </button>
                     </div>
                 :
                     <ul className={styles.headerAuthRedirect}>
                         <li>
-                            <a href="/">Sign up</a>
+                            <a href="/signup">Sign up</a>
                         </li>
-                        <button type="button">Log In</button>
+                        <button type="button">
+                            <a href='/login'>
+                                Log In
+                            </a>
+                        </button>
                     </ul>
                 }
             </div>
