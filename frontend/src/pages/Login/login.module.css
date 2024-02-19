@@ -94,13 +94,17 @@
     border: 1px solid red;
 }
 
-.emailFocus::placeholder{
+.emailInput::placeholder{
     color: grey;
 }
 
 .emailInput:focus{
     outline: none;
     border: 3px solid red;
+}
+
+.emailInput:valid {
+    border: 3px solid white;
 }
 
 .emailError{
@@ -147,13 +151,19 @@
     border: 1px solid red;
 }
 
-.passwordFocus::placeholder{
+
+
+.passwordInput::placeholder{
     color: grey;
 }
 
 .passwordInput:focus{
     outline: none;
     border: 3px solid red;
+}
+
+.passwordInput:valid {
+    border: 3px solid white;
 }
 
 .passwordError{

@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
 
       <div className={styles.mainGradient}>
         <div className={styles.formContainer}>
-          <h1>Log in to Spotify</h1>
+          <h1>Log in to Novawave</h1>
           <form onSubmit={logInUser}>
 
             <div className={styles.errorsContainer}>

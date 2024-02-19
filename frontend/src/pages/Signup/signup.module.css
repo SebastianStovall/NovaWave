@@ -1,191 +1,288 @@
-.dashboard {
-    padding-top: 64px;
-    padding-left: 24px;
-    padding-right: 24px;
-
-    position: relative;
-    z-index: 0;
-    background: linear-gradient(to bottom, rgba(35, 6, 125, 0.6) 64px, #121212 300px, #121212)
+.header {
+    height: 100px;
+    background-color: #121212;
 }
 
-.gradientOverlayForTransition {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 2s;
-}
-
-.welcomeMessage {
-    font-size: 31px;
-    letter-spacing: -1.5px;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-/* Quickplay Albums Grid Stylings */
-
-.quickplayPlaylists {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 10px;
-}
-.quickplayPlaylists > div {  /* Each div in grid */
-    height: 80px;
-    display: flex;
-    overflow: hidden;
-    cursor: pointer;
-}
-.imageContainer {
-    display: flex;
-    min-width: 80px;
-    min-height: 80px;
-    max-width: 80px;
-    max-height: 80px;
-}
-.imageContainer img {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    box-shadow: 9px 1px 10px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.quickplayPlaylists > div > :last-child {  /* Everything besides image */
-    overflow: hidden;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 15px;
-
-    background-color: rgb(182, 183, 182, 0.1);
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    transition: background 0.2s ease;
-}
-.quickplayPlaylists > div > :last-child:hover {
-    background-color: rgb(182, 183, 182, 0.3);
-}
-.quickplayPlaylists > div > div :first-child {  /* TEXT */
-    color: white;   /* text color */
-    font-weight: 600;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;  /* Limit to 3 lines */
-    -webkit-box-orient: vertical;  /* Vertical layout */
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.quickplayPlaylists > div > div :last-child {   /* PLAY BUTTON */
-    position: relative;
-}
-
-.quickplayPlaylists > div > div :last-child span {
-    width: 20px;
-    position: absolute;
-    right: 5px;
-    top: -5px;
-    padding: 12px;
-    background-color: #26f7fd;
-    border-radius: 50%;
-    opacity: 0;
-    transition: all ease 0s;
-    font-size: 18px;
-    color: black;
+.mainGradient{
+    padding: 32px;
+    height: 942px;
+    background: linear-gradient(rgba(255, 255, 255, 0.164) 0%, rgb(0, 0, 0) 100%);
     display: flex;
     justify-content: center;
 }
 
-.quickplayPlaylists > div:hover > div :last-child span {
-    opacity: 1;
-    transform: translateY(-20px);
+.formContainer{
+    width: 734px;
+    background-color: #121212;
+    color: white;
+    row-gap: normal;
+    border-radius: 8px;
+    padding: 32px 0px;
 }
 
-
-@media (max-width: 1442px) {
-    .quickplayPlaylists {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-    }
+.formContainer > h1 {
+    font-size: 3rem;
+    text-align: center;
+    margin: 48px 0px;
 }
 
-
-/* Main Grid Sections */
-
-.mainGridSection {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    grid-template-rows: auto;
-    grid-auto-rows: 0;
-    column-gap: 20px;
-    overflow: hidden;
+.errorsContainer{
+    padding: 0px 50px;
 }
 
-.recommended {
-    color: #ffffff;
-    font-size: 22px;
-    margin-top: 30px;
-    margin-bottom: 10px;
-}
-
-.mainGridSection > div { /* Grid Item */
-    padding: 15px;
-    background-color: #181818;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all ease 0.4s;
-}
-
-.mainGridSection > div:hover { /* Grid Item Hover */
-    background-color: #252525;
-}
-
-.mainGridSection > div img {
-    width: 100%;
-    height: 150px;
-    object-fit: fill;
-    border-radius: 6px;
-    margin-bottom: 10px;
-}
-
-.mainGridSection > div .playButton {  /* playbutton */
+.errors{
+    box-sizing: border-box;
     position: relative;
-}
-
-.mainGridSection > div .playButton #playFa {  /* playbutton */
-    position: absolute;
-    right: 10px;
-    top: -60px;
-    padding: 18px;
-    background-color: #26f7fd;
-    border-radius: 100%;
-    opacity: 0;
-    transition: all ease 0.4s;
-    font-size: 20px;
-}
-
-.mainGridSection > div:hover .playButton #playFa {  /* playbutton */
-    opacity: 1;
-    transform: translateY(-20px);
-}
-
-.mainGridSection > div h4 {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background-color: #e91429;
     color: #ffffff;
-    font-size: 14px;
-    margin-bottom: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding-block-start: 12px;
+    padding-block-end: 12px;
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
 }
 
-.mainGridSection > div p {
-    color: #989898;
-    font-size: 13px;
-    line-height: 20px;
-    font-weight: 500;
+.formHr {
+    margin: 32px 100px;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+    border-image: initial;
+    border-top: 1px solid rgb(41, 41, 41);
+}
+
+.loginInputs{
+    width: 324px;
+    margin: 0px auto;
+    padding-bottom: 0px;
+}
+
+.emailContainer{
+    padding-bottom: 16px;
+}
+
+.emailLabel{
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+    inline-size: 100%;
+    padding-block-end: 8px;
+}
+
+.emailInput{
+    appearance: none;
+    background-image: none;
+    border: 0px;
+    display: block;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: box-shadow 0.1s ease-in-out 0s, color 0.1s ease-in-out 0s;
+    inline-size: 100%;
+    box-sizing: border-box;
+    margin-block: 0px;
+    border-radius: 4px;
+    padding-inline: 14px;
+    padding-block-start: 8px;
+    padding-block-end: 8px;
+    min-block-size: 48px;
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid red;
+}
+
+.emailInput::placeholder{
+    color: grey;
+}
+
+.emailInput:focus{
+    outline: none;
+    border: 3px solid red;
+}
+
+.emailInput:valid {
+    border: 3px solid white;
+}
+
+.emailError{
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 400;
+    display: flex;
+    margin-block-start: 8px;
+    color: #d31225;
+}
+
+.usernameContainer{
+    padding-bottom: 16px;
+}
+
+.usernameLabel{
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+    inline-size: 100%;
+    padding-block-end: 8px;
+}
+
+.usernameInput{
+    appearance: none;
+    background-image: none;
+    border: 0px;
+    display: block;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: box-shadow 0.1s ease-in-out 0s, color 0.1s ease-in-out 0s;
+    inline-size: 100%;
+    box-sizing: border-box;
+    margin-block: 0px;
+    border-radius: 4px;
+    padding-inline: 14px;
+    padding-block-start: 8px;
+    padding-block-end: 8px;
+    min-block-size: 48px;
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid red;
+}
+
+.usernameInput::placeholder{
+    color: grey;
+}
+
+.usernameInput:focus{
+    outline: none;
+    border: 3px solid red;
+}
+
+.usernameInput:valid {
+    border: 3px solid white;
+}
+
+.usernameError{
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 400;
+    display: flex;
+    margin-block-start: 8px;
+    color: #d31225;
+}
+
+.passwordContainer{
+    padding-bottom: 16px;
+}
+
+.passwordLabel{
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+    inline-size: 100%;
+    padding-block-end: 8px;
+}
+
+.passwordInput{
+    appearance: none;
+    background-image: none;
+    border: 0px;
+    display: block;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: box-shadow 0.1s ease-in-out 0s, color 0.1s ease-in-out 0s;
+    inline-size: 100%;
+    box-sizing: border-box;
+    margin-block: 0px;
+    border-radius: 4px;
+    padding-inline: 14px;
+    padding-block-start: 8px;
+    padding-block-end: 8px;
+    min-block-size: 48px;
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid red;
+}
+
+
+
+.passwordInput::placeholder{
+    color: grey;
+}
+
+.passwordInput:focus{
+    outline: none;
+    border: 3px solid red;
+}
+
+.passwordInput:valid {
+    border: 3px solid white;
+}
+
+.passwordError{
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 400;
+    display: flex;
+    margin-block-start: 8px;
+    color: #d31225;
+}
+
+.buttonContainer{
+    text-align: center;
+    padding: 32px 0px;
+}
+
+.button{
+    height: 50px;
+    border: none;
+    border-radius: 500px;
+    background-color: var(--novawave-blue);
+    width: 100%;
+}
+
+.formHr2{
+    margin: 32px 100px;
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+    border-image: initial;
+    border-top: 1px solid rgb(41, 41, 41);
+}
+
+.signup{
+    padding: 16px 0px;
+}
+
+.signup > div {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin-block: 0px;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #6a6a6a;
+
+}
+
+.signup > div > div > span {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin-block: 0px;
+    font-size: 1rem;
+    font-weight: 400;
+    color:#6a6a6a;
+}
+
+.signup > div > div > a {
+    box-sizing: border-box;
+    color: white;
+    align-items: center;
 }
