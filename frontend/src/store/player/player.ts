@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface TrackInterface {
+    _id: string
     title: string
     length: string
     audio: string
