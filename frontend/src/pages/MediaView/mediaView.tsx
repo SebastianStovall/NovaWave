@@ -18,6 +18,7 @@ export const MediaView: React.FC = () => {
     let isPlaying = useRef(true)
 
 
+
     const dispatch = useAppDispatch();
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);

@@ -209,3 +209,27 @@
 .volumeBar .progressBar:hover .progress::after{
     --size: .8em;
 }
+
+
+/* State Changes in Footer when signed in */
+
+#repeatButtonActive {
+    color: var(--novawave-blue);
+}
+#repeatButtonInactive {
+    color: var(--secondary-color-icon);
+}
+#repeatButtonInactive:hover {
+    color: var(--primary-color-icon);
+}
+
+
+#shuffleActive {
+    color: var(--novawave-blue);
+}
+#shuffleInactive {
+    color: var(--secondary-color-icon);
+}
+#shuffleInactive:hover {
+    color: var(--primary-color-icon);
+}

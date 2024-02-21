@@ -14,7 +14,7 @@ import "rc-slider/assets/index.css";
 import { setPlay, setCurrentSong, setSongList } from "../../store/player/player";
 
 export const Footer: React.FC = () => {
-  console.log("FOOTER RE-RENDER");
+  console.log(" ------------------ FOOTER RE-RENDER ------------- ");
   const user = useAppSelector((state) => state.session.user);
 
   const dispatch = useAppDispatch();
@@ -25,22 +25,22 @@ export const Footer: React.FC = () => {
   const currentSong = useAppSelector((state) => state.player.currentSong);
 
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(null);
+  const [duration, setDuration] = useState<number>(0);
   const [volume, setVolume] = useState(1);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(-1);
-
   const randomIndex = Math.floor(Math.random() * songList.length);
+
+  console.log("PLAY STATE ----> ", play)
 
   useEffect(() => {
     // Play/Pause current audio depending if a song is playing
-    setTimeout(() => {
-      if (currentSong && audioRef.current) {
-        audioRef.current.play();
-        dispatch(setPlay(true));
-      }
-    }, 1000);
+
+    // if (currentSong && audioRef.current) { // TODO ---> THIS CODE SNIPPET CAUSES PROBLEMS, its supposed to play song automatically when refreshing page i think
+    //   audioRef.current.play();
+    //   dispatch(setPlay(true));
+    // }
 
     if (!currentSong && audioRef.current) {
       audioRef.current.pause();
@@ -55,12 +55,12 @@ export const Footer: React.FC = () => {
       );
     }
 
-    // TODO ----- AUDIO IN LOCAL STATE (using REDUX PERSIST)
-    // const localAudio = localStorage.getItem('tritone-volume')
-    // if (localAudio) {
-    //   audioRef.current.volume = localAudio
-    //   setVolume(localAudio)
-    // }
+    const localAudio = localStorage.getItem('novawave-volume') // set volume
+    if (localAudio && audioRef.current) {
+      audioRef.current.volume = parseInt(localAudio, 10)
+      setVolume( parseInt(localAudio, 10) )
+    }
+
   }, [currentSong, dispatch, songList]);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export const Footer: React.FC = () => {
       setCurrentSong(songList[randomIndex])
     }
 
-    const handleExternalPlay = async () => {
+    const handleAsyncPlay = async () => { //! DOM EXCEPTION ERROR FROM THIS FUNCTION CALL
       if(audioRef.current) {
         await audioRef.current.play()
       }
@@ -91,11 +91,79 @@ export const Footer: React.FC = () => {
     }
 
     if (play === true) {
-      handleExternalPlay()
+      handleAsyncPlay()
     }
 
 
   }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList]);
+
+  const handlePlay = async () => { // play song when user hits play button
+    if(audioRef.current) {
+      await audioRef.current.play()
+      dispatch(setPlay(true))
+    }
+  }
+
+  const handlePause = () => { // pause button when user hits pause button
+    if(audioRef.current) {
+      audioRef.current.pause()
+      dispatch(setPlay(false))
+    }
+  }
+
+  const handleBack = () => { // go back one song when user hits the back button in media player
+    if (currentTime === duration && shuffle) {
+      setCurrentSong(songList[randomIndex])
+    } else {
+      setCurrentSong(songList[currentSongIndex - 1] || songList[songList.length - 1])
+    }
+  }
+
+  const handleSkip = () => { // go forward one song when user hits the skip button in media player
+    if (shuffle) {
+      setCurrentSong(songList[randomIndex])
+    } else {
+      setCurrentSong(songList[currentSongIndex + 1] || songList[0])
+    }
+  }
+
+  const handleVolume = (e: number) => {
+    setVolume(e)
+    localStorage.setItem('tritone-volume', e.toString())
+    if(audioRef.current) {
+      audioRef.current.volume = e
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    if(audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime)
+      setDuration(audioRef.current.duration)
+    }
+  }
+
+  const handleCurrentTime = (e: number) => {
+    setCurrentTime(e)
+    if(audioRef.current) {
+      audioRef.current.currentTime = e
+    }
+  }
+
+  const handleRepeat = () => {
+    if (!repeat) {
+      setRepeat(true)
+    } else {
+      setRepeat(false)
+    }
+  }
+
+  const handleShuffle = () => {
+    if (!shuffle) {
+      setShuffle(true)
+    } else {
+      setShuffle(false)
+    }
+  }
 
   return (
     <div
@@ -110,17 +178,26 @@ export const Footer: React.FC = () => {
       {user ? (
         //! ---------------- MEDIA PLAYER WHEN SIGNED IN -------------------------------
         <div className={styles.musicPlayer}>
+
+          { /* AUDIO PLAYER */ }
+          <audio
+            ref={audioRef}
+            src={currentSong?.audio}
+            onTimeUpdate={handleTimeUpdate}
+          />
+          { /* AUDIO PLAYER */ }
+
           <div className={styles.songBar}>
             <div className={styles.songInfo}>
               <div className={styles.imageContainer}>
                 <img
-                  src="https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif"
+                  src={currentSong !== null ? currentSong.image : "https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif"}
                   alt="musicPlayerCurrentlyPlayingImage"
                 />
               </div>
               <div>
-                <p className={styles.title}>Bloody 98</p>
-                <p className={styles.artist}>$uicideboy$</p>
+                <p className={styles.title}>{currentSong !== null ? currentSong.title : 'Bloody 98'}</p>
+                <p className={styles.artist}>{currentSong !== null ? currentSong.artistName : '$uicideboy$'}</p>
               </div>
             </div>
 
@@ -131,11 +208,14 @@ export const Footer: React.FC = () => {
 
           <div className={styles.progressController}>
             <div className={styles.controlButtons}>
-              <i className="fas fa-random"></i>
-              <i className="fas fa-step-backward"></i>
-              <div className={`fas fa-play ${styles.playPause}`}></div>
-              <i className="fas fa-step-forward"></i>
-              <i className="fas fa-undo-alt"></i>
+              <i id={ shuffle ? `${styles.shuffleActive}` : `${styles.shuffleInactive}` } className="fas fa-random" onClick={handleShuffle}></i>
+              <i className="fas fa-step-backward" onClick={handleBack}></i>
+
+              { !play && <div className={`fas fa-play ${styles.playPause}`} onClick={handlePlay}></div> }
+              { play && <div className={`fas fa-pause ${styles.playPause}`} onClick={handlePause}></div> }
+
+              <i className="fas fa-step-forward" onClick={handleSkip}></i>
+              <i id={ repeat ? `${styles.repeatButtonActive}` : `${styles.repeatButtonInactive}` } className={`fas fa-undo-alt`} onClick={handleRepeat}></i>
             </div>
             <div className={styles.progressContainer}>
               <span>0:49</span>
