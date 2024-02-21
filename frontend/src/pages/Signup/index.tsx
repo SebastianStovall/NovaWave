@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { login } from "../../store/session/session";
+import { login, signup } from "../../store/session/session";
 import { useNavigate } from "react-router-dom";
 import { FormEvent } from 'react';
 import styles from "./signup.module.css";
@@ -24,22 +24,26 @@ export const Signup: React.FC = () => {
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [errors, setErrors] = useState([]);
 
-  const logInUser = async (e: FormEvent<HTMLFormElement>) => {
+  const signUpUser = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const user: ILoginUser = {
+    const user: IRegisterUser = {
       email: email,
       password: password,
+      username: username
     };
-    console.log('am i here bros')
-    const response = await dispatch(login(user));
+    const response = await dispatch(signup(user));
+
     if(response.meta.requestStatus === 'rejected') {
       setErrors(response.payload.error)
     } else {
+      await dispatch(login(user))
       navigate('/')
     }
-    console.log('res -----------------', response.meta)
+
+
   };
 
 
@@ -52,7 +56,7 @@ export const Signup: React.FC = () => {
       <div className={styles.mainGradient}>
         <div className={styles.formContainer}>
           <h1>Sign up to start listening</h1>
-          <form onSubmit={logInUser}>
+          <form onSubmit={signUpUser}>
 
             <div className={styles.errorsContainer}>
               {errors.length > 0 && <div className={styles.errors}>
@@ -98,8 +102,8 @@ export const Signup: React.FC = () => {
                   className={styles.usernameInput}
                   placeholder="Username"
                   type='text'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
 

@@ -4,10 +4,13 @@ import { ILoginUser, IRegisterUser } from '../../pages/Login';
 // Thunk to handle user signup
 export const signup = createAsyncThunk('session/signup', async (user: IRegisterUser, thunkAPI) => {
   try {
+
     const response = await fetch("/api/auth/register", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
+
     if(response.ok) {
       const data = await response.json();
       return data.user;
