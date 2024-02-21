@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { changeGradient, changeMediaInfo } from '../../store/header/header'
 import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/media'
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
-import { toggleSidebar } from '../../store/sidebar/sidebar'
 
 
 export const MediaView: React.FC = () => {
@@ -15,8 +14,8 @@ export const MediaView: React.FC = () => {
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const [isPlaying, setIsPlaying] = useState<boolean>(true)
+    let hoveredIndex = useRef<number | null>(null);
+    let isPlaying = useRef(true)
 
 
     const dispatch = useAppDispatch();
@@ -30,46 +29,49 @@ export const MediaView: React.FC = () => {
         let mediaInfo = {mediaType, mediaId}
         if(mediaInfo.mediaType === 'collection') {
             mediaInfo.mediaType = 'playlist'
-            mediaInfo.mediaId = user?.likedSongsPlaylistId
         }
         dispatch(addMediaToRecentlyViewed(mediaInfo))
         dispatch(updateCurrentMedia(mediaInfo))
-    }, [dispatch, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId])
+    }, [dispatch, location.pathname, mediaId, mediaType])
 
     useEffect(() => {
         dispatch(changeMediaInfo(mediaType === 'album' ? currentAlbumMedia?.title : currentPlaylistMedia?.title ))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, currentPlaylistMedia, currentAlbumMedia, data.muted, mediaType])
 
-    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
+    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType]
     useMediaViewResize(dependencies);
 
     if(isLoading) {
         return <p>...Loading</p>
     }
 
+    console.log("RE-RENDER")
+
 
     //! --------------------------------------------------------------------================================================----------------------------------------//
-    type ActiveSongs = {
-        [key: string]: number
-    }
-    const activeSongs: ActiveSongs = {}
-    for(let i = 0; i < currentAlbumMedia.tracks.length; i++) {
-        activeSongs[i.toString()] = 0
-    }
+    // type ActiveSongs = {
+    //     [key: string]: number
+    // }
+    // const activeSongs: ActiveSongs = {}
+    // for(let i = 0; i < currentAlbumMedia.tracks.length; i++) {
+    //     activeSongs[i.toString()] = 0
+    // }
 
-    function isSongPlaying() {
-        for(let index in activeSongs) {
-            if(activeSongs[index] === 1) {
-                activeSongs[index] = 0
-                return true
-            }
-        }
-        return false
-    }
+    // function isSongPlaying() {
+    //     for(let index in activeSongs) {
+    //         if(activeSongs[index] === 1) {
+    //             activeSongs[index] = 0
+    //             return true
+    //         }
+    //     }
+    //     return false
+    // }
 
-    function togglePause(isPlaying: boolean, index: number) {
-        
+    function togglePause(isPlaying: React.MutableRefObject<boolean>, index: number) {
+        isPlaying.current = !(isPlaying.current)
+        console.log("IS PLAYING", isPlaying.current)
+        console.log("INDEX", index)
     }
     //! --------------------------------------------------------------------================================================----------------------------------------//
 
@@ -130,11 +132,12 @@ export const MediaView: React.FC = () => {
                         <div
                         className={`${styles.gridItem}`}
                         key={track._id}
-                        onMouseEnter={() => setHoveredIndex(index)}
-                        onMouseLeave={() => setHoveredIndex(null)}
+                        onMouseEnter={() => hoveredIndex.current = index}
+                        onMouseLeave={() => hoveredIndex.current = null}
+                        onClick={() => togglePause(isPlaying, index)}
                         >
                             {/* // TODO ============================================================ */}
-                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div onClick={() => togglePause(isPlaying, index)} id={styles.toggleButton} className={`${isPlaying ? styles.togglePause : ''}`}>&#9654;</div>}
+                            {hoveredIndex.current !== index ? <div>{index + 1}</div> : <div id={styles.toggleButton} className={`${isPlaying.current ? styles.togglePause : ''}`}>&#9654;</div>}
                             {/* // TODO ============================================================ */}
                             <div className={styles.song}>
                                 <div>
