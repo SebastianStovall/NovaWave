@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
   const play = useAppSelector((state) => state.player.play);
   const currentSong = useAppSelector((state) => state.player.currentSong);
 
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState<number | number[]>(0);
   const [duration, setDuration] = useState<number>(0);
   const [volume, setVolume] = useState<number | number[]>(0.15);
   const [repeat, setRepeat] = useState(false);
@@ -32,9 +32,11 @@ export const Footer: React.FC = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(-1);
   const randomIndex = Math.floor(Math.random() * songList.length);
 
-  const [isHandleHovered, setIsHandleHovered] = useState(false);
+  const [volumeHovered, setVolumeHovered] = useState(false);
+  const [progressBarHovered, setProgressBarHovered] = useState(false);
 
   console.log("PLAY STATE ----> ", play)
+  console.log("CURRENT TIME", currentTime)
 
   useEffect(() => {
     // Play/Pause current audio depending if a song is playing
@@ -85,8 +87,8 @@ export const Footer: React.FC = () => {
       setCurrentSong(songList[randomIndex])
     }
 
-    const handleAsyncPlay = async () => { //! DOM EXCEPTION ERROR FROM THIS FUNCTION CALL
-      if(audioRef.current) {
+    const handleAsyncPlay = async () => {
+      if(audioRef.current && currentSong) { //! ONLY ATTEMPT TO PLAY IF A CURRENT SONG IS ACTIVE, OTHERWISE YOU WILL GET A DOM ERROR SINCE ITS ATTEMPTING TO PLAY PLAYBACK OF UNDEFINED
         await audioRef.current.play()
       }
     }
@@ -151,10 +153,14 @@ export const Footer: React.FC = () => {
     }
   }
 
-  const handleCurrentTime = (e: number) => {
-    setCurrentTime(e)
+  const handleCurrentTime = (value: number | number[]) => {
+    setCurrentTime(value)
     if(audioRef.current) {
-      audioRef.current.currentTime = e
+      if(Array.isArray(value)) {
+        audioRef.current.currentTime = value[0]
+      } else {
+        audioRef.current.currentTime = value
+      }
     }
   }
 
@@ -172,6 +178,20 @@ export const Footer: React.FC = () => {
     } else {
       setShuffle(false)
     }
+  }
+
+  function formatTimestamp(totalLength: string, currentTime: number) {
+    // Parse the total length of the song and current time to seconds
+    const [totalMinutes, totalSeconds] = totalLength.split(':').map(Number);
+    const totalSecondsTotal = totalMinutes * 60 + totalSeconds;
+
+    // Calculate the elapsed time in seconds
+    const elapsedMinutes = Math.floor(currentTime / 60);
+    const elapsedSeconds = Math.floor(currentTime % 60);
+
+    // Format the timestamp
+    const formattedTimestamp = `${elapsedMinutes}:${elapsedSeconds < 10 ? '0' : ''}${elapsedSeconds}`;
+    return formattedTimestamp;
   }
 
   return (
@@ -226,20 +246,34 @@ export const Footer: React.FC = () => {
               <i className="fas fa-step-forward" onClick={handleSkip}></i>
               <i id={ repeat ? `${styles.repeatButtonActive}` : `${styles.repeatButtonInactive}` } className={`fas fa-undo-alt`} onClick={handleRepeat}></i>
             </div>
-            <div className={styles.progressContainer}>
-              <span>0:49</span>
+            <div
+              className={styles.progressContainer}
+              onMouseEnter={() => setProgressBarHovered(true)}
+              onMouseLeave={() => setProgressBarHovered(false)}
+            >
+            { currentSong && <span>{formatTimestamp(currentSong.length, currentTime as number)}</span>}
               <div className={styles.progressBar}>
-                <div className={styles.progress}></div>
+                <Slider
+                  min={0}
+                  max={duration || 0} // Ensure duration is always a number
+                  step={0.1}
+                  value={currentTime}
+                  onChange={handleCurrentTime}
+                  trackStyle={{ backgroundColor: '#26f7fd', height: 4 }}
+                  railStyle={{ backgroundColor: '#4d4d4d', height: 4 }}
+                  handleStyle={{ backgroundColor: progressBarHovered ? 'white' : 'transparent', border: 'none', opacity: 1, height: 14, width: 14 }}
+                />
               </div>
-              <span>3:15</span>
+              { currentSong && <span>{currentSong.length}</span>}
             </div>
           </div>
 
           <div className={styles.otherFeatures}>
             <NowPlayingButton />
-            <div className={styles.volumeBar}
-            onMouseEnter={() => setIsHandleHovered(true)}
-            onMouseLeave={() => setIsHandleHovered(false)}
+            <div
+              className={styles.volumeBar}
+              onMouseEnter={() => setVolumeHovered(true)}
+              onMouseLeave={() => setVolumeHovered(false)}
             >
               <i className="fas fa-volume-down"></i>
               <div className={styles.progressBar}>
@@ -253,7 +287,7 @@ export const Footer: React.FC = () => {
                   trackStyle={{ backgroundColor: '#26f7fd' }}
                   railStyle={{ backgroundColor: '#999' }}
                   handleStyle={{
-                    backgroundColor: isHandleHovered ? 'white' : 'transparent',
+                    backgroundColor: volumeHovered ? 'white' : 'transparent',
                     border: 'none',
                     opacity: 1,
                   }}
