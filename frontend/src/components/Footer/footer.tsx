@@ -26,11 +26,13 @@ export const Footer: React.FC = () => {
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState<number>(0);
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState<number | number[]>(0.15);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(-1);
   const randomIndex = Math.floor(Math.random() * songList.length);
+
+  const [isHandleHovered, setIsHandleHovered] = useState(false);
 
   console.log("PLAY STATE ----> ", play)
 
@@ -56,10 +58,13 @@ export const Footer: React.FC = () => {
     }
 
     const localAudio = localStorage.getItem('novawave-volume') // set volume
-    if (localAudio && audioRef.current) {
-      audioRef.current.volume = parseInt(localAudio, 10)
-      setVolume( parseInt(localAudio, 10) )
-    }
+
+    setTimeout(() => {
+      if (localAudio && audioRef.current) {
+        audioRef.current.volume = Number(localAudio)
+        setVolume( Number(localAudio) )
+      }
+    }, 150)
 
   }, [currentSong, dispatch, songList]);
 
@@ -127,11 +132,15 @@ export const Footer: React.FC = () => {
     }
   }
 
-  const handleVolume = (e: number) => {
-    setVolume(e)
-    localStorage.setItem('tritone-volume', e.toString())
+  const handleVolume = (value: number | number[]) => {
+    setVolume(value)
+    localStorage.setItem('novawave-volume', value.toString())
     if(audioRef.current) {
-      audioRef.current.volume = e
+      if(Array.isArray(value)) {
+        audioRef.current.volume = value[0]
+      } else {
+        audioRef.current.volume = value
+      }
     }
   }
 
@@ -228,10 +237,27 @@ export const Footer: React.FC = () => {
 
           <div className={styles.otherFeatures}>
             <NowPlayingButton />
-            <div className={styles.volumeBar}>
+            <div className={styles.volumeBar}
+            onMouseEnter={() => setIsHandleHovered(true)}
+            onMouseLeave={() => setIsHandleHovered(false)}
+            >
               <i className="fas fa-volume-down"></i>
               <div className={styles.progressBar}>
-                <div className={styles.progress}></div>
+                {/* Use the Slider component */}
+                <Slider
+                  min={0}
+                  max={0.5}
+                  step={0.01}
+                  value={volume}
+                  onChange={handleVolume}
+                  trackStyle={{ backgroundColor: '#26f7fd' }}
+                  railStyle={{ backgroundColor: '#999' }}
+                  handleStyle={{
+                    backgroundColor: isHandleHovered ? 'white' : 'transparent',
+                    border: 'none',
+                    opacity: 1,
+                  }}
+                />
               </div>
             </div>
             <i className="fas fa-compress"></i>
