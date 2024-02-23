@@ -244,24 +244,25 @@
 
 
 
-/* Testing Audio Relating CSS Stylings */
+/* CSS FOR HOVER AND ACTIVE TRACK for playing and pausing audio */
 
-#novawaveBlue {
-    font-size: 11px;
+#activeStyingsHovered {
+    font-size: 14px;
     color: #26f7fd;
-    padding-right: 2px;
 }
-
-#novawaveBlueText {
+#activeTitleText {
     color: #26f7fd;
 }
 
-#toggleButton {
+#togglePlayGrey {
     cursor: pointer;
+    font-size: 14px;
 }
-#toggleButtonBlue {
-    font-size: 11px;
+#togglePlay {
+    font-size: 14px;
     color: var(--novawave-blue);
     cursor: pointer;
-    padding-right: 2px;
+}
+#trackNumber {
+    font-size: 14px;
 }

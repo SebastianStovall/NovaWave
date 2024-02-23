@@ -81,6 +81,12 @@ export const MediaView: React.FC = () => {
         }
     }
 
+    function handlePlayFromTrackNumber(index: number) {
+        dispatch(setSongList(currentAlbumMedia.tracks))
+        dispatch(setCurrentSong(currentAlbumMedia.tracks[index]))
+        dispatch(setPlay(true))
+    }
+
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
 
@@ -146,21 +152,20 @@ export const MediaView: React.FC = () => {
                             {
                             hoveredIndex !== index ?
                                 <div
-                                    id={currentSong._id === track._id ? styles.novawaveBlue : ''}
-                                    className={ (currentSong._id === track._id && play) ? styles.hoveredBluePause : ''}
+                                    id={currentSong._id === track._id ? styles.activeStyingsHovered : styles.trackNumber}
                                 >
-                                    {currentSong._id !== track._id ? index + 1 : (play ? '▐▐' : `\u25B6`)}
+                                    {currentSong._id !== track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
                                 </div>
                                 :
 
-                                currentSong._id === track._id ? <div id={styles.toggleButtonBlue}>{play ? '▐▐' : index + 1}</div> : <div id={styles.toggleButton}>{`\u25B6`}</div>
+                                currentSong._id === track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(index)} >{`\u25B6`}</div>
                             }
 
                             {/* // TODO ============================================================ */}
                             <div className={styles.song}>
                                 <div>
                                     {/* song active = blue title else normal title*/}
-                                    <p id={currentSong._id === track._id ? styles.novawaveBlueText : ''}>{track.title}</p>
+                                    <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
                                     <p>{track.artistName}</p>
                                 </div>
                                 <i className="fa fa-heart-o"></i>
