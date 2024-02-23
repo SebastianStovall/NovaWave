@@ -1,7 +1,9 @@
 import React, {useEffect} from "react";
 import styles from './header.module.css'
 import { useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { useLocation } from 'react-router-dom';
+import { handlePlayFromStart } from "../../utils/audio/mediaViewHelpers";
 import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/session/session";
@@ -13,6 +15,14 @@ export const Header: React.FC = () => {
     const headerState = useAppSelector((state) => state.header)
     const location = useLocation();
     const dispatch = useAppDispatch();
+
+    // Audio Related
+    const dispatch = useAppDispatch();
+    const songList = useAppSelector((state) => state.player.songList);
+    const play = useAppSelector((state) => state.player.play)
+    const currentSong = useAppSelector((state) => state.player.currentSong)
+    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
+    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
 
     useEffect(() => { /* header component is absolutely positioned with relative container so full width works, however, JS scroll logic is needed to acheieve sticking behavior due to relatively positioned parent */
         const handleScroll = () => {
@@ -70,6 +80,19 @@ export const Header: React.FC = () => {
         await dispatch(logout());
         navigate('/')
       };
+    
+    function playOrPause() {
+        if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
+            // If header media album name matches the currently queued song list album name
+            if(play === true) {
+                return `fas fa-pause`
+            } else {
+                return `fas fa-play`
+            }
+        } else {
+            return `fas fa-play`
+        }
+    }
 
     return (
         <div className={styles.header}>
@@ -86,8 +109,12 @@ export const Header: React.FC = () => {
 
                     {headerState && headerState.media && (
                     <div className={styles.headerMediaContainer}>
-                        <div className={mediaViewStyles.resumeAndPause} style={{width: '48px', height: '48px', opacity: '0', transition: 'opacity 0.5s ease'}}>
-                            <div className={`fas fa-play`}></div>
+                        <div
+                            className={mediaViewStyles.resumeAndPause}
+                            style={{width: '48px', height: '48px', opacity: '0', transition: 'opacity 0.5s ease'}}
+                            onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, location.pathname.split('/')[1], play, dispatch)}
+                        >
+                            <div className={playOrPause()}></div>
                         </div>
                     </div>
                     )}
