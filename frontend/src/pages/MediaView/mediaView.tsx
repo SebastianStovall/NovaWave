@@ -5,10 +5,10 @@ import { usePalette } from 'react-palette'
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/media'
+import { setPlay } from '../../store/player/player'
+import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
-
-import { setPlay, setCurrentSong, setSongList } from '../../store/player/player'
 
 
 export const MediaView: React.FC = () => {
@@ -23,12 +23,10 @@ export const MediaView: React.FC = () => {
     const user: any = useAppSelector((state) => state.session.user);
     const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
 
-    //* Audio Related
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
-    const songList: any = useAppSelector((state) => state.player.songList);
+
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -52,40 +50,6 @@ export const MediaView: React.FC = () => {
     }
 
     console.log("RE-RENDER")
-
-
-    const handlePlayFromStart = () => {
-        if(play === true) { // If already playing, then pause
-            dispatch(setPlay(false))
-            return
-        }
-
-        if(mediaType === 'album') {
-            const indexOfCurrentSongInsideMedia = currentAlbumMedia.tracks.findIndex((track: any) => track._id === currentSong._id)
-
-            if(indexOfCurrentSongInsideMedia === -1) { // if current song is NOT in the album we are trying to play, we will play album from the start
-                dispatch(setSongList(currentAlbumMedia.tracks))
-                dispatch(setCurrentSong(currentAlbumMedia.tracks[0]))
-                dispatch(setPlay(true))
-            } else {
-                dispatch(setSongList(currentAlbumMedia.tracks))
-                dispatch(setCurrentSong(currentAlbumMedia.tracks[indexOfCurrentSongInsideMedia]))
-                dispatch(setPlay(true))
-            }
-
-            // console.log("SONG LIST ----------------->", songList)
-            // console.log("CURRENT SONG ----------------->", currentSong)
-            // console.log("PLAY STATE ----------------->", play)
-        } else {
-            console.log("WE ARE LOOKING AT A PLAYLIST")
-        }
-    }
-
-    function handlePlayFromTrackNumber(index: number) {
-        dispatch(setSongList(currentAlbumMedia.tracks))
-        dispatch(setCurrentSong(currentAlbumMedia.tracks[index]))
-        dispatch(setPlay(true))
-    }
 
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
@@ -113,7 +77,7 @@ export const MediaView: React.FC = () => {
             <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
-                        <div className={styles.resumeAndPause} onClick={handlePlayFromStart}>
+                        <div className={styles.resumeAndPause} onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>
                             <div className={`${ (play && currentSong.album === mediaId) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
@@ -147,9 +111,9 @@ export const MediaView: React.FC = () => {
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                         >
-                            {/* // TODO ============================================================ */}
 
                             {
+                                //* When NOT hovering over audio track, but if track is queued VS not queued
                             hoveredIndex !== index ?
                                 <div
                                     id={currentSong._id === track._id ? styles.activeStyingsHovered : styles.trackNumber}
@@ -157,14 +121,12 @@ export const MediaView: React.FC = () => {
                                     {currentSong._id !== track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
                                 </div>
                                 :
-
-                                currentSong._id === track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(index)} >{`\u25B6`}</div>
+                                currentSong._id === track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                //* When hovering over audio, if track is queued VS not queued
                             }
 
-                            {/* // TODO ============================================================ */}
                             <div className={styles.song}>
                                 <div>
-                                    {/* song active = blue title else normal title*/}
                                     <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
                                     <p>{track.artistName}</p>
                                 </div>
