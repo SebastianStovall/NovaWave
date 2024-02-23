@@ -14,7 +14,6 @@ import "rc-slider/assets/index.css";
 import { setPlay, setCurrentSong } from "../../store/player/player";
 
 export const Footer: React.FC = () => {
-  console.log(" ------------------ FOOTER RE-RENDER ------------- ");
   const user = useAppSelector((state) => state.session.user);
 
   const dispatch = useAppDispatch();
@@ -35,15 +34,13 @@ export const Footer: React.FC = () => {
   const [volumeHovered, setVolumeHovered] = useState(false);
   const [progressBarHovered, setProgressBarHovered] = useState(false);
 
-  console.log("PLAY STATE ----> ", play)
-  console.log("CURRENT TIME", currentTime)
+  // console.log(" ------------------ FOOTER RE-RENDER ------------- ");
+  // console.log("PLAY STATE ----> ", play)
 
   useEffect(() => {
-    // Play/Pause current audio depending if a song is playing
-
     //! If the user doesnt not interact with the page before this executes, will receive an autoplay error ----> play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
     if (play && currentSong && songList.length > 0 && audioRef.current) {
-      if(audioRef.current.paused) {
+      if(audioRef.current && audioRef.current.paused) {
         audioRef.current.play();
       }
     }
@@ -62,8 +59,8 @@ export const Footer: React.FC = () => {
       );
     }
 
-    const localAudio = localStorage.getItem('novawave-volume') // set volume
 
+    const localAudio = localStorage.getItem('novawave-volume') // set volume
     setTimeout(() => {
       if (localAudio && audioRef.current) {
         audioRef.current.volume = Number(localAudio)
@@ -73,71 +70,78 @@ export const Footer: React.FC = () => {
 
   }, [currentSong, dispatch, songList, play]);
 
-  useEffect(() => {
-    if(repeat && audioRef.current) { // if repeat is ACTIVE, loop current song
+  useEffect(() => { //* This useEffect fires if --->     1.) user changes song      2.) song ends      3.) user puts on shuffle     4.) user puts on loop
+    if(repeat && audioRef.current) {
       audioRef.current.loop = true
     }
 
-    if (!repeat && audioRef.current) { // if repeat is NOT active, turn audio loop OFF
+    if (!repeat && audioRef.current) {
       audioRef.current.loop = false
     }
 
-    if (currentTime === duration && !repeat && !shuffle) { // go to NEXT song if repeat and shuffle are NOT active
-      setCurrentSong(songList[currentSongIndex + 1] || songList[0])
-    }
-
-    if (currentTime === duration && shuffle && !repeat) { // if shuffle is ACTIVE, go to RANDOM index
-      setCurrentSong(songList[randomIndex])
-    }
-
-    const handleAsyncPlay = async () => {
-      if(audioRef.current && currentSong) { //! ONLY ATTEMPT TO PLAY IF A CURRENT SONG IS ACTIVE, OTHERWISE YOU WILL GET A DOM ERROR SINCE ITS ATTEMPTING TO PLAY PLAYBACK OF UNDEFINED
-        await audioRef.current.play()
+    function handleSongEnd() {
+      if (!repeat && !shuffle) { // go to next song when song ends (if shuffle and repeat are NOT active)
+        dispatch(setCurrentSong(songList[currentSongIndex + 1] || songList[0]))
+      } else {
+        dispatch(setCurrentSong(songList[randomIndex])) // if shuffle on, go to random song
       }
     }
 
-    if (play === false && audioRef.current) {
-      audioRef.current.pause()
+    if (play === true && audioRef.current && currentSong) { // play if needed
+      if(audioRef.current && audioRef.current.paused) {
+        audioRef.current.play()
+      }
     }
 
-    if (play === true) {
-      handleAsyncPlay()
+    if (play === false && audioRef.current) {  // pause if needed
+      if(!audioRef.current.paused) {
+        audioRef.current.pause()
+      }
     }
 
+    audioRef.current?.addEventListener('ended', handleSongEnd); //*  detect when a video/audio input has ended, so you can safely go to the next song without having to worry about the async behavior of audioRef.play()
 
-  }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList, currentSong]);
+    return () => {
+      audioRef.current?.removeEventListener('ended', handleSongEnd);
+    };
 
-  const handlePlay = async () => { // play song when user hits play button
-    if(audioRef.current) {  // TODO ----> ONLY SET IF ITS NOT ALREADY PLAYING?  ' !audioRef.current.ispaused() '
+  }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList, currentSong, dispatch]);
+
+  const handlePlay = async () => { //! -- IMPORTANT -- ONLY ATTEMPT TO PLAY IF A CURRENT SONG IS ACTIVE, OTHERWISE YOU WILL GET A DOM ERROR SINCE ITS ATTEMPTING TO PLAY PLAYBACK OF UNDEFINED
+    if(audioRef.current) {
       if(audioRef.current.paused) {
-        await audioRef.current.play()
+        audioRef.current.play()
       }
-      dispatch(setPlay(true))
+      if(play === false) {
+        dispatch(setPlay(true))
+      }
     }
   }
 
   const handlePause = () => { // pause button when user hits pause button
-    if(audioRef.current) {  // TODO ----> WHAT IF ITS ALREADY PAUSED?  ' audioRef.current.ispaused() '
+    if(audioRef.current) {
       if(!audioRef.current.paused) {
         audioRef.current.pause()
       }
-      dispatch(setPlay(false))
+      if(play === true) {
+        dispatch(setPlay(false))
+      }
     }
   }
 
   const handleBack = () => { // go back one song when user hits the back button in media player
     if (currentTime === duration && shuffle) {
-      setCurrentSong(songList[randomIndex])
+      dispatch(setCurrentSong(songList[randomIndex]))
     } else {
-      setCurrentSong(songList[currentSongIndex - 1] || songList[songList.length - 1])
+      dispatch(setCurrentSong(songList[currentSongIndex - 1] || songList[songList.length - 1]))
     }
   }
 
   const handleSkip = () => { // go forward one song when user hits the skip button in media player
     if (shuffle) {
-      setCurrentSong(songList[randomIndex])
+      dispatch(setCurrentSong(songList[randomIndex]))
     } else {
-      setCurrentSong(songList[currentSongIndex + 1] || songList[0])
+      dispatch(setCurrentSong(songList[currentSongIndex + 1] || songList[0]))
     }
   }
 

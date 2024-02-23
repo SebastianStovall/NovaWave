@@ -8,7 +8,7 @@ import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
 
-import { setPlay } from '../../store/player/player'
+import { setPlay, setCurrentSong, setSongList } from '../../store/player/player'
 
 
 export const MediaView: React.FC = () => {
@@ -16,19 +16,19 @@ export const MediaView: React.FC = () => {
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
-
-    const play: any = useAppSelector((state) => state.player.play);
-
-
-
     const dispatch = useAppDispatch();
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
     const isLoading: boolean = useAppSelector((state) => state.media.isLoading)
     const user: any = useAppSelector((state) => state.session.user);
     const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
+
+    //* Audio Related
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+
+    const play: any = useAppSelector((state) => state.player.play);
+    const currentSong: any = useAppSelector((state) => state.player.currentSong);
+    const songList: any = useAppSelector((state) => state.player.songList);
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -52,6 +52,29 @@ export const MediaView: React.FC = () => {
     }
 
     console.log("RE-RENDER")
+
+
+    const handlePlayFromStart = () => {
+        let currentSongIsFromThisMedia;
+
+        if(mediaType === 'album') {
+            if(!currentSong) {
+                setSongList(currentAlbumMedia.tracks)
+                setCurrentSong(currentAlbumMedia.tracks[0].audio)
+                setPlay(true)
+            } else { // we need to check if the currentSong is from this peice of media, if it IS, then play from that index, else, start from the start of album
+                dispatch(setSongList(currentAlbumMedia.tracks))
+                dispatch(setCurrentSong(currentAlbumMedia.tracks[0]))
+                dispatch(setPlay(true))
+
+                console.log("SONG LIST ----------------->", songList)
+                console.log("CURRENT SONG ----------------->", currentSong)
+                console.log("PLAY STATE ----------------->", play)
+            }
+        } else {
+            console.log("WE ARE LOOKING AT A PLAYLIST")
+        }
+    }
 
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
@@ -79,7 +102,7 @@ export const MediaView: React.FC = () => {
             <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
-                        <div className={styles.resumeAndPause} onClick={() => dispatch(setPlay(!play))}>
+                        <div className={styles.resumeAndPause} onClick={handlePlayFromStart}>
                             <div className={`${play === false ? `fas fa-play` : `fas fa-pause`} ${styles.playPause}` }></div>
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
