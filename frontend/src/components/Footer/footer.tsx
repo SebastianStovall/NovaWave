@@ -11,7 +11,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 // REDUCER ACTIONS
-import { setPlay, setCurrentSong, setSongList } from "../../store/player/player";
+import { setPlay, setCurrentSong } from "../../store/player/player";
 
 export const Footer: React.FC = () => {
   console.log(" ------------------ FOOTER RE-RENDER ------------- ");
@@ -41,14 +41,17 @@ export const Footer: React.FC = () => {
   useEffect(() => {
     // Play/Pause current audio depending if a song is playing
 
-    // if (currentSong && audioRef.current) { // TODO ---> THIS CODE SNIPPET CAUSES PROBLEMS, its supposed to play song automatically when refreshing page i think
-    //   audioRef.current.play();
-    //   dispatch(setPlay(true));
-    // }
+    //! If the user doesnt not interact with the page before this executes, will receive an autoplay error ----> play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
+    if (play && currentSong && songList.length > 0 && audioRef.current) {
+      if(audioRef.current.paused) {
+        audioRef.current.play();
+      }
+    }
 
-    if (!currentSong && audioRef.current) {
-      audioRef.current.pause();
-      dispatch(setPlay(false));
+    if ( (play === false || !currentSong || songList.length === 0) && audioRef.current) {
+      if(!audioRef.current.paused) {
+        audioRef.current.pause();
+      }
     }
 
     if (!currentSong) {
@@ -68,7 +71,7 @@ export const Footer: React.FC = () => {
       }
     }, 150)
 
-  }, [currentSong, dispatch, songList]);
+  }, [currentSong, dispatch, songList, play]);
 
   useEffect(() => {
     if(repeat && audioRef.current) { // if repeat is ACTIVE, loop current song
@@ -102,18 +105,22 @@ export const Footer: React.FC = () => {
     }
 
 
-  }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList]);
+  }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList, currentSong]);
 
   const handlePlay = async () => { // play song when user hits play button
-    if(audioRef.current) {
-      await audioRef.current.play()
+    if(audioRef.current) {  // TODO ----> ONLY SET IF ITS NOT ALREADY PLAYING?  ' !audioRef.current.ispaused() '
+      if(audioRef.current.paused) {
+        await audioRef.current.play()
+      }
       dispatch(setPlay(true))
     }
   }
 
   const handlePause = () => { // pause button when user hits pause button
-    if(audioRef.current) {
-      audioRef.current.pause()
+    if(audioRef.current) {  // TODO ----> WHAT IF ITS ALREADY PAUSED?  ' audioRef.current.ispaused() '
+      if(!audioRef.current.paused) {
+        audioRef.current.pause()
+      }
       dispatch(setPlay(false))
     }
   }
@@ -180,11 +187,7 @@ export const Footer: React.FC = () => {
     }
   }
 
-  function formatTimestamp(totalLength: string, currentTime: number) {
-    // Parse the total length of the song and current time to seconds
-    const [totalMinutes, totalSeconds] = totalLength.split(':').map(Number);
-    const totalSecondsTotal = totalMinutes * 60 + totalSeconds;
-
+  function formatTimestamp(currentTime: number) {
     // Calculate the elapsed time in seconds
     const elapsedMinutes = Math.floor(currentTime / 60);
     const elapsedSeconds = Math.floor(currentTime % 60);
@@ -246,20 +249,20 @@ export const Footer: React.FC = () => {
               <i className="fas fa-step-forward" onClick={handleSkip}></i>
               <i id={ repeat ? `${styles.repeatButtonActive}` : `${styles.repeatButtonInactive}` } className={`fas fa-undo-alt`} onClick={handleRepeat}></i>
             </div>
-            <div
-              className={styles.progressContainer}
-              onMouseEnter={() => setProgressBarHovered(true)}
-              onMouseLeave={() => setProgressBarHovered(false)}
-            >
-            { currentSong && <span>{formatTimestamp(currentSong.length, currentTime as number)}</span>}
-              <div className={styles.progressBar}>
+            <div className={styles.progressContainer} >
+            { currentSong && <span>{formatTimestamp(currentTime as number)}</span>}
+              <div
+                className={styles.progressBar}
+                onMouseEnter={() => setProgressBarHovered(true)}
+                onMouseLeave={() => setProgressBarHovered(false)}
+              >
                 <Slider
                   min={0}
                   max={duration || 0} // Ensure duration is always a number
                   step={0.1}
                   value={currentTime}
                   onChange={handleCurrentTime}
-                  trackStyle={{ backgroundColor: '#26f7fd', height: 4 }}
+                  trackStyle={{ backgroundColor: progressBarHovered ? '#26f7fd' : '#ddd', height: 4 }}
                   railStyle={{ backgroundColor: '#4d4d4d', height: 4 }}
                   handleStyle={{ backgroundColor: progressBarHovered ? 'white' : 'transparent', border: 'none', opacity: 1, height: 14, width: 14 }}
                 />
@@ -284,7 +287,7 @@ export const Footer: React.FC = () => {
                   step={0.01}
                   value={volume}
                   onChange={handleVolume}
-                  trackStyle={{ backgroundColor: '#26f7fd' }}
+                  trackStyle={{ backgroundColor: volumeHovered ? '#26f7fd' : '#ddd' }}
                   railStyle={{ backgroundColor: '#999' }}
                   handleStyle={{
                     backgroundColor: volumeHovered ? 'white' : 'transparent',

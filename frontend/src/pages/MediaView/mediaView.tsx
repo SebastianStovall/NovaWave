@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { changeGradient, changeMediaInfo } from '../../store/header/header'
 import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
@@ -8,14 +8,18 @@ import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
 
+import { setPlay } from '../../store/player/player'
+
 
 export const MediaView: React.FC = () => {
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
-    let hoveredIndex = useRef<number | null>(null);
-    let isPlaying = useRef(true)
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+
+
+    const play: any = useAppSelector((state) => state.player.play);
 
 
 
@@ -49,33 +53,6 @@ export const MediaView: React.FC = () => {
 
     console.log("RE-RENDER")
 
-
-    //! --------------------------------------------------------------------================================================----------------------------------------//
-    // type ActiveSongs = {
-    //     [key: string]: number
-    // }
-    // const activeSongs: ActiveSongs = {}
-    // for(let i = 0; i < currentAlbumMedia.tracks.length; i++) {
-    //     activeSongs[i.toString()] = 0
-    // }
-
-    // function isSongPlaying() {
-    //     for(let index in activeSongs) {
-    //         if(activeSongs[index] === 1) {
-    //             activeSongs[index] = 0
-    //             return true
-    //         }
-    //     }
-    //     return false
-    // }
-
-    function togglePause(isPlaying: React.MutableRefObject<boolean>, index: number) {
-        isPlaying.current = !(isPlaying.current)
-        console.log("IS PLAYING", isPlaying.current)
-        console.log("INDEX", index)
-    }
-    //! --------------------------------------------------------------------================================================----------------------------------------//
-
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
 
@@ -102,8 +79,8 @@ export const MediaView: React.FC = () => {
             <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
-                        <div className={styles.resumeAndPause}>
-                            <div className={`fas fa-play ${styles.playPause}`}></div>
+                        <div className={styles.resumeAndPause} onClick={() => dispatch(setPlay(!play))}>
+                            <div className={`${play === false ? `fas fa-play` : `fas fa-pause`} ${styles.playPause}` }></div>
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
                             {/* <i className="fa fa-heart"></i> */}
@@ -133,12 +110,11 @@ export const MediaView: React.FC = () => {
                         <div
                         className={`${styles.gridItem}`}
                         key={track._id}
-                        onMouseEnter={() => hoveredIndex.current = index}
-                        onMouseLeave={() => hoveredIndex.current = null}
-                        onClick={() => togglePause(isPlaying, index)}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
                         >
                             {/* // TODO ============================================================ */}
-                            {hoveredIndex.current !== index ? <div>{index + 1}</div> : <div id={styles.toggleButton} className={`${isPlaying.current ? styles.togglePause : ''}`}>&#9654;</div>}
+                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div id={styles.toggleButton}>&#9654;</div>}
                             {/* // TODO ============================================================ */}
                             <div className={styles.song}>
                                 <div>
