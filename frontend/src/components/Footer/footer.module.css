@@ -133,6 +133,9 @@
     gap: 1.5em;
     margin-bottom: 7px;
 }
+.controlButtons:hover {
+    cursor: pointer;
+}
 .playPause {
     display: inline-block;
     position: relative;
@@ -164,10 +167,10 @@
     font-weight: 600;
 }
 .progressBar{
-    height: 4px;
+    /* height: 4px; */
     border-radius: 10px;
     width: 24%;
-    background-color: #ccc4;
+    /* background-color: #ccc4; */
 }
 .progress{
     position: relative;
@@ -208,4 +211,28 @@
 }
 .volumeBar .progressBar:hover .progress::after{
     --size: .8em;
+}
+
+
+/* State Changes in Footer when signed in */
+
+#repeatButtonActive {
+    color: var(--novawave-blue);
+}
+#repeatButtonInactive {
+    color: var(--secondary-color-icon);
+}
+#repeatButtonInactive:hover {
+    color: var(--primary-color-icon);
+}
+
+
+#shuffleActive {
+    color: var(--novawave-blue);
+}
+#shuffleInactive {
+    color: var(--secondary-color-icon);
+}
+#shuffleInactive:hover {
+    color: var(--primary-color-icon);
 }

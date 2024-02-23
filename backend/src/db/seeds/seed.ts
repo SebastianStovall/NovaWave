@@ -116,7 +116,7 @@ async function seedDatabase() {
             updatedAt: new Date()
             },
 
-            { title: 'YIN YANG TAPES: Spring Season (1989-1990)',
+            { title: 'YIN YANG TAPES: Summer Season (1989-1990)',
             artistName: '$uicideboy$',
             artist: artistRefs[0],
             yearReleased: 2023,
