@@ -55,22 +55,27 @@ export const MediaView: React.FC = () => {
 
 
     const handlePlayFromStart = () => {
-        let currentSongIsFromThisMedia;
+        if(play === true) { // If already playing, then pause
+            dispatch(setPlay(false))
+            return
+        }
 
         if(mediaType === 'album') {
-            if(!currentSong) {
-                setSongList(currentAlbumMedia.tracks)
-                setCurrentSong(currentAlbumMedia.tracks[0].audio)
-                setPlay(true)
-            } else { // we need to check if the currentSong is from this peice of media, if it IS, then play from that index, else, start from the start of album
+            const indexOfCurrentSongInsideMedia = currentAlbumMedia.tracks.findIndex((track: any) => track._id === currentSong._id)
+
+            if(indexOfCurrentSongInsideMedia === -1) { // if current song is NOT in the album we are trying to play, we will play album from the start
                 dispatch(setSongList(currentAlbumMedia.tracks))
                 dispatch(setCurrentSong(currentAlbumMedia.tracks[0]))
                 dispatch(setPlay(true))
-
-                console.log("SONG LIST ----------------->", songList)
-                console.log("CURRENT SONG ----------------->", currentSong)
-                console.log("PLAY STATE ----------------->", play)
+            } else {
+                dispatch(setSongList(currentAlbumMedia.tracks))
+                dispatch(setCurrentSong(currentAlbumMedia.tracks[indexOfCurrentSongInsideMedia]))
+                dispatch(setPlay(true))
             }
+
+            // console.log("SONG LIST ----------------->", songList)
+            // console.log("CURRENT SONG ----------------->", currentSong)
+            // console.log("PLAY STATE ----------------->", play)
         } else {
             console.log("WE ARE LOOKING AT A PLAYLIST")
         }
@@ -103,7 +108,7 @@ export const MediaView: React.FC = () => {
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
                         <div className={styles.resumeAndPause} onClick={handlePlayFromStart}>
-                            <div className={`${play === false ? `fas fa-play` : `fas fa-pause`} ${styles.playPause}` }></div>
+                            <div className={`${ (play && currentSong.album === mediaId) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
                             {/* <i className="fa fa-heart"></i> */}
@@ -137,11 +142,25 @@ export const MediaView: React.FC = () => {
                         onMouseLeave={() => setHoveredIndex(null)}
                         >
                             {/* // TODO ============================================================ */}
-                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div id={styles.toggleButton}>&#9654;</div>}
+
+                            {
+                            hoveredIndex !== index ?
+                                <div
+                                    id={currentSong._id === track._id ? styles.novawaveBlue : ''}
+                                    className={ (currentSong._id === track._id && play) ? styles.hoveredBluePause : ''}
+                                >
+                                    {currentSong._id !== track._id ? index + 1 : (play ? '▐▐' : `\u25B6`)}
+                                </div>
+                                :
+
+                                currentSong._id === track._id ? <div id={styles.toggleButtonBlue}>{play ? '▐▐' : index + 1}</div> : <div id={styles.toggleButton}>{`\u25B6`}</div>
+                            }
+
                             {/* // TODO ============================================================ */}
                             <div className={styles.song}>
                                 <div>
-                                    <p>{track.title}</p>
+                                    {/* song active = blue title else normal title*/}
+                                    <p id={currentSong._id === track._id ? styles.novawaveBlueText : ''}>{track.title}</p>
                                     <p>{track.artistName}</p>
                                 </div>
                                 <i className="fa fa-heart-o"></i>

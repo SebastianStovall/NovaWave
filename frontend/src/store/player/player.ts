@@ -38,6 +38,21 @@ const dummyTrack = {
     albumName: "KILLKA"
 }
 
+// const dummyTrack2 = {
+//     _id: "65c539be310ebe25c934a800",
+//     title: "Can't Tell Me Nothing",
+//     length: "4:31",
+//     audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+Can't+Tell+Me+Nothing.mp3",
+//     image: "https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Graduation-Album-3.jfif",
+//     plays: 490821294,
+//     artist: "65c539be310ebe25c934a7e6",
+//     artistName: "Kanye West",
+//     artistAboutImage: "https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif",
+//     artistMonthlyListeners: 64191521,
+//     album: "65c539be310ebe25c934a7ec",
+//     albumName: "Graduation"
+// }
+
 const initialState: PlayerState = { currentSong: dummyTrack, songList: [dummyTrack], play: false }
 
 const playerSlice = createSlice({

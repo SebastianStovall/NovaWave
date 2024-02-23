@@ -71,12 +71,14 @@ export const Footer: React.FC = () => {
   }, [currentSong, dispatch, songList, play]);
 
   useEffect(() => { //* This useEffect fires if --->     1.) user changes song      2.) song ends      3.) user puts on shuffle     4.) user puts on loop
-    if(repeat && audioRef.current) {
-      audioRef.current.loop = true
+    const audioElement = audioRef.current;
+
+    if(repeat && audioElement) {
+      audioElement.loop = true
     }
 
-    if (!repeat && audioRef.current) {
-      audioRef.current.loop = false
+    if (!repeat && audioElement) {
+      audioElement.loop = false
     }
 
     function handleSongEnd() {
@@ -87,22 +89,22 @@ export const Footer: React.FC = () => {
       }
     }
 
-    if (play === true && audioRef.current && currentSong) { // play if needed
-      if(audioRef.current && audioRef.current.paused) {
-        audioRef.current.play()
+    if (play === true && audioElement && currentSong) { // play if needed
+      if(audioElement && audioElement.paused) {
+        audioElement.play()
       }
     }
 
-    if (play === false && audioRef.current) {  // pause if needed
-      if(!audioRef.current.paused) {
-        audioRef.current.pause()
+    if (play === false && audioElement) {  // pause if needed
+      if(!audioElement.paused) {
+        audioElement.pause()
       }
     }
 
-    audioRef.current?.addEventListener('ended', handleSongEnd); //*  detect when a video/audio input has ended, so you can safely go to the next song without having to worry about the async behavior of audioRef.play()
+    audioElement?.addEventListener('ended', handleSongEnd); //*  detect when a video/audio input has ended, so you can safely go to the next song without having to worry about the async behavior of audioRef.play()
 
     return () => {
-      audioRef.current?.removeEventListener('ended', handleSongEnd);
+      audioElement?.removeEventListener('ended', handleSongEnd);
     };
 
   }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList, currentSong, dispatch]);
