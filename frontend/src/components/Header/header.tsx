@@ -7,14 +7,12 @@ import { handlePlayFromStart } from "../../utils/audio/mediaViewHelpers";
 import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/session/session";
-import { useAppDispatch } from "../../hooks";
 
 export const Header: React.FC = () => {
     const navigate = useNavigate()
     const user = useAppSelector((state) => state.session.user)
     const headerState = useAppSelector((state) => state.header)
     const location = useLocation();
-    const dispatch = useAppDispatch();
 
     // Audio Related
     const dispatch = useAppDispatch();
@@ -80,7 +78,7 @@ export const Header: React.FC = () => {
         await dispatch(logout());
         navigate('/')
       };
-    
+
     function playOrPause() {
         if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
             // If header media album name matches the currently queued song list album name

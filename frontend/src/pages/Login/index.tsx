@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { login } from "../../store/session/session";
 import { useNavigate } from "react-router-dom";
 import { FormEvent } from 'react';
@@ -20,7 +20,6 @@ export interface IRegisterUser {
 
 export const Login: React.FC = () => {
   const navigate = useNavigate()
-  const sessionUser = useAppSelector((state) => state.session.user);
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
