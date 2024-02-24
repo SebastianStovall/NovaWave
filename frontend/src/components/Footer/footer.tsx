@@ -39,7 +39,7 @@ export const Footer: React.FC = () => {
   const play = useAppSelector((state) => state.player.play);
   const currentSong = useAppSelector((state) => state.player.currentSong);
 
-  // Local audio useState actions
+  // Local audio useState()
   const [currentTime, setCurrentTime] = useState<number | number[]>(0);
   const [duration, setDuration] = useState<number>(0);
   const [volume, setVolume] = useState<number | number[]>(0.15);
