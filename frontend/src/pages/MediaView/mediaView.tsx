@@ -49,8 +49,6 @@ export const MediaView: React.FC = () => {
         return <p>...Loading</p>
     }
 
-    console.log("RE-RENDER")
-
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
 

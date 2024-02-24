@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./footer.module.css";
 import { NowPlayingButton } from "../UI/nowPlayingButton/nowPlayingButton";
 
@@ -13,16 +13,33 @@ import "rc-slider/assets/index.css";
 // REDUCER ACTIONS
 import { setPlay, setCurrentSong } from "../../store/player/player";
 
+// Hooks
+import { useAudioPlayer } from "../../hooks/useAudioPlayer";
+
+// Helper Functions
+import {
+  handlePlay,
+  handlePause,
+  handleBack,
+  handleSkip,
+  handleTimeUpdate,
+  handleRepeat,
+  handleShuffle,
+  formatTimestamp
+} from "../../utils/audio/audioPlayerHelpers";
+
 export const Footer: React.FC = () => {
   const user = useAppSelector((state) => state.session.user);
 
   const dispatch = useAppDispatch();
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // global audio state
   const songList = useAppSelector((state) => state.player.songList);
   const play = useAppSelector((state) => state.player.play);
   const currentSong = useAppSelector((state) => state.player.currentSong);
 
+  // Local audio useState actions
   const [currentTime, setCurrentTime] = useState<number | number[]>(0);
   const [duration, setDuration] = useState<number>(0);
   const [volume, setVolume] = useState<number | number[]>(0.15);
@@ -34,174 +51,46 @@ export const Footer: React.FC = () => {
   const [volumeHovered, setVolumeHovered] = useState(false);
   const [progressBarHovered, setProgressBarHovered] = useState(false);
 
-  // console.log(" ------------------ FOOTER RE-RENDER ------------- ");
-  // console.log("PLAY STATE ----> ", play)
+  // Hook that handles the useEffect effects for audio player
+  useAudioPlayer(
+    play,
+    currentSong,
+    dispatch,
+    songList,
+    currentSongIndex,
+    repeat,
+    shuffle,
+    audioRef,
+    randomIndex,
+    setCurrentSongIndex,
+    setVolume,
+    setCurrentSong
+  )
 
-  useEffect(() => {
-    //! If the user doesnt not interact with the page before this executes, will receive an autoplay error ----> play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
-    if (play && currentSong && songList.length > 0 && audioRef.current) {
-      if(audioRef.current && audioRef.current.paused) {
-        audioRef.current.play();
-      }
-    }
-
-    if ( (play === false || !currentSong || songList.length === 0) && audioRef.current) {
-      if(!audioRef.current.paused) {
-        audioRef.current.pause();
-      }
-    }
-
-    if (!currentSong) {
-      setCurrentSongIndex(-1);
-    } else {
-      setCurrentSongIndex(
-        songList.map((songMap) => songMap._id).indexOf(currentSong._id)
-      );
-    }
-
-
-    const localAudio = localStorage.getItem('novawave-volume') // set volume
-    setTimeout(() => {
-      if (localAudio && audioRef.current) {
-        audioRef.current.volume = Number(localAudio)
-        setVolume( Number(localAudio) )
-      }
-    }, 150)
-
-  }, [currentSong, dispatch, songList, play]);
-
-  useEffect(() => { //* This useEffect fires if --->     1.) user changes song      2.) song ends      3.) user puts on shuffle     4.) user puts on loop
-    const audioElement = audioRef.current;
-
-    if(repeat && audioElement) {
-      audioElement.loop = true
-    }
-
-    if (!repeat && audioElement) {
-      audioElement.loop = false
-    }
-
-    function handleSongEnd() {
-      if (!repeat && !shuffle) { // go to next song when song ends (if shuffle and repeat are NOT active)
-        dispatch(setCurrentSong(songList[currentSongIndex + 1] || songList[0]))
-      } else {
-        dispatch(setCurrentSong(songList[randomIndex])) // if shuffle on, go to random song
-      }
-    }
-
-    if (play === true && audioElement && currentSong) { // play if needed
-      if(audioElement && audioElement.paused) {
-        audioElement.play()
-      }
-    }
-
-    if (play === false && audioElement) {  // pause if needed
-      if(!audioElement.paused) {
-        audioElement.pause()
-      }
-    }
-
-    audioElement?.addEventListener('ended', handleSongEnd); //*  detect when a video/audio input has ended, so you can safely go to the next song without having to worry about the async behavior of audioRef.play()
-
-    return () => {
-      audioElement?.removeEventListener('ended', handleSongEnd);
-    };
-
-  }, [repeat, currentTime, play, shuffle, currentSongIndex, duration, randomIndex, songList, currentSong, dispatch]);
-
-  const handlePlay = async () => { //! -- IMPORTANT -- ONLY ATTEMPT TO PLAY IF A CURRENT SONG IS ACTIVE, OTHERWISE YOU WILL GET A DOM ERROR SINCE ITS ATTEMPTING TO PLAY PLAYBACK OF UNDEFINED
-    if(audioRef.current) {
-      if(audioRef.current.paused) {
-        audioRef.current.play()
-      }
-      if(play === false) {
-        dispatch(setPlay(true))
-      }
-    }
-  }
-
-  const handlePause = () => { // pause button when user hits pause button
-    if(audioRef.current) {
-      if(!audioRef.current.paused) {
-        audioRef.current.pause()
-      }
-      if(play === true) {
-        dispatch(setPlay(false))
-      }
-    }
-  }
-
-  const handleBack = () => { // go back one song when user hits the back button in media player
-    if (currentTime === duration && shuffle) {
-      dispatch(setCurrentSong(songList[randomIndex]))
-    } else {
-      dispatch(setCurrentSong(songList[currentSongIndex - 1] || songList[songList.length - 1]))
-    }
-  }
-
-  const handleSkip = () => { // go forward one song when user hits the skip button in media player
-    if (shuffle) {
-      dispatch(setCurrentSong(songList[randomIndex]))
-    } else {
-      dispatch(setCurrentSong(songList[currentSongIndex + 1] || songList[0]))
-    }
-  }
-
-  const handleVolume = (value: number | number[]) => {
-    setVolume(value)
-    localStorage.setItem('novawave-volume', value.toString())
-    if(audioRef.current) {
+// handle live time update on slider bar
+const handleCurrentTime = ( value: number | number[] ) => {
+  setCurrentTime(value)
+  if(audioRef.current) {
       if(Array.isArray(value)) {
-        audioRef.current.volume = value[0]
+          audioRef.current.currentTime = value[0]
       } else {
-        audioRef.current.volume = value
+          audioRef.current.currentTime = value
       }
-    }
   }
+}
 
-  const handleTimeUpdate = () => {
-    if(audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime)
-      setDuration(audioRef.current.duration)
-    }
-  }
-
-  const handleCurrentTime = (value: number | number[]) => {
-    setCurrentTime(value)
-    if(audioRef.current) {
+// handle volume change
+const handleVolume = ( value: number | number[]) => {
+  setVolume(value)
+  localStorage.setItem('novawave-volume', value.toString())
+  if(audioRef.current) {
       if(Array.isArray(value)) {
-        audioRef.current.currentTime = value[0]
+          audioRef.current.volume = value[0]
       } else {
-        audioRef.current.currentTime = value
+          audioRef.current.volume = value
       }
-    }
   }
-
-  const handleRepeat = () => {
-    if (!repeat) {
-      setRepeat(true)
-    } else {
-      setRepeat(false)
-    }
-  }
-
-  const handleShuffle = () => {
-    if (!shuffle) {
-      setShuffle(true)
-    } else {
-      setShuffle(false)
-    }
-  }
-
-  function formatTimestamp(currentTime: number) {
-    // Calculate the elapsed time in seconds
-    const elapsedMinutes = Math.floor(currentTime / 60);
-    const elapsedSeconds = Math.floor(currentTime % 60);
-
-    // Format the timestamp
-    const formattedTimestamp = `${elapsedMinutes}:${elapsedSeconds < 10 ? '0' : ''}${elapsedSeconds}`;
-    return formattedTimestamp;
-  }
+}
 
   return (
     <div
@@ -221,7 +110,7 @@ export const Footer: React.FC = () => {
           <audio
             ref={audioRef}
             src={currentSong?.audio}
-            onTimeUpdate={handleTimeUpdate}
+            onTimeUpdate={() => handleTimeUpdate(audioRef, setCurrentTime, setDuration)}
           />
           { /* AUDIO PLAYER */ }
 
@@ -246,14 +135,14 @@ export const Footer: React.FC = () => {
 
           <div className={styles.progressController}>
             <div className={styles.controlButtons}>
-              <i id={ shuffle ? `${styles.shuffleActive}` : `${styles.shuffleInactive}` } className="fas fa-random" onClick={handleShuffle}></i>
-              <i className="fas fa-step-backward" onClick={handleBack}></i>
+              <i id={ shuffle ? `${styles.shuffleActive}` : `${styles.shuffleInactive}` } className="fas fa-random" onClick={() => handleShuffle(shuffle, setShuffle)}></i>
+              <i className="fas fa-step-backward" onClick={() => handleBack(currentTime, duration, shuffle, dispatch, setCurrentSong, songList, currentSongIndex, randomIndex)}></i>
 
-              { !play && <div className={`fas fa-play ${styles.playPause}`} onClick={handlePlay}></div> }
-              { play && <div className={`fas fa-pause ${styles.playPause}`} onClick={handlePause}></div> }
+              { !play && <div className={`fas fa-play ${styles.playPause}`} onClick={() => handlePlay(audioRef, dispatch, play, setPlay)}></div> }
+              { play && <div className={`fas fa-pause ${styles.playPause}`} onClick={() => handlePause(audioRef, dispatch, play, setPlay)}></div> }
 
-              <i className="fas fa-step-forward" onClick={handleSkip}></i>
-              <i id={ repeat ? `${styles.repeatButtonActive}` : `${styles.repeatButtonInactive}` } className={`fas fa-undo-alt`} onClick={handleRepeat}></i>
+              <i className="fas fa-step-forward" onClick={() => handleSkip(shuffle, dispatch, setCurrentSong, songList, currentSongIndex, randomIndex)}></i>
+              <i id={ repeat ? `${styles.repeatButtonActive}` : `${styles.repeatButtonInactive}` } className={`fas fa-undo-alt`} onClick={() => handleRepeat(repeat, setRepeat)}></i>
             </div>
             <div className={styles.progressContainer} >
             { currentSong && <span>{formatTimestamp(currentTime as number)}</span>}

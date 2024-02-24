@@ -1,27 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-export interface TrackInterface {
-    _id: string
-    title: string
-    length: string
-    audio: string
-    image: string
-    plays: number
-
-    artist: string
-    artistName: string
-    artistAboutImage: string
-    artistMonthlyListeners: number
-
-    album: string
-    albumName: string
-}
-
-interface PlayerState {
-    currentSong: null | TrackInterface
-    songList: [] | TrackInterface[]
-    play: boolean
-}
+import { PlayerState } from "./playerTypes";
 
 const dummyTrack = {
     _id: "65c539be310ebe25c934a838",
