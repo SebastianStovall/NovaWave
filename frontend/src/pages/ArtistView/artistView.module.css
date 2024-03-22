@@ -1,0 +1,40 @@
+.mediaContent {
+  height: 40vh;
+
+  display: flex;
+  position: relative;
+
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.coverBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 100%);  /* Filter to darken backdrop for white backgrounds */
+  /* background-color: red; */    /* TODO ---> THIS IS GOOD FOR JS NOW  */
+  /* opacity: 0.5; */             /* TODO ---> THIS IS GOOD FOR JS NOW  */
+}
+
+.bannerArtistInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-bottom: 40px;
+}
+.bannerArtistInfo h1 {
+    font-size: 96px;      /* TODO ---> Use the overlay logic for this from the hook  */
+    color: white;
+    z-index: 1;
+}
+.bannerArtistInfo p {
+    color: white;
+    z-index: 1;
+}
+
+.songsContainer {
+  height: 2000px; /* For now, just to see what gradient will end up looking like */
+}

@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
                 if(location.pathname === '/') {
                     // DASHBOARD
                     bgOpacity = Math.min(scrollPosition / 120, 1);
-                } else {
+                } else if(location.pathname.split("/")[1] === 'album' || location.pathname.split("/")[1] === 'collection') {
                     // MEDIA VIEW PAGE
                     const steps = Math.min(Math.floor((scrollPosition - 179) / 5), 12);
                     bgOpacity = Math.min(steps * 0.05, 0.6);
@@ -51,6 +51,8 @@ export const Header: React.FC = () => {
                         headerPlayButton.style.opacity = '0'
                         headerMediaText.style.opacity = '0'
                     }
+                } else if(location.pathname.split("/")[1] === 'artist') {
+                    // TODO ---> logic for handling header change color on artist page
                 }
 
                 if(location.pathname === '/') {
