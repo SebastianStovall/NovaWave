@@ -1,23 +1,130 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styles from "./footer.module.css";
 import { NowPlayingButton } from "../UI/nowPlayingButton/nowPlayingButton";
+
+// DISPATCH + App Selector
+import { useAppDispatch } from "../../hooks";
 import { useAppSelector } from "../../hooks";
 
+// SLIDER
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+
+// REDUCER ACTIONS
+import { setPlay, setCurrentSong } from "../../store/player/player";
+
+// Hooks
+import { useAudioPlayer } from "../../hooks/useAudioPlayer";
+
+// Helper Functions
+import {
+  handlePlay,
+  handlePause,
+  handleBack,
+  handleSkip,
+  handleTimeUpdate,
+  handleRepeat,
+  handleShuffle,
+  formatTimestamp
+} from "../../utils/audio/audioPlayerHelpers";
+
 export const Footer: React.FC = () => {
-  const user = useAppSelector((state) => state.session.user)
+  const user = useAppSelector((state) => state.session.user);
+
+  const dispatch = useAppDispatch();
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // global audio state
+  const songList = useAppSelector((state) => state.player.songList);
+  const play = useAppSelector((state) => state.player.play);
+  const currentSong = useAppSelector((state) => state.player.currentSong);
+
+  // Local audio useState()
+  const [currentTime, setCurrentTime] = useState<number | number[]>(0);
+  const [duration, setDuration] = useState<number>(0);
+  const [volume, setVolume] = useState<number | number[]>(0.15);
+  const [repeat, setRepeat] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [currentSongIndex, setCurrentSongIndex] = useState<number>(-1);
+  const randomIndex = Math.floor(Math.random() * songList.length);
+
+  const [volumeHovered, setVolumeHovered] = useState(false);
+  const [progressBarHovered, setProgressBarHovered] = useState(false);
+
+  // Hook that handles the useEffect effects for audio player
+  useAudioPlayer(
+    play,
+    currentSong,
+    dispatch,
+    songList,
+    currentSongIndex,
+    repeat,
+    shuffle,
+    audioRef,
+    randomIndex,
+    setCurrentSongIndex,
+    setVolume,
+    setCurrentSong
+  )
+
+// handle live time update on slider bar
+const handleCurrentTime = ( value: number | number[] ) => {
+  setCurrentTime(value)
+  if(audioRef.current) {
+      if(Array.isArray(value)) {
+          audioRef.current.currentTime = value[0]
+      } else {
+          audioRef.current.currentTime = value
+      }
+  }
+}
+
+// handle volume change
+const handleVolume = ( value: number | number[]) => {
+  setVolume(value)
+  localStorage.setItem('novawave-volume', value.toString())
+  if(audioRef.current) {
+      if(Array.isArray(value)) {
+          audioRef.current.volume = value[0]
+      } else {
+          audioRef.current.volume = value
+      }
+  }
+}
 
   return (
-    <div className={styles.footer} style={{background: `${user ? '#000000' : 'linear-gradient(to right, #ae2896, #509bf5)'}`, backgroundSize: `${user ? 'auto' : '300%'}`}}>
-      { user ?
+    <div
+      className={styles.footer}
+      style={{
+        background: `${
+          user ? "#000000" : "linear-gradient(to right, #ae2896, #509bf5)"
+        }`,
+        backgroundSize: `${user ? "auto" : "300%"}`,
+      }}
+    >
+      {user ? (
+        //! ---------------- MEDIA PLAYER WHEN SIGNED IN -------------------------------
         <div className={styles.musicPlayer}>
+
+          { /* AUDIO PLAYER */ }
+          <audio
+            ref={audioRef}
+            src={currentSong?.audio}
+            onTimeUpdate={() => handleTimeUpdate(audioRef, setCurrentTime, setDuration)}
+          />
+          { /* AUDIO PLAYER */ }
+
           <div className={styles.songBar}>
             <div className={styles.songInfo}>
               <div className={styles.imageContainer}>
-                <img src="https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif" alt="musicPlayerCurrentlyPlayingImage" />
+                <img
+                  src={currentSong !== null ? currentSong.image : "https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/Yin-Yang-Tapes-Summer-Season-Album-2.jfif"}
+                  alt="musicPlayerCurrentlyPlayingImage"
+                />
               </div>
               <div>
-                <p className={styles.title}>Bloody 98</p>
-                <p className={styles.artist}>$uicideboy$</p>
+                <p className={styles.title}>{currentSong !== null ? currentSong.title : 'Bloody 98'}</p>
+                <p className={styles.artist}>{currentSong !== null ? currentSong.artistName : '$uicideboy$'}</p>
               </div>
             </div>
 
@@ -28,42 +135,76 @@ export const Footer: React.FC = () => {
 
           <div className={styles.progressController}>
             <div className={styles.controlButtons}>
-              <i className="fas fa-random"></i>
-              <i className="fas fa-step-backward"></i>
-              <div className={`fas fa-play ${styles.playPause}`}></div>
-              <i className="fas fa-step-forward"></i>
-              <i className="fas fa-undo-alt"></i>
+              <i id={ shuffle ? `${styles.shuffleActive}` : `${styles.shuffleInactive}` } className="fas fa-random" onClick={() => handleShuffle(shuffle, setShuffle)}></i>
+              <i className="fas fa-step-backward" onClick={() => handleBack(currentTime, duration, shuffle, dispatch, setCurrentSong, songList, currentSongIndex, randomIndex)}></i>
+
+              { !play && <div className={`fas fa-play ${styles.playPause}`} onClick={() => handlePlay(audioRef, dispatch, play, setPlay)}></div> }
+              { play && <div className={`fas fa-pause ${styles.playPause}`} onClick={() => handlePause(audioRef, dispatch, play, setPlay)}></div> }
+
+              <i className="fas fa-step-forward" onClick={() => handleSkip(shuffle, dispatch, setCurrentSong, songList, currentSongIndex, randomIndex)}></i>
+              <i id={ repeat ? `${styles.repeatButtonActive}` : `${styles.repeatButtonInactive}` } className={`fas fa-undo-alt`} onClick={() => handleRepeat(repeat, setRepeat)}></i>
             </div>
-            <div className={styles.progressContainer}>
-              <span>0:49</span>
-                <div className={styles.progressBar}>
-                  <div className={styles.progress}></div>
-                </div>
-              <span>3:15</span>
+            <div className={styles.progressContainer} >
+            { currentSong && <span>{formatTimestamp(currentTime as number)}</span>}
+              <div
+                className={styles.progressBar}
+                onMouseEnter={() => setProgressBarHovered(true)}
+                onMouseLeave={() => setProgressBarHovered(false)}
+              >
+                <Slider
+                  min={0}
+                  max={duration || 0} // Ensure duration is always a number
+                  step={0.1}
+                  value={currentTime}
+                  onChange={handleCurrentTime}
+                  trackStyle={{ backgroundColor: progressBarHovered ? '#26f7fd' : '#ddd', height: 4 }}
+                  railStyle={{ backgroundColor: '#4d4d4d', height: 4 }}
+                  handleStyle={{ backgroundColor: progressBarHovered ? 'white' : 'transparent', border: 'none', opacity: 1, height: 14, width: 14 }}
+                />
+              </div>
+              { currentSong && <span>{currentSong.length}</span>}
             </div>
           </div>
 
           <div className={styles.otherFeatures}>
             <NowPlayingButton />
-            <div className={styles.volumeBar}>
+            <div
+              className={styles.volumeBar}
+              onMouseEnter={() => setVolumeHovered(true)}
+              onMouseLeave={() => setVolumeHovered(false)}
+            >
               <i className="fas fa-volume-down"></i>
               <div className={styles.progressBar}>
-                <div className={styles.progress}></div>
+                {/* Use the Slider component */}
+                <Slider
+                  min={0}
+                  max={0.5}
+                  step={0.01}
+                  value={volume}
+                  onChange={handleVolume}
+                  trackStyle={{ backgroundColor: volumeHovered ? '#26f7fd' : '#ddd' }}
+                  railStyle={{ backgroundColor: '#999' }}
+                  handleStyle={{
+                    backgroundColor: volumeHovered ? 'white' : 'transparent',
+                    border: 'none',
+                    opacity: 1,
+                  }}
+                />
               </div>
             </div>
             <i className="fas fa-compress"></i>
           </div>
-
         </div>
-        :
+      ) : (
+        //* ---------------- MEDIA PLAYER WHEN NOT SIGNED IN -------------------------------
         <>
           <div className={styles.previewText}>
             <h6>Preview of NovaWave</h6>
             <p>Sign up to start listening to your favorite songs.</p>
           </div>
-            <button>Sign up Free</button>
+          <button>Sign up Free</button>
         </>
-      }
+      )}
     </div>
   );
 };

@@ -101,7 +101,7 @@ sudo /usr/bin/mongod --dbpath /var/lib/mongodb
 
 7. check mongodb status and connect (To exit ---> ctrl + d)
 ```bash
-mongosh --host <INSERT_IP_HERE> --port 27017
+mongosh --host 127.0.0.1 --port 27017
 ```
 
 <br />

@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { changeGradient, changeMediaInfo } from '../../store/header/header'
 import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/media'
+import { setPlay } from '../../store/player/player'
+import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { useLocation } from 'react-router-dom'
 import styles from './mediaView.module.css'
-import { toggleSidebar } from '../../store/sidebar/sidebar'
 
 
 export const MediaView: React.FC = () => {
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
-
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const [isPlaying, setIsPlaying] = useState<boolean>(true)
-
 
     const dispatch = useAppDispatch();
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
@@ -26,52 +23,31 @@ export const MediaView: React.FC = () => {
     const user: any = useAppSelector((state) => state.session.user);
     const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
 
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+    const play: any = useAppSelector((state) => state.player.play);
+    const currentSong: any = useAppSelector((state) => state.player.currentSong);
+
+
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
         if(mediaInfo.mediaType === 'collection') {
             mediaInfo.mediaType = 'playlist'
-            mediaInfo.mediaId = user?.likedSongsPlaylistId
         }
         dispatch(addMediaToRecentlyViewed(mediaInfo))
         dispatch(updateCurrentMedia(mediaInfo))
-    }, [dispatch, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId])
+    }, [dispatch, location.pathname, mediaId, mediaType])
 
     useEffect(() => {
         dispatch(changeMediaInfo(mediaType === 'album' ? currentAlbumMedia?.title : currentPlaylistMedia?.title ))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, currentPlaylistMedia, currentAlbumMedia, data.muted, mediaType])
 
-    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType, user?.likedSongsPlaylistId]
+    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType]
     useMediaViewResize(dependencies);
 
     if(isLoading) {
         return <p>...Loading</p>
     }
-
-
-    //! --------------------------------------------------------------------================================================----------------------------------------//
-    type ActiveSongs = {
-        [key: string]: number
-    }
-    const activeSongs: ActiveSongs = {}
-    for(let i = 0; i < currentAlbumMedia.tracks.length; i++) {
-        activeSongs[i.toString()] = 0
-    }
-
-    function isSongPlaying() {
-        for(let index in activeSongs) {
-            if(activeSongs[index] === 1) {
-                activeSongs[index] = 0
-                return true
-            }
-        }
-        return false
-    }
-
-    function togglePause(isPlaying: boolean, index: number) {
-        
-    }
-    //! --------------------------------------------------------------------================================================----------------------------------------//
 
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
@@ -99,8 +75,8 @@ export const MediaView: React.FC = () => {
             <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
-                        <div className={styles.resumeAndPause}>
-                            <div className={`fas fa-play ${styles.playPause}`}></div>
+                        <div className={styles.resumeAndPause} onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>
+                            <div className={`${ (play && currentSong.album === mediaId) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
                             {/* <i className="fa fa-heart"></i> */}
@@ -133,12 +109,23 @@ export const MediaView: React.FC = () => {
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                         >
-                            {/* // TODO ============================================================ */}
-                            {hoveredIndex !== index ? <div>{index + 1}</div> : <div onClick={() => togglePause(isPlaying, index)} id={styles.toggleButton} className={`${isPlaying ? styles.togglePause : ''}`}>&#9654;</div>}
-                            {/* // TODO ============================================================ */}
+
+                            {
+                                //* When NOT hovering over audio track, but if track is queued VS not queued
+                            hoveredIndex !== index ?
+                                <div
+                                    id={currentSong._id === track._id ? styles.activeStyingsHovered : styles.trackNumber}
+                                >
+                                    {currentSong._id !== track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
+                                </div>
+                                :
+                                currentSong._id === track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                //* When hovering over audio, if track is queued VS not queued
+                            }
+
                             <div className={styles.song}>
                                 <div>
-                                    <p>{track.title}</p>
+                                    <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
                                     <p>{track.artistName}</p>
                                 </div>
                                 <i className="fa fa-heart-o"></i>

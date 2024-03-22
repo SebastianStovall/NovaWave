@@ -1,14 +1,26 @@
 import React, {useEffect} from "react";
 import styles from './header.module.css'
 import { useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { useLocation } from 'react-router-dom';
+import { handlePlayFromStart } from "../../utils/audio/mediaViewHelpers";
 import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../store/session/session";
 
 export const Header: React.FC = () => {
-
+    const navigate = useNavigate()
     const user = useAppSelector((state) => state.session.user)
     const headerState = useAppSelector((state) => state.header)
     const location = useLocation();
+
+    // Audio Related
+    const dispatch = useAppDispatch();
+    const songList = useAppSelector((state) => state.player.songList);
+    const play = useAppSelector((state) => state.player.play)
+    const currentSong = useAppSelector((state) => state.player.currentSong)
+    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
+    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
 
     useEffect(() => { /* header component is absolutely positioned with relative container so full width works, however, JS scroll logic is needed to acheieve sticking behavior due to relatively positioned parent */
         const handleScroll = () => {
@@ -55,10 +67,30 @@ export const Header: React.FC = () => {
         const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
         mainContent.addEventListener('scroll', handleScroll); // attach scroll event listener onto mainContent div
 
+
+
         return () => {
             mainContent.removeEventListener('scroll', handleScroll);
         };
     }, [headerState, location.pathname]);
+
+    const logoutUser = async () => {
+        await dispatch(logout());
+        navigate('/')
+      };
+
+    function playOrPause() {
+        if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
+            // If header media album name matches the currently queued song list album name
+            if(play === true) {
+                return `fas fa-pause`
+            } else {
+                return `fas fa-play`
+            }
+        } else {
+            return `fas fa-play`
+        }
+    }
 
     return (
         <div className={styles.header}>
@@ -75,8 +107,12 @@ export const Header: React.FC = () => {
 
                     {headerState && headerState.media && (
                     <div className={styles.headerMediaContainer}>
-                        <div className={mediaViewStyles.resumeAndPause} style={{width: '48px', height: '48px', opacity: '0', transition: 'opacity 0.5s ease'}}>
-                            <div className={`fas fa-play`}></div>
+                        <div
+                            className={mediaViewStyles.resumeAndPause}
+                            style={{width: '48px', height: '48px', opacity: '0', transition: 'opacity 0.5s ease'}}
+                            onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, location.pathname.split('/')[1], play, dispatch)}
+                        >
+                            <div className={playOrPause()}></div>
                         </div>
                     </div>
                     )}
@@ -87,15 +123,19 @@ export const Header: React.FC = () => {
                 {user ?
                     <div className={styles.profileIconContainer}>
                         <button>
-                            <img src='https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg' alt="pf-pic" />
+                            <img src='https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg' alt="pf-pic" onClick={logoutUser}/>
                         </button>
                     </div>
                 :
                     <ul className={styles.headerAuthRedirect}>
                         <li>
-                            <a href="/">Sign up</a>
+                            <a href="/signup">Sign up</a>
                         </li>
-                        <button type="button">Log In</button>
+                        <button type="button">
+                            <a href='/login'>
+                                Log In
+                            </a>
+                        </button>
                     </ul>
                 }
             </div>

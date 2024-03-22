@@ -95,7 +95,13 @@ export const Dashboard: React.FC = () => {
       <h2 className={styles.recommended}>Recommended For Today</h2>
       <div className={styles.mainGridSection}>
         {recommendedAlbums.map((album, index) => (
-          <div key={index} onClick={() => navigate(`/album/${album._id}`)}>
+          <div key={index} onClick={(e) => {
+            if ((e.target as HTMLElement).tagName.toLowerCase() === 'p') {
+              navigate(`/artist/${album.artist}`)
+            } else {
+              navigate(`/album/${album._id}`)
+            }
+            }}>
             <img
               src={album.image as string}
               alt="playlist_album_photo"
@@ -103,8 +109,8 @@ export const Dashboard: React.FC = () => {
             <div className={styles.playButton}>
               <span className="fa fa-play" id={styles.playFa}></span>
             </div>
-            <h4>{album.artistName}</h4>
-            <p>{album.title}</p>
+            <h4>{album.title}</h4>
+            <p className={styles.artistClick}>{album.artistName}</p>
           </div>
         ))}
       </div>
@@ -113,7 +119,13 @@ export const Dashboard: React.FC = () => {
       <h2 className={styles.recommended}>Recently Viewed</h2>
       <div className={styles.mainGridSection}>
         {recentlyViewed.map((album: any, index) => (
-          <div key={index} onClick={() => navigate(`/album/${album._id}`)}>
+          <div key={index} onClick={(e) => {
+            if ((e.target as HTMLElement).tagName.toLowerCase() === 'p') {
+              navigate(`/artist/${album.artist}`)
+            } else {
+              navigate(`/album/${album._id}`)
+            }
+            }}>
           <img
             src={album.image as string}
             alt="playlist_album_photo"
@@ -121,8 +133,8 @@ export const Dashboard: React.FC = () => {
           <div className={styles.playButton}>
             <span className="fa fa-play" id={styles.playFa}></span>
           </div>
-          <h4>{album.artistName}</h4>
-          <p>{album.title}</p>
+          <h4>{album.title}</h4>
+          <p className={styles.artistClick} onClick={() => navigate(`/artist/${album.artist}`)}>{album.artistName}</p>
           </div>
         ))}
       </div>
