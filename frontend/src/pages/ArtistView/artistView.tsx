@@ -5,6 +5,8 @@ import { usePalette } from 'react-palette'
 
 // import { addMediaToRecentlyViewed } from '../../store/media/media'
 import { updateCurrentMedia } from '../../store/media/media'
+import { changeMediaInfo } from '../../store/header/header'
+import { changeGradient } from '../../store/header/header'
 
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import styles from './artistView.module.css'
@@ -16,13 +18,18 @@ export const ArtistView: React.FC = () => {
 
     const artistData: any = useAppSelector((state) => state.media.artistData)
     const dispatch = useAppDispatch()
-    const { data } = usePalette(artistData?.bannerImage);
+    const { data } = usePalette(artistData !== null ? artistData.bannerImage : '');
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
         // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> fix
         dispatch(updateCurrentMedia(mediaInfo))
     }, [dispatch, location.pathname, mediaId, mediaType])
+
+    useEffect(() => {
+        dispatch(changeMediaInfo(artistData?.name))
+        dispatch(changeGradient(`${hexToRgb(data.muted)}`))
+    }, [dispatch, data.muted, artistData])
 
     return (
         <div>
