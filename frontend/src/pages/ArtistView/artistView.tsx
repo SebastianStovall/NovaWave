@@ -31,11 +31,20 @@ export const ArtistView: React.FC = () => {
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, data.muted, artistData])
 
+    // TODO -- GONNA HAVE TO ADD THIS EVERYWHERE TO SCROLL TO TOP OF MAIN CONTENT AND RESET HEADER COLOR TO TRANSPARENT ----
+    const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
+    const header = document.querySelector('.header_header__lOwdN') as HTMLElement;
+    if(mainContent) {
+        mainContent.scrollTop = 0;
+        header.style.background = 'transparent'
+    }
+    // TODO ---------------------------------------------------------------------------------------------------------------
+
     return (
         <div>
             <div className={styles.mediaContent} style={{backgroundImage: `url(${artistData?.bannerImage})`, backgroundPosition: 'center', backgroundSize: 'cover'}}>
                 {/* Artist name and monthly listners relative div here */}
-                <div className={styles.coverBackground}>
+                <div className={styles.coverBannerBackground}>
                     {/* USED FOR FADE IN AND OUT OF COVER IMAGE */}
                 </div>
                 <div className={styles.bannerArtistInfo}>

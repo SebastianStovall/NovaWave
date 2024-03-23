@@ -52,13 +52,33 @@ export const Header: React.FC = () => {
                         headerMediaText.style.opacity = '0'
                     }
                 } else if(location.pathname.split("/")[1] === 'artist') {
-                    // TODO ---> logic for handling header change color on artist page
+                    // ARTIST PAGE
+                    const coverBackground = document.querySelector('.artistView_coverBannerBackground__eHIZw') as HTMLDivElement;
+                    const artistBannerContainer = document.querySelector('.artistView_mediaContent__R7nyD') as HTMLDivElement;
+
+                    const maxOpacity = 0.6;
+                    const thresholdDistance = artistBannerContainer.scrollHeight - 219;
+
+                    if (scrollPosition >= thresholdDistance) {
+                        bgOpacity = maxOpacity;
+                        // let backgroundSizePercentage = 120 - ((bgOpacity / maxOpacity) * 5);
+                        // artistBannerContainer.style.backgroundSize = `${backgroundSizePercentage}%`
+                        header.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 100vw),rgba(${headerState.color}, ${(bgOpacity / 0.6)})`;
+                        coverBackground.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 900vw),rgba(${headerState.color}, ${((bgOpacity / 0.6))})`;
+                    } else {
+                        bgOpacity = (scrollPosition / thresholdDistance) * maxOpacity;
+                        // let backgroundSizePercentage = 120 - ((bgOpacity / maxOpacity) * 5);
+                        // artistBannerContainer.style.backgroundSize = `${backgroundSizePercentage}%`
+                        header.style.background = `linear-gradient(rgba(0,0,0,${0}) 0,rgba(18,18,18,${(0)}) 100vw),rgba(${headerState.color}, ${(0)})`;
+                        coverBackground.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 900vw),rgba(${headerState.color}, ${((bgOpacity / 0.6))})`;
+                    }
+
                 }
 
                 if(location.pathname === '/') {
                     // DASHBOARD
                     header.style.backgroundColor = `rgba(${headerState.color}, ${bgOpacity})`;
-                } else {
+                } else if(location.pathname.split("/")[1] === 'album' || location.pathname.split("/")[1] === 'collection') {
                     // MEDIA VIEW
                     header.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity === 0.6 ? 1 : bgOpacity)}) 100vw),rgba(${headerState.color}, ${(bgOpacity === 0.6 ? 1 : bgOpacity)})`;
                 }
@@ -79,7 +99,7 @@ export const Header: React.FC = () => {
     const logoutUser = async () => {
         await dispatch(logout());
         navigate('/')
-      };
+    };
 
     function playOrPause() {
         if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
@@ -144,15 +164,3 @@ export const Header: React.FC = () => {
         </div>
     );
 };
-
-
-
-
-// // Original logic for fade in for mediaView header
-// if (scrollPosition < 179) {
-//     bgOpacity = 0;
-// } else if (scrollPosition >= 179 && scrollPosition <= 184) {
-//     // have ranges defined here at step by 0.05...
-// } else {
-//     bgOpacity = Math.min(scrollPosition / 480, 0.60)
-// }
