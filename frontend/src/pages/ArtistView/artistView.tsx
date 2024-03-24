@@ -42,7 +42,7 @@ export const ArtistView: React.FC = () => {
 
     return (
         <div>
-            <div className={styles.mediaContent} style={{backgroundImage: `url(${artistData?.bannerImage})`, backgroundPosition: 'center', backgroundSize: 'cover'}}>
+            <div className={styles.mediaContent} style={{backgroundImage: `url(${artistData?.bannerImage})`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
                 {/* Artist name and monthly listners relative div here */}
                 <div className={styles.coverBannerBackground}>
                     {/* USED FOR FADE IN AND OUT OF COVER IMAGE */}
