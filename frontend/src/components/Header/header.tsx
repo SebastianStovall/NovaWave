@@ -61,14 +61,10 @@ export const Header: React.FC = () => {
 
                     if (scrollPosition >= thresholdDistance) {
                         bgOpacity = maxOpacity;
-                        // let backgroundSizePercentage = 120 - ((bgOpacity / maxOpacity) * 5);
-                        // artistBannerContainer.style.backgroundSize = `${backgroundSizePercentage}%`
                         header.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 100vw),rgba(${headerState.color}, ${(bgOpacity / 0.6)})`;
                         coverBackground.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 900vw),rgba(${headerState.color}, ${((bgOpacity / 0.6))})`;
                     } else {
                         bgOpacity = (scrollPosition / thresholdDistance) * maxOpacity;
-                        // let backgroundSizePercentage = 120 - ((bgOpacity / maxOpacity) * 5);
-                        // artistBannerContainer.style.backgroundSize = `${backgroundSizePercentage}%`
                         header.style.background = `linear-gradient(rgba(0,0,0,${0}) 0,rgba(18,18,18,${(0)}) 100vw),rgba(${headerState.color}, ${(0)})`;
                         coverBackground.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 900vw),rgba(${headerState.color}, ${((bgOpacity / 0.6))})`;
                     }
