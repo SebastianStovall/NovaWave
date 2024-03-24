@@ -157,9 +157,6 @@ export const Dashboard: React.FC = () => {
         ))}
       </div>
 
-      {/* <audio controls>
-                <source src="https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+KILLKA.mp3" type="audio/mp3" />
-            </audio> */}
     </div>
   );
 };
