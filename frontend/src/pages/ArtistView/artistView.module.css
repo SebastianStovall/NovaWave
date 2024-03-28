@@ -33,6 +33,40 @@
     z-index: 1;
 }
 
+
+/* Styles After Banner Section */
+
 .songsContainer {
   height: 2000px; /* For now, just to see what gradient will end up looking like */
+}
+
+.followButton {
+    margin-left: 25px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-weight: 700;
+    background-color: transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    padding-block-start: calc(4px - 1px);
+    padding-block-end: calc(4px - 1px);
+    padding-inline-start: calc(16px - 1px);
+    padding-inline-end: calc(16px - 1px);
+    border: 1px solid #727272;
+    min-inline-size: 0px;
+    min-block-size: 32px;
+    color: white;
+
+}
+.followButton:hover {
+  min-block-size: 40px;
+  border: 1px solid white;
+}
+
+.popularText {
+  padding-left: 24px;
+  font-size: 21px;
+  color: white;
 }
