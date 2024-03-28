@@ -24,8 +24,8 @@ export const ArtistView: React.FC = () => {
     const dispatch = useAppDispatch()
     const { data } = usePalette(artistData !== null ? artistData.bannerImage : '');
 
-    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData); //! NEED TO CREATE BACKEND ROUTE FOR THIS
-    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData); //! NEED TO CREATE BACKEND ROUTE FOR THIS
+    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
+    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
     const artistTopSongs: any = useAppSelector((state) => state.media.artistTopSongs)
@@ -35,7 +35,7 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
-        // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> THIS IS BROKEN.... ITS HAPPENING BECAUSE WHEN I GO TO ARTIST PAGE ITS http://localhost:3000/artist/UNDEFINED <--- MAKE SURE ARTIST INFO ALWAYS GETTING PASSED IN
+        // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> THIS IS BROKEN.... ITS HAPPENING BECAUSE WHEN I GO TO ARTIST PAGE ITS http://localhost:3000/artist/UNDEFINED <--- MAKE SURE ARTIST INFO ALWAYS GETTING PASSED IN FROM DASHBOARD COMPONENT
         dispatch(updateCurrentMedia(mediaInfo))
     }, [dispatch, location.pathname, mediaId, mediaType])
 
