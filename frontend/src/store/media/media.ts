@@ -56,10 +56,34 @@ export const addMediaToRecentlyViewed = createAsyncThunk('media/addToRecentlyVie
 });
 
 
+// thunk to retreive artist top songs when user navigates to artist page
+export const retreiveArtistTopSongs = createAsyncThunk('media/getTopSongs', async (artistId: string | undefined, thunkAPI) => {
+  try {
+    const response = await fetch("/api/media/getTopSongs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({artistId: artistId}),
+    })
+
+    if (response.ok) {
+      const data = await response.json();
+      return data
+    } else {
+      const error = await response.json();
+      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      return thunkAPI.rejectWithValue(error);
+    }
+  } catch (e: any) {
+    console.error("There was an issue performing fetch to /api/media/getTopSongs")
+    return thunkAPI.rejectWithValue(e.message)
+  }
+});
+
+
 // Create a slice for the session state
 const mediaSlice = createSlice({
   name: "media",
-  initialState: { albumData: null, playlistData: null, artistData: null, isLoading: true },
+  initialState: { albumData: null, playlistData: null, artistData: null, artistTopSongs: null, isLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -76,6 +100,9 @@ const mediaSlice = createSlice({
       .addCase(addMediaToRecentlyViewed.fulfilled, (state, action) => {
         // no state change for this thunk
         // console.log("MESSAGE ---> ", action.payload)
+      })
+      .addCase(retreiveArtistTopSongs.fulfilled, (state, action) => {
+        state.artistTopSongs = action.payload.songs
       })
   },
 });

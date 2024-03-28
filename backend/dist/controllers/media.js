@@ -30,7 +30,7 @@ const getArtistTopSongs = async (req, res, next) => {
             throw new CustomError_1.default("Bad Request", "Entity information is missing in the request body", 400);
         }
         const songs = await (0, media_actions_1.getTopSongs)(artistId);
-        return res.status(200).json({ message: `Successfully Retreived Top Songs for artist ${artistId}`, songs: songs });
+        return res.status(200).json({ message: `Successfully Retreived Top Songs for artist`, songs: songs });
     }
     catch (e) {
         next(e);

@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { usePalette } from 'react-palette'
 
 // import { addMediaToRecentlyViewed } from '../../store/media/media'
-import { updateCurrentMedia } from '../../store/media/media'
+import { updateCurrentMedia, retreiveArtistTopSongs } from '../../store/media/media'
 import { changeMediaInfo } from '../../store/header/header'
 import { changeGradient } from '../../store/header/header'
 
@@ -15,6 +15,7 @@ import styles from './artistView.module.css'
 import mediaViewStyles from '../MediaView/mediaView.module.css'
 
 export const ArtistView: React.FC = () => {
+    const { artistId } = useParams();
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
@@ -27,12 +28,20 @@ export const ArtistView: React.FC = () => {
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData); //! NEED TO CREATE BACKEND ROUTE FOR THIS
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
+    const artistTopSongs: any = useAppSelector((state) => state.media.artistTopSongs)
+
+    console.log("RERENDER PAGE", artistTopSongs)
+    // TODO ------> USE ARTIST TOP SONGS ARRAY AS POPULAR GRID CONTENT. !!!!! PASS IN 'artistTopSongs' AS ITS OWN ALBUM!!! SHOULD WORK LIKE ANY OTHER ALBUM
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
-        // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> fix
+        // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> THIS IS BROKEN.... ITS HAPPENING BECAUSE WHEN I GO TO ARTIST PAGE ITS http://localhost:3000/artist/UNDEFINED <--- MAKE SURE ARTIST INFO ALWAYS GETTING PASSED IN
         dispatch(updateCurrentMedia(mediaInfo))
     }, [dispatch, location.pathname, mediaId, mediaType])
+
+    useEffect(() => {
+        dispatch(retreiveArtistTopSongs(artistId))
+    }, [dispatch, artistId])
 
     useEffect(() => {
         dispatch(changeMediaInfo(artistData?.name))

@@ -46,7 +46,7 @@ export const getArtistTopSongs: RequestHandler = async(req, res, next) => {
         }
 
         const songs = await getTopSongs(artistId)
-        return res.status(200).json({ message: `Successfully Retreived Top Songs for artist ${artistId}`, songs: songs});
+        return res.status(200).json({ message: `Successfully Retreived Top Songs for artist`, songs: songs});
 
     } catch(e) {
         next(e)
