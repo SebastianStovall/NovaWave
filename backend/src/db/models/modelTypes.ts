@@ -66,3 +66,20 @@ export interface UserDocumentPopulatedWithLikedSongs {
     createdAt: Date
     updatedAt: Date
 }
+
+export interface TrackDocument {
+    _id: ObjectId
+    title: string
+    length: string
+    audio: string
+    image: string
+    plays: number
+
+    artist: ObjectId
+    artistName: string
+    artistAboutImage: string
+    artistMonthlyListeners: number
+
+    album?: ObjectId | null
+    albumName?: string | null
+}
