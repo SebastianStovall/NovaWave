@@ -27,6 +27,16 @@ export const handlePlayFromStart = (
             dispatch(setCurrentSong(currentAlbumMedia.tracks[indexOfCurrentSongInsideMedia]))
             dispatch(setPlay(true))
         }
+    } else if(mediaType === 'artist') {
+        if(indexOfCurrentSongInsideMedia === -1) { // if current song is NOT in the album we are trying to play, we will play album from the start
+            dispatch(setSongList(currentAlbumMedia.tracks))
+            dispatch(setCurrentSong(currentAlbumMedia.tracks[0]))
+            dispatch(setPlay(true))
+        } else {
+            dispatch(setSongList(currentAlbumMedia.tracks))
+            dispatch(setCurrentSong(currentAlbumMedia.tracks[indexOfCurrentSongInsideMedia]))
+            dispatch(setPlay(true))
+        }
     } else {
         // TODO --->  LOGIC IF YOUR LOOKING AT A PLAYLIST INSTEAD OF AN ALBUM
 
