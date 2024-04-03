@@ -5,7 +5,8 @@ import sidebarReducer from "./sidebar/sidebar";
 import headerReducer from "./header/header";
 import dashboardReducer from './dashboard/dashboard';
 import mediaReducer from './media/media';
-import playerReducer from './player/player'
+import playerReducer from './player/player';
+import artistReducer from './artist/artist'
 import persistantReducer from './persist/persist';
 
 import storage from "redux-persist/lib/storage"; // PERSIST
@@ -19,6 +20,7 @@ const reducer = combineReducers({
     dashboard: dashboardReducer,
     media: mediaReducer,
     player: playerReducer,
+    artist: artistReducer,
     persist: persistantReducer
 })
 
@@ -27,7 +29,7 @@ const persistConfig = {
   version: 1,
   storage,
   whitelist: ['persist'], // Add the reducers you want to persist here
-  blacklist: ['sidebar', 'library', 'session', 'header', 'dashboard', 'media', 'player'] // exclude reducers from persist here
+  blacklist: ['sidebar', 'library', 'session', 'header', 'dashboard', 'media', 'player', 'artist'] // exclude reducers from persist here
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)

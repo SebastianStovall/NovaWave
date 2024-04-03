@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTopSongs = exports.getMediaInfo = void 0;
+exports.getDiscography = exports.getTopSongs = exports.getMediaInfo = void 0;
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 const Artist_1 = require("../models/Artist");
 const Album_1 = require("../models/Album");
@@ -58,3 +58,17 @@ const getTopSongs = async (artistId) => {
     }
 };
 exports.getTopSongs = getTopSongs;
+const getDiscography = async (artistId) => {
+    try {
+        const artist = await Artist_1.ArtistModel.findById(artistId);
+        if (!artist) {
+            throw new CustomError_1.default("Query Error", `${artistId} document could not be found`, 500);
+        }
+        const discography = await Album_1.AlbumModel.find({ artist: artistId });
+        return discography;
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.getDiscography = getDiscography;

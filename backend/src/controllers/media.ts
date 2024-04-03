@@ -31,24 +31,3 @@ export const updateCurrentMedia: RequestHandler = async(req, res, next) => {
         next(e)
     }
 }
-
-
-export const getArtistTopSongs: RequestHandler = async(req, res, next) => {
-    try {
-        const { artistId } = req.body;
-
-        if(!artistId) {
-            throw new CustomError(
-                "Bad Request",
-                "Entity information is missing in the request body",
-                400
-            );
-        }
-
-        const songs = await getTopSongs(artistId)
-        return res.status(200).json({ message: `Successfully Retreived Top Songs for artist`, songs: songs});
-
-    } catch(e) {
-        next(e)
-    }
-}

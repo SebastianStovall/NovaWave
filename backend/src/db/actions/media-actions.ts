@@ -74,3 +74,24 @@ export const getTopSongs = async(artistId: string) => {
         throw e
     }
 }
+
+
+export const getDiscography = async(artistId: string) => {
+    try {
+        const artist: ArtistDocument | null = await ArtistModel.findById(artistId);
+            if(!artist) {
+                throw new CustomError(
+                    "Query Error",
+                    `${artistId} document could not be found`,
+                    500
+                );
+            }
+
+        const discography: AlbumDocument[] = await AlbumModel.find({ artist: artistId });
+
+        return discography;
+
+    } catch(e: any) {
+        throw e
+    }
+}

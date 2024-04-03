@@ -6,6 +6,7 @@ import library from './library'
 import tracks from './track'
 import dashboard from './dashboard'
 import media from './media'
+import artist from './artist'
 
 const router = Router()
 
@@ -17,6 +18,7 @@ export default (): Router => { // wire all routers to single router to be used i
     tracks(router);
     dashboard(router);
     media(router);
+    artist(router);
 
     return router
 }

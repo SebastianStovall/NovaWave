@@ -4,7 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks'
 import { usePalette } from 'react-palette'
 
 // import { addMediaToRecentlyViewed } from '../../store/media/media'
-import { updateCurrentMedia, retreiveArtistTopSongs } from '../../store/media/media'
+import { updateCurrentMedia } from '../../store/media/media'
+import { retreiveArtistDiscography, retreiveArtistTopSongs } from '../../store/artist/artist'
 import { changeMediaInfo } from '../../store/header/header'
 import { changeGradient } from '../../store/header/header'
 
@@ -22,15 +23,21 @@ export const ArtistView: React.FC = () => {
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
-    const artistData: any = useAppSelector((state) => state.media.artistData)
+    // media state slice
+    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
+    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
+    const artistData: any = useAppSelector((state) => state.media.artistData);
+    
     const dispatch = useAppDispatch()
     const { data } = usePalette(artistData !== null ? artistData.bannerImage : '');
 
-    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
-    const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
+    // player state slice
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
-    const artistTopSongs: any = useAppSelector((state) => state.media.artistTopSongs);
+
+    // artist state slice
+    const artistTopSongs: any = useAppSelector((state) => state.artist.artistTopSongs);
+    const dicography: any = useAppSelector((state) => state.artist.artistDiscography);
 
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -42,6 +49,7 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         dispatch(retreiveArtistTopSongs(artistId))
+        dispatch(retreiveArtistDiscography(artistId))
     }, [dispatch, artistId])
 
     useEffect(() => {
