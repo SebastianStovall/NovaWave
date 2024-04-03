@@ -22,6 +22,9 @@ export const Header: React.FC = () => {
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
 
+    // Artist Page Related
+    const artistTopSongs: any = useAppSelector((state) => state.artist.artistTopSongs);
+
     useEffect(() => { /* header component is absolutely positioned with relative container so full width works, however, JS scroll logic is needed to acheieve sticking behavior due to relatively positioned parent */
         const handleScroll = () => {
             const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
@@ -44,6 +47,7 @@ export const Header: React.FC = () => {
                     const headerPlayButton = document.querySelector('.mediaView_resumeAndPause__hK21k') as HTMLDivElement;
                     const headerMediaText = document.querySelector('.header_headerMediaText__u3IHJ') as HTMLDivElement;
 
+                    //* TOGGLE MEDIA TITLE TEXT + PLAY BUTTON OPACITY DEPENDING ON SCROLL POSITION
                     if(scrollPosition >= (playButtonContainer.scrollHeight + 10)) {
                         headerPlayButton.style.opacity = '1'
                         headerMediaText.style.opacity = '1'
@@ -67,6 +71,19 @@ export const Header: React.FC = () => {
                         bgOpacity = (scrollPosition / thresholdDistance) * maxOpacity;
                         header.style.background = `linear-gradient(rgba(0,0,0,${0}) 0,rgba(18,18,18,${(0)}) 100vw),rgba(${headerState.color}, ${(0)})`;
                         coverBackground.style.background = `linear-gradient(rgba(0,0,0,${bgOpacity}) 0,rgba(18,18,18,${(bgOpacity / 0.6)}) 900vw),rgba(${headerState.color}, ${((bgOpacity / 0.6))})`;
+                    }
+
+                    const artistBackgroundContainer = document.querySelector('.artistView_coverBannerBackground__eHIZw') as HTMLDivElement;
+                    const headerPlayButton = document.querySelector('.mediaView_resumeAndPause__hK21k') as HTMLDivElement;
+                    const headerMediaText = document.querySelector('.header_headerMediaText__u3IHJ') as HTMLDivElement;
+
+                    //* TOGGLE MEDIA TITLE TEXT + PLAY BUTTON OPACITY DEPENDING ON SCROLL POSITION
+                    if(scrollPosition >= (artistBackgroundContainer.clientHeight + 14)) {
+                        headerPlayButton.style.opacity = '1'
+                        headerMediaText.style.opacity = '1'
+                    } else {
+                        headerPlayButton.style.opacity = '0'
+                        headerMediaText.style.opacity = '0'
                     }
 
                 }
@@ -98,15 +115,33 @@ export const Header: React.FC = () => {
     };
 
     function playOrPause() {
-        if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
-            // If header media album name matches the currently queued song list album name
-            if(play === true) {
-                return `fas fa-pause`
+        //* MEDIA VIEW PAGE
+        if(location.pathname.split("/")[1] === 'album' || location.pathname.split("/")[1] === 'collection') {
+            if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
+                // If header media album name matches the currently queued song list album name
+                if(play === true) {
+                    return `fas fa-pause`
+                } else {
+                    return `fas fa-play`
+                }
             } else {
                 return `fas fa-play`
             }
-        } else {
-            return `fas fa-play`
+        } else if(location.pathname.split("/")[1] === 'artist') {
+            //* IF ON ARTIST PAGE
+            interface Song {
+                _id: string;
+            }
+            if(currentSong && artistTopSongs) {
+                const isCurrentSongInArtistTopSongs = artistTopSongs.some((song: Song) => song._id === currentSong._id);
+                if(play === true && isCurrentSongInArtistTopSongs) {
+                    return `fas fa-pause`
+                } else {
+                    return `fas fa-play`
+                }
+            } else {
+                return 'fas fa-play'
+            }
         }
     }
 
@@ -128,7 +163,15 @@ export const Header: React.FC = () => {
                         <div
                             className={mediaViewStyles.resumeAndPause}
                             style={{width: '48px', height: '48px', opacity: '0', transition: 'opacity 0.5s ease'}}
-                            onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, location.pathname.split('/')[1], play, dispatch)}
+                            onClick={() => {
+                                //! If you are on Media page, play the start of the album
+                                if (location.pathname.split('/')[1] !== 'artist') {
+                                    handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, location.pathname.split('/')[1], play, dispatch);
+                                } else {
+                                    //! If you are on artist page, the album will be the artists most popular songs
+                                    handlePlayFromStart({tracks: artistTopSongs}, currentPlaylistMedia, currentSong, location.pathname.split('/')[1], play, dispatch)
+                                }
+                            }}
                         >
                             <div className={playOrPause()}></div>
                         </div>
