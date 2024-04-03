@@ -65,13 +65,6 @@
   border: 1px solid white;
 }
 
-.popularText {
-  padding-left: 24px;
-  font-size: 21px;
-  color: white;
-  margin-bottom: 15px;
-}
-
 .songTitle {
   color: var(--primary);
   font-size: 14px;
@@ -107,4 +100,21 @@
 .viewCount {
   color: var(--secondary);
   font-size: 14px;
+}
+
+
+.songsContainer + h2 {
+  padding-left: 24px;
+  font-size: 21px;
+  color: white;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
+.artistHeading {
+  padding-left: 24px;
+  font-size: 22px;
+  color: white;
+  margin-bottom: 15px;
 }

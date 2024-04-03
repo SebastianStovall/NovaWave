@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { usePalette } from 'react-palette'
+import { useNavigate } from "react-router-dom";
 
 // import { addMediaToRecentlyViewed } from '../../store/media/media'
 import { updateCurrentMedia } from '../../store/media/media'
@@ -14,12 +15,16 @@ import { setPlay } from '../../store/player/player'
 
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { addCommasToNumber } from '../../utils/audio/numberUtils'
+import { AlbumDocument } from '../../../../backend/src/db/models/modelTypes';
+
 import styles from './artistView.module.css'
 import mediaViewStyles from '../MediaView/mediaView.module.css'
+import dashboardStyles from '../Dashboard/dashboard.module.css'
 
 export const ArtistView: React.FC = () => {
     const { artistId } = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
@@ -27,7 +32,7 @@ export const ArtistView: React.FC = () => {
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
     const artistData: any = useAppSelector((state) => state.media.artistData);
-    
+
     const dispatch = useAppDispatch()
     const { data } = usePalette(artistData !== null ? artistData.bannerImage : '');
 
@@ -94,7 +99,7 @@ export const ArtistView: React.FC = () => {
                     </div>
                 </div>
 
-                <h2 className={styles.popularText}>Popular</h2>
+                <h2 className={styles.artistHeading}>Popular</h2>
 
                 <div className={mediaViewStyles.flexGrid}>
                     { artistTopSongs?.map((track: any, index: number) => (
@@ -119,7 +124,7 @@ export const ArtistView: React.FC = () => {
                             }
 
                             <div className={mediaViewStyles.song}>
-                                <img src={track.image} width='40px' height='40px' style={{borderRadius: '5px'}} />
+                                <img src={track.image} width='40px' height='40px' style={{borderRadius: '5px'}} alt='album-cover-img' />
                                 <div className={styles.testThis}>
                                     <p id={currentSong._id === track._id ? mediaViewStyles.activeTitleText : ''} className={styles.songTitle}>{track.title}</p>
                                     <span aria-label="Explicit" className={styles.explicit}>E</span>
@@ -135,6 +140,24 @@ export const ArtistView: React.FC = () => {
                             </div>
                         </div> ))
                     }
+                </div>
+
+                <h2 className={styles.artistHeading} style={{marginTop: '80px'}}>Discography</h2>
+
+                <div className={dashboardStyles.mainGridSection} style={{paddingLeft: '24px', paddingRight: '24px'}}>
+                    {dicography?.map((album: AlbumDocument, index: number) => (
+                        <div key={index} onClick={(e) => navigate(`/album/${album._id}`)}>
+                        <img
+                            src={album.image as string}
+                            alt="playlist_album_photo"
+                        />
+                        <div className={dashboardStyles.playButton}>
+                            <span className="fa fa-play" id={dashboardStyles.playFa}></span>
+                        </div>
+                        <h4>{album.title}</h4>
+                        <p className={dashboardStyles.artistClick}>{album.yearReleased} · {album.tracks.length > 1 ? 'Album' : 'Single'}</p>
+                        </div>
+                    ))}
                 </div>
 
             </div>
