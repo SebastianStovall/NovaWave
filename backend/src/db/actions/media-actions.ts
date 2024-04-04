@@ -1,5 +1,5 @@
 import CustomError from "../../utils/CustomError";
-import { ArtistDocument, AlbumDocument, PlaylistDocument } from "../models/modelTypes";
+import { ArtistDocument, AlbumDocument, PlaylistDocument} from "../models/modelTypes";
 import { ArtistModel } from "../models/Artist";
 import { AlbumModel } from "../models/Album";
 import { PlaylistModel } from "../models/Playlist";
