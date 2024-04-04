@@ -25,6 +25,18 @@ export interface ArtistDocument {
     updatedAt: Date
 }
 
+export interface ArtistDocumentPopulated {
+    _id: ObjectId
+    name: string
+    bannerImage: string
+    aboutImage: string
+    monthlyListeners: number
+    description: string
+    discography?: AlbumDocument[] | undefined
+    createdAt: Date
+    updatedAt: Date
+}
+
 interface Track {
     track: ObjectId, date: Date
 }
@@ -65,4 +77,21 @@ export interface UserDocumentPopulatedWithLikedSongs {
     likedSongsPlaylistId: PlaylistDocument
     createdAt: Date
     updatedAt: Date
+}
+
+export interface TrackDocument {
+    _id: ObjectId
+    title: string
+    length: string
+    audio: string
+    image: string
+    plays: number
+
+    artist: ObjectId
+    artistName: string
+    artistAboutImage: string
+    artistMonthlyListeners: number
+
+    album?: ObjectId | null
+    albumName?: string | null
 }

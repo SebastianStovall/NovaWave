@@ -53,14 +53,14 @@ async function seedDatabase() {
             {
                 name: 'Kanye West',
                 bannerImage: '',
-                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Kanye-West-ABOUT-Artist-2.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/kanyewest_real_about.jpg',
                 monthlyListeners: 64191521,
                 description: "One of the most influential, critically-lauded, and controversial artists of the early 21st century, American rapper and producer Kanye West went from hip-hop beatmaker to worldwide hitmaker with a wildly successful solo career that counted an unbroken string of chart-topping, multi-platinum albums and nearly two-dozen Grammy Awards. His early 2000s production work quickly led to a major-label recording contract, yielding a classic trilogy comprised of 2004's The College Dropout, 2005's Late Registration, and 2007's Graduation. With each successive album, he pushed the boundaries of hip-hop and soon entered a new phase of artistry with game changers such as 2008's 808s & Heartbreak, 2010's widely-regarded magnum opus My Beautiful Dark Twisted Fantasy, and 2013's industrial-leaning foray Yeezus. Celebrity, tabloid headlines, and a changing artistic vision informed much of his next era, as the trappings of fame and inner turmoil became the focus of chart-toppers such as The Life of Pablo and Ye. He even released a gospel album, Jesus Is King, in 2019. As his outspoken personality and political statements began to eclipse his music into the 2020s, he still managed to top the charts and garner accolades with 2020's exploratory Donda. In 2023, West joined forces with  to form new project ¥$, the duo working towards the release of their debut album Vultures."
             },
             {
                 name: 'Eminem',
                 bannerImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/Eminem-Banner-Artist.jfif',
-                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/Eminem-ABOUT-Artist-3.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/real_eminem_about.jpg',
                 monthlyListeners: 72027242,
                 description: "Apart from being one of the best-selling artists in music history, Eminem is one of the greatest rappers of his generation: effortlessly fast, fluid, dexterous, and unpredictable, capable of pulling off long-form narratives or withering asides. And thanks to his mentor , he's had music to match: thick, muscular loops evoking the terror and paranoia conjured by his lyrics. To be certain, a great deal of the controversy Eminem courted came through in how his violent fantasias, often directed at his mother or his wife, intertwined with flights of absurdity that appealed to listeners too young to absorb the psychodramas explored on his breakthrough albums The Slim Shady LP and The Marshall Mathers LP. Eminem's commercial peak came around the time of his 2002 album The Eminem Show (which went platinum 27 times over) and with his crossover onto the big screen that same year with 8 Mile, a film that earned him acclaim for his performance and an Oscar for the film's anthem, 'Lose Yourself.' Eminem's journey as a living rap legend included struggles with addiction, near-constant feuding with other artists, and a celebrity status that shifted as the years went on. Through all his various changes, however, he continued growing as an artist as well as consistently hitting high commercial marks. Though critics could be unkind to efforts like 2009's Relapse or 2017's Revival, fans made sure that each new album sold at least platinum numbers and topped the charts. Instead of recycling old ideas, the rapper experimented with new production approaches, faster flows, and increasingly complex multisyllabic wordplay on projects like 2020's Music to Be Murdered By."
             },
@@ -74,7 +74,7 @@ async function seedDatabase() {
             {
                 name: 'fkbambam',
                 bannerImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-images/fkbambam-Banner-Artist.jfif',
-                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/fkbambam-ABOUT-Artist-5.jfif',
+                aboutImage: 'https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/fkbambam_real_about.jpg',
                 monthlyListeners: 851181,
                 description: "just calm down // ig: @fkbambam"
             },

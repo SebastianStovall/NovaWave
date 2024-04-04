@@ -63,10 +63,10 @@ export const MediaView: React.FC = () => {
                     </div>
                     <div className={styles.stats}>
                         <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif' width='24px' height='24px' alt='artist/owner' />
-                        <span>{mediaType === 'album' ? currentAlbumMedia.artistName : user?.username}</span>
-                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia.yearReleased}` : ''}</span>
-                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
-                        <span>{mediaType === 'album' ? currentAlbumMedia.length : `${currentPlaylistMedia?.length}`}</span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.yearReleased}` : ''}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia?.length : `${currentPlaylistMedia?.length}`}</span>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@ export const MediaView: React.FC = () => {
                     </div>
 
                     {/* If viewing an album */}
-                    {mediaType === 'album' ? ( currentAlbumMedia.tracks.map((track: any, index: number) => (
+                    {mediaType === 'album' ? ( currentAlbumMedia?.tracks.map((track: any, index: number) => (
                         <div
                         className={`${styles.gridItem}`}
                         key={track._id}
