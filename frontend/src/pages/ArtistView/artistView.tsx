@@ -135,7 +135,7 @@ export const ArtistView: React.FC = () => {
                     }
                 </div>
 
-                <h2 className={styles.artistHeading} style={{marginTop: '80px'}}>Discography</h2>
+                <h2 className={styles.artistHeading} style={{marginTop: '60px'}}>Discography</h2>
 
                 <div className={dashboardStyles.mainGridSection} style={{paddingLeft: '24px', paddingRight: '24px'}}>
                     {artist?.discography?.map((album: AlbumDocument, index: number) => (
@@ -151,6 +151,17 @@ export const ArtistView: React.FC = () => {
                         <p className={dashboardStyles.artistClick}>{album.yearReleased} · {album.tracks.length > 1 ? 'Album' : 'Single'}</p>
                         </div>
                     ))}
+                </div>
+
+                <h2 className={styles.artistHeading} style={{marginTop: '60px'}}>About</h2>
+
+                <div className={styles.aboutContainer}>
+                    <button type='button' className={styles.aboutModalButton} style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%), url(${artist?.aboutImage})`}}>
+                        <div className={styles.modalTextContainer}>
+                            <div className={styles.monthlyListeners}>{addCommasToNumber(artist?.monthlyListeners)} monthly listeners</div>
+                            <div className={styles.bioText}>{artist?.description}</div>
+                        </div>
+                    </button>
                 </div>
 
             </div>
