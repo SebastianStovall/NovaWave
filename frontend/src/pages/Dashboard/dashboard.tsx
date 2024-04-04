@@ -102,10 +102,12 @@ export const Dashboard: React.FC = () => {
               navigate(`/album/${album._id}`)
             }
             }}>
-            <img
-              src={album.image as string}
-              alt="playlist_album_photo"
-            />
+            <div>
+              <img
+                src={album.image as string}
+                alt="playlist_album_photo"
+              />
+            </div>
             <div className={styles.playButton}>
               <span className="fa fa-play" id={styles.playFa}></span>
             </div>
@@ -126,10 +128,12 @@ export const Dashboard: React.FC = () => {
               navigate(`/album/${album._id}`)
             }
             }}>
-          <img
-            src={album.image as string}
-            alt="playlist_album_photo"
-          />
+          <div>
+            <img
+              src={album.image as string}
+              alt="playlist_album_photo"
+            />
+          </div>
           <div className={styles.playButton}>
             <span className="fa fa-play" id={styles.playFa}></span>
           </div>
@@ -144,10 +148,12 @@ export const Dashboard: React.FC = () => {
       <div className={styles.mainGridSection}>
         {popularArtists.map((artist: any, index) => (
           <div key={index} onClick={() => navigate(`/artist/${artist._id}`)}>
+            <div>
             <img
               src={artist.aboutImage as string}
               alt="playlist_album_photo"
             />
+          </div>
             <div className={styles.playButton}>
               <span className="fa fa-play" id={styles.playFa}></span>
             </div>

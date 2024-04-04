@@ -122,8 +122,8 @@ export const ArtistView: React.FC = () => {
                                     <p id={currentSong._id === track._id ? mediaViewStyles.activeTitleText : ''} className={styles.songTitle}>{track.title}</p>
                                     <span aria-label="Explicit" className={styles.explicit}>E</span>
                                 </div>
-                                <span className={styles.viewCount} style={{marginLeft: 'auto'}}>{addCommasToNumber(track.plays)}</span>
-                                <i className="fa fa-heart-o" style={{marginLeft: 'auto'}}></i>
+                                <span className={styles.viewCount} style={{marginLeft: 'auto', paddingLeft: '10px'}}>{addCommasToNumber(track.plays)}</span>
+                                <i className="fa fa-heart-o" style={{marginLeft: 'auto', paddingLeft: '10px'}}></i>
                             </div>
                             <div>
                                 <p>{track.length}</p>
@@ -140,10 +140,12 @@ export const ArtistView: React.FC = () => {
                 <div className={dashboardStyles.mainGridSection} style={{paddingLeft: '24px', paddingRight: '24px'}}>
                     {artist?.discography?.map((album: AlbumDocument, index: number) => (
                         <div key={index} onClick={(e) => navigate(`/album/${album._id}`)}>
-                        <img
-                            src={album.image as string}
-                            alt="playlist_album_photo"
-                        />
+                        <div>
+                            <img
+                                src={album.image as string}
+                                alt="playlist_album_photo"
+                            />
+                        </div>
                         <div className={dashboardStyles.playButton}>
                             <span className="fa fa-play" id={dashboardStyles.playFa}></span>
                         </div>
