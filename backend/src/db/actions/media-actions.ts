@@ -1,8 +1,7 @@
 import CustomError from "../../utils/CustomError";
-import { ArtistDocument, AlbumDocument, PlaylistDocument, TrackDocument } from "../models/modelTypes";
+import { ArtistDocument, AlbumDocument, PlaylistDocument} from "../models/modelTypes";
 import { ArtistModel } from "../models/Artist";
 import { AlbumModel } from "../models/Album";
-import { TrackModel } from "../models/Track";
 import { PlaylistModel } from "../models/Playlist";
 import { Document } from "mongodb";
 
@@ -45,52 +44,6 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
                 500
             );
         }
-    } catch(e: any) {
-        throw e
-    }
-}
-
-
-
-export const getTopSongs = async(artistId: string) => {
-    try {
-        const artist: ArtistDocument | null = await ArtistModel.findById(artistId);
-            if(!artist) {
-                throw new CustomError(
-                    "Query Error",
-                    `${artistId} document could not be found`,
-                    500
-                );
-            }
-
-        const topSongs: TrackDocument[] = await TrackModel
-        .find({ artist: artistId }) // Filter tracks by artistId
-        .sort({ plays: -1 }) // Sort in descending order based on plays
-        .limit(5); // Limit to top 5 tracks
-
-        return topSongs;
-
-    } catch(e: any) {
-        throw e
-    }
-}
-
-
-export const getDiscography = async(artistId: string) => {
-    try {
-        const artist: ArtistDocument | null = await ArtistModel.findById(artistId);
-            if(!artist) {
-                throw new CustomError(
-                    "Query Error",
-                    `${artistId} document could not be found`,
-                    500
-                );
-            }
-
-        const discography: AlbumDocument[] = await AlbumModel.find({ artist: artistId });
-
-        return discography;
-
     } catch(e: any) {
         throw e
     }

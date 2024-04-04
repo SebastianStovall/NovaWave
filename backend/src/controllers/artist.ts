@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import CustomError from "../utils/CustomError";
-import { getTopSongs, getDiscography } from "../db/actions/media-actions";
+import { getTopSongs, getArtistInfo } from "../db/actions/artist-actions";
 
 export const getArtistTopSongs: RequestHandler = async(req, res, next) => {
     try {
@@ -22,7 +22,7 @@ export const getArtistTopSongs: RequestHandler = async(req, res, next) => {
     }
 }
 
-export const getArtistDiscography: RequestHandler = async(req, res, next) => {
+export const getArtistInformation: RequestHandler = async(req, res, next) => {
     try {
         const { artistId } = req.body;
 
@@ -34,8 +34,8 @@ export const getArtistDiscography: RequestHandler = async(req, res, next) => {
             );
         }
 
-        const discography = await getDiscography(artistId)
-        return res.status(200).json({ message: `Successfully Retreived artist discography`, discography: discography});
+        const artist = await getArtistInfo(artistId)
+        return res.status(200).json({ message: `Successfully Retreived artist information`, artist: artist});
 
     } catch(e) {
         next(e)

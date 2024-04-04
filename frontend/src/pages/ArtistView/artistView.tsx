@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 // import { addMediaToRecentlyViewed } from '../../store/media/media'
 import { updateCurrentMedia } from '../../store/media/media'
-import { retreiveArtistDiscography, retreiveArtistTopSongs } from '../../store/artist/artist'
+import { retreiveArtistInformation, retreiveArtistTopSongs } from '../../store/artist/artist'
 import { changeMediaInfo } from '../../store/header/header'
 import { changeGradient } from '../../store/header/header'
 
@@ -29,7 +29,7 @@ export const ArtistView: React.FC = () => {
     const mediaId = location.pathname.split('/')[2];
 
     // media state slice
-    const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
+    // const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
     const artistData: any = useAppSelector((state) => state.media.artistData);
 
@@ -39,10 +39,11 @@ export const ArtistView: React.FC = () => {
     // player state slice
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
+    interface Song { _id: string }
 
     // artist state slice
     const artistTopSongs: any = useAppSelector((state) => state.artist.artistTopSongs);
-    const dicography: any = useAppSelector((state) => state.artist.artistDiscography);
+    const artist: any = useAppSelector((state) => state.artist.artist);
 
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -54,22 +55,13 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         dispatch(retreiveArtistTopSongs(artistId))
-        dispatch(retreiveArtistDiscography(artistId))
+        dispatch(retreiveArtistInformation(artistId))
     }, [dispatch, artistId])
 
     useEffect(() => {
         dispatch(changeMediaInfo(artistData?.name))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, data.muted, artistData])
-
-    // // TODO -- GONNA HAVE TO ADD THIS EVERYWHERE TO SCROLL TO TOP OF MAIN CONTENT AND RESET HEADER COLOR TO TRANSPARENT ----
-    // const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
-    // const header = document.querySelector('.header_header__lOwdN') as HTMLElement;
-    // if(mainContent) {
-    //     mainContent.scrollTop = 0;
-    //     header.style.background = 'transparent'
-    // }
-    // TODO ---------------------------------------------------------------------------------------------------------------
 
     return (
         <div>
@@ -88,7 +80,8 @@ export const ArtistView: React.FC = () => {
                 <div className={mediaViewStyles.controlButtons}>
                     <div className={mediaViewStyles.leftButtons}>
                         <div className={mediaViewStyles.resumeAndPause} onClick={() => handlePlayFromStart({tracks: artistTopSongs}, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>
-                            <div className={`${ (play && currentSong.artist === mediaId) ? `fas fa-pause` : `fas fa-play`} ${mediaViewStyles.playPause}` }></div>
+                            {/* //* should show play or pause depending if current song playing is part of that artist top songs */}
+                            <div className={`${ (play && currentSong && artistTopSongs && artistTopSongs.some((song: Song) => song._id === currentSong._id)) ? `fas fa-pause` : `fas fa-play`} ${mediaViewStyles.playPause}` }></div>
                         </div>
                         <button className={styles.followButton}>
                             Follow
@@ -145,7 +138,7 @@ export const ArtistView: React.FC = () => {
                 <h2 className={styles.artistHeading} style={{marginTop: '80px'}}>Discography</h2>
 
                 <div className={dashboardStyles.mainGridSection} style={{paddingLeft: '24px', paddingRight: '24px'}}>
-                    {dicography?.map((album: AlbumDocument, index: number) => (
+                    {artist?.discography?.map((album: AlbumDocument, index: number) => (
                         <div key={index} onClick={(e) => navigate(`/album/${album._id}`)}>
                         <img
                             src={album.image as string}

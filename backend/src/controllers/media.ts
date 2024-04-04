@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import CustomError from "../utils/CustomError";
-import { getMediaInfo, getTopSongs } from "../db/actions/media-actions";
+import { getMediaInfo } from "../db/actions/media-actions";
 import { ArtistDocument, AlbumDocument, PlaylistDocument } from "../db/models/modelTypes";
 
 
