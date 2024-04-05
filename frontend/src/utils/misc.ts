@@ -24,3 +24,25 @@ export function dynamicMarquee() {
         }
     }
 }
+
+
+export function dynamicMarquee2() {
+    const scrollingText = document.querySelector('.nowPlayingSidebar_scrollText22__1kjf5') as HTMLHeadingElement;
+    const container = document.querySelector('.nowPlayingSidebar_topInformation2__DbPcq') as HTMLDivElement;
+    const boxshadowContainer = document.querySelector('.nowPlayingSidebar_innerOverflowContainer2__mQJzZ') as HTMLDivElement;
+
+    if(scrollingText && container && boxshadowContainer) {
+        const isOverflow = ((container.clientWidth - 36) <= scrollingText.clientWidth);
+
+        if(isOverflow) {
+            const amountToTranslate = scrollingText.clientWidth - (container.clientWidth - 36);
+            scrollingText.style.setProperty('--trans-x2', `-${amountToTranslate + 15}px`);
+            boxshadowContainer.style.maskImage = 'linear-gradient(to right, transparent 0, #000 6px, #000 calc(100% - 12px), transparent 100%)'
+
+        } else {
+            // REMOVE
+            scrollingText.style.setProperty('--trans-x2', `0px`);
+            boxshadowContainer.style.maskImage = 'none'
+        }
+    }
+}

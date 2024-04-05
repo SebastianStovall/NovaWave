@@ -12,6 +12,8 @@ import { Layout } from "./components/Layout/layout";
 import { useAppDispatch } from "./hooks";
 import { restoreUser } from "./store/session/session";
 
+import { initializeStoreWithDummyTrack } from "./store/player/player";
+
 const App: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false)
   const dispatch = useAppDispatch();
@@ -19,6 +21,7 @@ const App: React.FC = () => {
   // Check for and restore user information on page refresh
   useEffect(() => {
     dispatch(restoreUser());
+    dispatch(initializeStoreWithDummyTrack())
     setIsLoaded(true)
   }, [dispatch]);
 

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { dynamicMarquee } from "../utils/misc";
+import { dynamicMarquee, dynamicMarquee2 } from "../utils/misc";
 
 export function useNowPlayingSidebarResize() {
     useEffect(() => {
@@ -10,6 +10,7 @@ export function useNowPlayingSidebarResize() {
 
                 // check if marquee styling is needed when changing sidebar width (checks for overflow on width resize)
                 dynamicMarquee()
+                dynamicMarquee2()
 
             });
         });

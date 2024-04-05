@@ -35,6 +35,8 @@
   padding-right: 12px;
 }
 
+/* //? Dynamic Marquee Styling */
+
 .topInformation {
   /* this container has its own additional padding */
   margin-top: 20px;
@@ -123,6 +125,120 @@
   box-shadow: 0px 0px 1px 9px rgb(46, 46, 46, 0.5);
   border-radius: 20px;
 }
+/* //?--------------------------------------------------- */
+
+.albumImgCover {
+  width: 100%;
+  max-height: 400px;
+  margin-top: 20px;
+}
+.albumImgCover > img {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  transform: scale(0.97);
+}
+
+
+/* //? Second Marquee Here */
+.topInformation2 {
+  /* this container has its own additional padding */
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.overflowContainer2 {
+    min-width: 0;
+    overflow: hidden;
+}
+.innerOverflowContainer2 {
+    overflow: hidden;
+    position: relative;
+    margin-inline-start: -6px;
+}
+.secondInnerOverflowContainer2 {
+    overflow: hidden;
+}
+.containerForOverflowText2 {
+    --trans-x2: 0px;
+    display: flex;
+    transform: translateX(var(--trans-x2));
+    white-space: nowrap;
+    width: fit-content;
+    padding-inline-start: 6px;
+}
+/* Needed for text animation effect */
+@keyframes dynamicMarquee2 {
+  0% {
+    transform: translateX(0px);
+  }
+  10% {
+    transform: translateX(0px); /* stops for 10% */
+  }
+  50% {
+    transform: translateX(var(--trans-x2));
+  }
+  60% {
+    transform: translateX(var(--trans-x2)); /* stops for 10% */
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.scrollText22 {
+    --trans-x2: 0px;
+    color: white;
+    font-weight: 700;
+    font-size: 24px;
+    animation: dynamicMarquee2 15s linear infinite;
+}
+.scrollText22:hover {
+    color: white;
+    cursor: pointer;
+    text-decoration: underline;
+}
+/* //? Second Marquee Here */
+
+
+.addToCollection {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+.addToCollection:hover {
+  cursor: pointer;
+}
+
+.addToCollection > i {
+  color: var(--secondary-color-icon);
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.addToCollection > i:hover {
+  color: white;
+  font-size: 16px;
+}
+
+.artistName {
+  padding-left: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 3px;
+  color: var(--secondary);
+}
+.artistName:hover {
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 /* Small */
 @media screen and (max-width: 1023px) and (min-width: 642px) {

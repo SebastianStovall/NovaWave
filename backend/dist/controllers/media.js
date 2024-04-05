@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateCurrentMedia = void 0;
+exports.grabDummyTrack = exports.updateCurrentMedia = void 0;
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
 const media_actions_1 = require("../db/actions/media-actions");
 const updateCurrentMedia = async (req, res, next) => {
@@ -23,3 +23,13 @@ const updateCurrentMedia = async (req, res, next) => {
     }
 };
 exports.updateCurrentMedia = updateCurrentMedia;
+const grabDummyTrack = async (req, res, next) => {
+    try {
+        const dummyTrack = await (0, media_actions_1.getTrack)();
+        return res.status(200).json({ message: `Successfully Retreived dummy track`, track: dummyTrack });
+    }
+    catch (e) {
+        next(e);
+    }
+};
+exports.grabDummyTrack = grabDummyTrack;

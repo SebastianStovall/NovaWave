@@ -49,7 +49,8 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
-        // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> THIS IS BROKEN.... ITS HAPPENING BECAUSE WHEN I GO TO ARTIST PAGE ITS http://localhost:3000/artist/UNDEFINED <--- MAKE SURE ARTIST INFO ALWAYS GETTING PASSED IN FROM DASHBOARD COMPONENT
+        console.log("MEDIA INFO", mediaInfo)
+        // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> THIS IS BROKEN....
         dispatch(updateCurrentMedia(mediaInfo))
     }, [dispatch, location.pathname, mediaId, mediaType])
 

@@ -3,10 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMediaInfo = void 0;
+exports.getTrack = exports.getMediaInfo = void 0;
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 const Artist_1 = require("../models/Artist");
 const Album_1 = require("../models/Album");
+const Track_1 = require("../models/Track");
 const Playlist_1 = require("../models/Playlist");
 const getMediaInfo = async (entityId, entityType) => {
     try {
@@ -40,3 +41,13 @@ const getMediaInfo = async (entityId, entityType) => {
     }
 };
 exports.getMediaInfo = getMediaInfo;
+const getTrack = async () => {
+    try {
+        const track = await Track_1.TrackModel.findOne({ title: 'KILLKA' });
+        return track;
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.getTrack = getTrack;

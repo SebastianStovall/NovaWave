@@ -1,22 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { PlayerState } from "./playerTypes";
 
-const dummyTrack = {
-    _id: "65c539be310ebe25c934a838",
-    title: "KILLKA",
-    length: "2:22",
-    audio: "https://sebass-novawave.s3.us-east-2.amazonaws.com/audio/spotifydown.com+-+KILLKA.mp3",
-    image: "https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/KILLKA-Album-9.jfif",
-    plays: 47259289,
-    artist: "65c539be310ebe25c934a7e9",
-    artistName: "fkbambam",
-    artistAboutImage: "https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/fkbambam-ABOUT-Artist-5.jfif",
-    artistMonthlyListeners: 851181,
-    album: "65c539be310ebe25c934a7f2",
-    albumName: "KILLKA"
-}
 
-const initialState: PlayerState = { currentSong: dummyTrack, songList: [dummyTrack], play: false }
+// when loading app, this thunk will always fire to initialize the store with a dummy track
+export const initializeStoreWithDummyTrack = createAsyncThunk('media/getDummyTrack', async (_, thunkAPI) => {
+    try {
+        const response = await fetch("/api/media/getDummyTrack")
+
+        if (response.ok) {
+            const data = await response.json();
+            return data.track
+        } else {
+            const error = await response.json();
+            console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+            return thunkAPI.rejectWithValue(error);
+        }
+    } catch (e: any) {
+        console.error("There was an issue performing fetch to /api/media/getDummyTrack")
+        return thunkAPI.rejectWithValue(e.message)
+    }
+});
+
+const initialState: PlayerState = { currentSong: null, songList: [], play: false }
 
 const playerSlice = createSlice({
     name: 'player',
@@ -32,6 +37,13 @@ const playerSlice = createSlice({
             state.play = action.payload
         }
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(initializeStoreWithDummyTrack.fulfilled, (state, action) => {
+                state.currentSong = action.payload
+                state.songList = [action.payload]
+            })
+    }
 })
 
 export const {setCurrentSong, setSongList, setPlay} = playerSlice.actions
