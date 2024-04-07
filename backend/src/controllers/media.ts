@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import CustomError from "../utils/CustomError";
-import { getMediaInfo } from "../db/actions/media-actions";
+import { getMediaInfo, getTrack } from "../db/actions/media-actions";
 import { ArtistDocument, AlbumDocument, PlaylistDocument } from "../db/models/modelTypes";
 
 
@@ -26,6 +26,16 @@ export const updateCurrentMedia: RequestHandler = async(req, res, next) => {
 
         const mediaInfo: ArtistDocument | AlbumDocument | PlaylistDocument = await getMediaInfo(mediaId, mediaType)
         return res.status(200).json({ message: `Successfully Retreived ${mediaType} info from backend database`, media: mediaInfo, type: mediaType});
+
+    } catch(e) {
+        next(e)
+    }
+}
+
+export const grabDummyTrack: RequestHandler = async(req, res, next) => {
+    try {
+        const dummyTrack = await getTrack()
+        return res.status(200).json({ message: `Successfully Retreived dummy track`, track: dummyTrack});
 
     } catch(e) {
         next(e)
