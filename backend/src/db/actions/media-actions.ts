@@ -2,6 +2,7 @@ import CustomError from "../../utils/CustomError";
 import { ArtistDocument, AlbumDocument, PlaylistDocument} from "../models/modelTypes";
 import { ArtistModel } from "../models/Artist";
 import { AlbumModel } from "../models/Album";
+import { TrackModel } from '../models/Track'
 import { PlaylistModel } from "../models/Playlist";
 import { Document } from "mongodb";
 
@@ -44,6 +45,15 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
                 500
             );
         }
+    } catch(e: any) {
+        throw e
+    }
+}
+
+export const getTrack = async() => {
+    try {
+        const track = await TrackModel.findOne({ title: 'KILLKA' })
+        return track
     } catch(e: any) {
         throw e
     }
