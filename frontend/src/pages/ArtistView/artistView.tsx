@@ -49,7 +49,6 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
-        console.log("MEDIA INFO", mediaInfo)
         // dispatch(addMediaToRecentlyViewed(mediaInfo)) //TODO ---> THIS IS BROKEN....
         dispatch(updateCurrentMedia(mediaInfo))
     }, [dispatch, location.pathname, mediaId, mediaType])

@@ -6,6 +6,8 @@ import styles from "./nowPlayingSidebar.module.css";
 import { useNowPlayingSidebarResize } from "../../hooks/useNowPlayingSidebarResize";
 import { dynamicMarquee, dynamicMarquee2 } from "../../utils/misc";
 import { useNavigate } from "react-router-dom";
+import { addCommasToNumber } from "../../utils/audio/numberUtils";
+import artistPageStyles from "../../pages/ArtistView/artistView.module.css"
 
 export const NowPlayingSidebar: React.FC = () => {
     const { sidebarWidth, handleMouseDown } = useSidebarResize("right");
@@ -74,6 +76,28 @@ export const NowPlayingSidebar: React.FC = () => {
                 </div>
 
                 <h3 className={styles.artistName} onClick={() => navigate(`/artist/${currentSong.artist}`)}>{currentSong?.artistName}</h3>
+
+                <div className={styles.aboutSection}>
+                    <button>
+                        <div className={styles.topCard} style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url(${currentSong?.artistAboutImage})`}}>
+                            <div className={styles.artistAboutText}>
+                                <div>About the artist</div>
+                            </div>
+                        </div>
+                        <div className={styles.bottomCard}>
+                            <div className={styles.artistNameText}>
+                                <p>{currentSong?.artistName}</p>
+                            </div>
+                            <div className={styles.bottomCardSubSection}>
+                                <div>{addCommasToNumber(currentSong?.artistMonthlyListeners)} monthly listeners</div>
+                                <div>
+                                    <button className={artistPageStyles.followButton} style={{transform: 'scale(0.95)'}}>Follow</button>
+                                </div>
+                            </div>
+                            {/* //TODO <span></span> ADD Bio Text */}
+                        </div>
+                    </button>
+                </div>
 
             </div>
 
