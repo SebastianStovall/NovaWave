@@ -49,6 +49,22 @@ export const MediaView: React.FC = () => {
         return <p>...Loading</p>
     }
 
+    async function handleFavoriteSong(trackId: string, playlistId: string) {
+        const response = await fetch('/api/playlists/add', {
+            method: 'PATCH',
+            body: JSON.stringify({trackId, playlistId}),
+            headers: { "Content-Type": "application/json" }
+        })
+
+        if(response.ok) {
+            const data = await response.json()
+            console.log("SUCESS")
+            console.log(data)
+        } else {
+            console.log("COULD NOT FAVORITE SONG ERROR")
+        }
+    }
+
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
 
@@ -128,7 +144,7 @@ export const MediaView: React.FC = () => {
                                     <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
                                     <p>{track.artistName}</p>
                                 </div>
-                                <i className="fa fa-heart-o"></i>
+                                <i className="fa fa-heart-o" onClick={() => handleFavoriteSong(track._id, user.likedSongsPlaylistId)}></i>
                             </div>
                             <div>
                                 <p>{track.length}</p>
@@ -140,18 +156,33 @@ export const MediaView: React.FC = () => {
                     }
 
                     {/* If viewing a playlist */}
-                    {mediaType === 'playlist' ? ( currentPlaylistMedia.tracks.map((track: any, index: number) => (
-                        <div className={styles.gridItem} key={track._id}>
-                            <div>{index + 1}</div>
+                    {(mediaType === 'playlist' || mediaType === 'collection') ? ( currentPlaylistMedia.tracks.map((track: any, index: number) => (
+                        <div className={styles.gridItem}
+                        key={track.track._id}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                        >
+                            {
+                                //* When NOT hovering over audio track, but if track is queued VS not queued
+                                hoveredIndex !== index ?
+                                <div
+                                    id={currentSong._id === track.track._id ? styles.activeStyingsHoveredPlaylistVersion : styles.trackNumberPlaylistVersion}
+                                >
+                                    {currentSong._id !== track.track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
+                                </div>
+                                :
+                                currentSong._id === track.track._id ? <div id={styles.togglePlayPlaylistVersion} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGreyPlaylistVersion} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                //* When hovering over audio, if track is queued VS not queued
+                            }
                             <div className={styles.song}>
                                 <div>
-                                    <p>{track.title}</p>
-                                    <p>{track.artistName}</p>
+                                    <p>{track.track.title}</p>
+                                    <p>{track.track.artistName}</p>
                                 </div>
                                 <i className="fa fa-heart-o"></i>
                             </div>
                             <div>
-                                <p>{track.length}</p>
+                                <p>{track.track.length}</p>
                                 <div className={styles.moreOptionsflexGrid}>
                                     <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg>
                                 </div>

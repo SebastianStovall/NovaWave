@@ -91,7 +91,7 @@ export const NowPlayingSidebar: React.FC = () => {
                             <div className={styles.bottomCardSubSection}>
                                 <div>{addCommasToNumber(currentSong?.artistMonthlyListeners)} monthly listeners</div>
                                 <div>
-                                    <button className={artistPageStyles.followButton} style={{transform: 'scale(0.95)'}}>Follow</button>
+                                    <div className={artistPageStyles.followButton} style={{transform: 'scale(0.95)', alignContent: 'center'}}>Follow</div>
                                 </div>
                             </div>
                             {/* //TODO <span></span> ADD Bio Text */}

@@ -266,3 +266,33 @@
 #trackNumber {
     font-size: 14px;
 }
+
+
+
+
+/* Applying additional styles needed for playlist view for divs that need unique identifiers (copying the styles over) */
+
+#activeStyingsHoveredPlaylistVersion {
+    font-size: 14px;
+    color: #26f7fd;
+}
+
+#trackNumberPlaylistVersion {
+    font-size: 14px;
+}
+
+#togglePlayPlaylistVersion {
+    font-size: 14px;
+    color: var(--novawave-blue);
+    cursor: pointer;
+}
+
+#togglePlayGreyPlaylistVersion {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#togglePlayGreyPlaylistVersion {
+    cursor: pointer;
+    font-size: 14px;
+}

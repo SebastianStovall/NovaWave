@@ -29,7 +29,7 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
             }
             return artist
         } else if (entityType === 'playlist') {
-            const playlist: PlaylistDocument | null = await PlaylistModel.findById(entityId);
+            const playlist: PlaylistDocument | null = await PlaylistModel.findById(entityId).populate('tracks.track');;
             if(!playlist) {
                 throw new CustomError(
                     "Query Error",
@@ -37,7 +37,7 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
                     500
                 );
             }
-            return await (playlist as Document).populate({path: 'tracks'})
+            return playlist
         } else {
             throw new CustomError(
                 "Bad Request",

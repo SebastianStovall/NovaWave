@@ -26,11 +26,12 @@ const getMediaInfo = async (entityId, entityType) => {
             return artist;
         }
         else if (entityType === 'playlist') {
-            const playlist = await Playlist_1.PlaylistModel.findById(entityId);
+            const playlist = await Playlist_1.PlaylistModel.findById(entityId).populate('tracks.track');
+            ;
             if (!playlist) {
                 throw new CustomError_1.default("Query Error", `${entityType} document could not be found`, 500);
             }
-            return await playlist.populate({ path: 'tracks' });
+            return playlist;
         }
         else {
             throw new CustomError_1.default("Bad Request", `Entity type ${entityType} is invalid`, 500);
