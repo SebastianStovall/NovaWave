@@ -135,7 +135,7 @@ export const MediaView: React.FC = () => {
                                     {currentSong._id !== track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
                                 </div>
                                 :
-                                currentSong._id === track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                currentSong._id === track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, mediaType, index, dispatch)} >{`\u25B6`}</div>
                                 //* When hovering over audio, if track is queued VS not queued
                             }
 
@@ -166,17 +166,17 @@ export const MediaView: React.FC = () => {
                                 //* When NOT hovering over audio track, but if track is queued VS not queued
                                 hoveredIndex !== index ?
                                 <div
-                                    id={currentSong._id === track.track._id ? styles.activeStyingsHoveredPlaylistVersion : styles.trackNumberPlaylistVersion}
+                                    id={currentSong._id === track.track._id ? styles.activeStyingsHovered : styles.trackNumber}
                                 >
                                     {currentSong._id !== track.track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
                                 </div>
                                 :
-                                currentSong._id === track.track._id ? <div id={styles.togglePlayPlaylistVersion} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGreyPlaylistVersion} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                currentSong._id === track.track._id ? <div id={styles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={styles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber(currentAlbumMedia, currentPlaylistMedia, mediaType, index, dispatch)} >{`\u25B6`}</div>
                                 //* When hovering over audio, if track is queued VS not queued
                             }
                             <div className={styles.song}>
                                 <div>
-                                    <p>{track.track.title}</p>
+                                    <p id={currentSong._id === track.track._id ? styles.activeTitleText : ''}>{track.track.title}</p>
                                     <p>{track.track.artistName}</p>
                                 </div>
                                 <i className="fa fa-heart-o"></i>

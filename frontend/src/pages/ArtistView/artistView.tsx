@@ -112,7 +112,7 @@ export const ArtistView: React.FC = () => {
                                     {currentSong._id !== track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
                                 </div>
                                 :
-                                currentSong._id === track._id ? <div id={mediaViewStyles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={mediaViewStyles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber({tracks: artistTopSongs}, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                currentSong._id === track._id ? <div id={mediaViewStyles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={mediaViewStyles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber({tracks: artistTopSongs}, currentPlaylistMedia, mediaType, index, dispatch)} >{`\u25B6`}</div>
                                 //* When hovering over audio, if track is queued VS not queued
                             }
 
