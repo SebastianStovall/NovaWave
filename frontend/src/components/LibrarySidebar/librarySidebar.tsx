@@ -13,7 +13,9 @@ export const LibrarySidebar: React.FC = () => {
     const initialContextMenu = { // default menu options for context menu
         show: false,
         x: 0,
-        y: 0
+        y: 0,
+        entityType: '',
+        entityId: ''
     }
 
     // local state
@@ -37,18 +39,31 @@ export const LibrarySidebar: React.FC = () => {
     const isMobileView = sidebarWidth === 80;  //! NEEDED FOR STYLE CHANGES WHEN USER RE-SIZE SIDEBAR (media queries only for window resize)
     const is584OrLarger = sidebarWidth >= 584; //! NEEDED FOR STYLE CHANGES WHEN USER RE-SIZE SIDEBAR (media queries only for window resize)
 
-    const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // context menu functions
+
+    const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, entityType: string, entityId: string) => {
         e.preventDefault() // prevents default right-click content from displaying
 
         const {pageX, pageY} = e
-        setContextMenu({show: true, x: pageX, y: pageY})
+        setContextMenu({show: true, x: pageX, y: pageY, entityType, entityId })
     }
 
-    const contextMenuClose = () => setContextMenu(initialContextMenu) // reset to initialContextMenu (show: close)
+    const contextMenuClose = () => { // reset to initialContextMenu (show: close)
+        setContextMenu(initialContextMenu)
+    }
+
 
     return (
         <>
-            {contextMenu.show && <ContextMenu x={contextMenu.x} y={contextMenu.y} closeContextMenu={contextMenuClose} />} {/* Doesn't matter where you put Context Menu, just needs to be somewhere on the output JSX */}
+            {contextMenu.show &&
+            <ContextMenu
+                x={contextMenu.x}
+                y={contextMenu.y}
+                entityType={contextMenu.entityType}
+                entityId={contextMenu.entityId}
+                closeContextMenu={contextMenuClose}
+            />
+            } {/* Doesn't matter where you put Context Menu, just needs to be somewhere on the output JSX */}
 
             <div className={styles.resizableSidebarContainer}>
                 <div className={styles.resizableSidebar} style={{ width: sidebarWidth }}> {/* inital width of container contained in state, but changed with events */}
@@ -93,7 +108,7 @@ export const LibrarySidebar: React.FC = () => {
                                     <div
                                     key={playlist._id}
                                     className={styles.item}
-                                    onContextMenu={(e) => handleContextMenu(e)} // tooltip available on this div
+                                    onContextMenu={(e) => handleContextMenu(e, 'playlist', playlist._id)} // tooltip available on this div
                                     onClick={() => {
                                         if(playlist._id === user.likedSongsPlaylistId) navigate('/collection/tracks')
                                     }}
@@ -113,7 +128,7 @@ export const LibrarySidebar: React.FC = () => {
                                     <div
                                     key={album._id}
                                     className={styles.item}
-                                    onContextMenu={(e) => handleContextMenu(e)} // tooltip available on this div
+                                    onContextMenu={(e) => handleContextMenu(e, 'album', album._id)} // tooltip available on this div
                                     onClick={() => {
                                         navigate(`/album/${album._id}`)
                                     }}
@@ -133,7 +148,7 @@ export const LibrarySidebar: React.FC = () => {
                                     <div
                                     key={artist._id}
                                     className={styles.item}
-                                    onContextMenu={(e) => handleContextMenu(e)} // tooltip available on this div
+                                    onContextMenu={(e) => handleContextMenu(e, 'artist', artist._id)} // tooltip available on this div
                                     onClick={() => {
                                         navigate(`/artist/${artist._id}`)
                                     }}

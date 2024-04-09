@@ -283,3 +283,9 @@
 #notInLikedSongs {
     border: 0px;
 }
+
+/* Styles for if album is or not in library */
+
+#inLibrary {
+    color: var(--novawave-blue)
+}

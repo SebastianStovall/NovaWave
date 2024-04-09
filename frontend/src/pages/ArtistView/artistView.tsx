@@ -17,9 +17,13 @@ import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { addCommasToNumber } from '../../utils/audio/numberUtils'
 import { AlbumDocument } from '../../../../backend/src/db/models/modelTypes';
 
+import { handleAddOrRemoveFromLibrary, isEntityInLibrary } from '../../utils/fetch';
+import { getUserLibraryThunk } from '../../store/library/library';
+
 import styles from './artistView.module.css'
 import mediaViewStyles from '../MediaView/mediaView.module.css'
 import dashboardStyles from '../Dashboard/dashboard.module.css'
+import { LibraryState } from '../../store/library/libraryTypes';
 
 export const ArtistView: React.FC = () => {
     const { artistId } = useParams();
@@ -45,7 +49,12 @@ export const ArtistView: React.FC = () => {
     const artistTopSongs: any = useAppSelector((state) => state.artist.artistTopSongs);
     const artist: any = useAppSelector((state) => state.artist.artist);
 
+    // library state slice
+    const userLibrary: LibraryState = useAppSelector((state) => state.library)
+
+    // local ui updates
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [libraryUpdated, setLibraryUpdated] = useState<boolean>(false);
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -62,6 +71,17 @@ export const ArtistView: React.FC = () => {
         dispatch(changeMediaInfo(artistData?.name))
         dispatch(changeGradient(`${hexToRgb(data.vibrant)}`))
     }, [dispatch, data.vibrant, artistData])
+
+    // UI HOT REFRESH
+    useEffect(() => {
+        dispatch(getUserLibraryThunk())
+    }, [dispatch, libraryUpdated])
+
+    useEffect(() => { // reset for subsequent UI updates
+        if (libraryUpdated) {
+            setLibraryUpdated(false);
+        }
+    }, [libraryUpdated]);
 
     return (
         <div>
@@ -83,8 +103,14 @@ export const ArtistView: React.FC = () => {
                             {/* //* should show play or pause depending if current song playing is part of that artist top songs */}
                             <div className={`${ (play && currentSong && artistTopSongs && artistTopSongs.some((song: Song) => song._id === currentSong._id)) ? `fas fa-pause` : `fas fa-play`} ${mediaViewStyles.playPause}` }></div>
                         </div>
-                        <button className={styles.followButton}>
-                            Follow
+                        <button
+                        className={styles.followButton}
+                        onClick={() => {
+                            handleAddOrRemoveFromLibrary('artist', mediaId, userLibrary)
+                            setLibraryUpdated(true)
+                        }}
+                        >
+                            {isEntityInLibrary('artist', mediaId, userLibrary) ? 'Following' : 'Follow'}
                         </button>
                         <div className={mediaViewStyles.moreOptions}>
                             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg>

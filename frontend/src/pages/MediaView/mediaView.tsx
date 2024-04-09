@@ -6,33 +6,49 @@ import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateCurrentMedia, addMediaToRecentlyViewed, getAllIdsInLikedSongs } from '../../store/media/media'
 import { setPlay } from '../../store/player/player'
-import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { useLocation } from 'react-router-dom'
+import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { isCurrentSongInLikedSongs, getLikedSongsPlaylistLength, isTargetSongInLikedSongs, handleFavoriteSong } from '../../utils/audio/likedSongsPlaylistHelpers'
+import { isEntityInLibrary, handleAddOrRemoveFromLibrary } from '../../utils/fetch'
+import { LibraryState } from '../../store/library/libraryTypes'
 import styles from './mediaView.module.css'
+import { getUserLibraryThunk } from '../../store/library/library'
 
 
 export const MediaView: React.FC = () => {
+
+    // location util help
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
+    // media slice
     const dispatch = useAppDispatch();
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
     const likedSongs: any = useAppSelector((state) => state.media.likedSongIds)
     const isLoading: boolean = useAppSelector((state) => state.media.isLoading)
     const likedSongsLoading: boolean = useAppSelector((state) => state.media.likedSongsLoading)
+
+    // session slice
     const user: any = useAppSelector((state) => state.session.user);
+
+    // library slice
+    const userLibrary: LibraryState = useAppSelector((state) => state.library)
+
+    // gradient
     const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
+
+
 
     // audio
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
 
-    // misc
+    // handle local UI updates
     const [likedSongsUpdated, setLikedSongsUpdated] = useState<boolean>(false)
+    const [libraryUpdated, setLibraryUpdated] = useState<boolean>(false)
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -48,15 +64,23 @@ export const MediaView: React.FC = () => {
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, currentPlaylistMedia, currentAlbumMedia, data.muted, mediaType])
 
+    // UI HOT REFRESH
+    useEffect(() => {
+        dispatch(getUserLibraryThunk())
+    }, [dispatch, libraryUpdated])
+
     useEffect(() => {
         dispatch(getAllIdsInLikedSongs())
     }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
 
-    useEffect(() => { // reset state when liked songs updates
+    useEffect(() => { // reset for subsequent UI updates
         if (likedSongsUpdated) {
             setLikedSongsUpdated(false);
         }
-    }, [likedSongsUpdated]);
+        if (libraryUpdated) {
+            setLibraryUpdated(false);
+        }
+    }, [likedSongsUpdated, libraryUpdated]);
 
     useMediaViewResize();
 
@@ -97,7 +121,15 @@ export const MediaView: React.FC = () => {
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
                             {/* <i className="fa fa-heart"></i> */}
-                            <i className="fa fa-heart-o"></i>
+                            {mediaType === 'album' &&
+                            <i
+                                className={isEntityInLibrary('album', currentAlbumMedia?._id, userLibrary) ? 'fa fa-heart' : 'fa fa-heart-o'}
+                                id={isEntityInLibrary('album', currentAlbumMedia?._id, userLibrary) ? `${styles.inLibrary}` : `${styles.notInLibrary}`}
+                                onClick={() => {
+                                    handleAddOrRemoveFromLibrary('album', currentAlbumMedia?._id, userLibrary)
+                                    setLibraryUpdated(true)
+                                }}
+                            ></i>}
                         </div>
                         <div className={styles.moreOptions}>
                             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg>
