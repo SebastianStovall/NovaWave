@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./footer.module.css";
+import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
 import { NowPlayingButton } from "../UI/nowPlayingButton/nowPlayingButton";
 
 // DISPATCH + App Selector
@@ -12,6 +14,7 @@ import "rc-slider/assets/index.css";
 
 // REDUCER ACTIONS
 import { setPlay, setCurrentSong } from "../../store/player/player";
+import { updateCurrentMedia, getAllIdsInLikedSongs } from "../../store/media/media";
 
 // Hooks
 import { useAudioPlayer } from "../../hooks/useAudioPlayer";
@@ -28,8 +31,10 @@ import {
   formatTimestamp
 } from "../../utils/audio/audioPlayerHelpers";
 
+import { isTargetSongInLikedSongs, handleFavoriteSong } from "../../utils/audio/likedSongsPlaylistHelpers";
+
 export const Footer: React.FC = () => {
-  const user = useAppSelector((state) => state.session.user);
+  const user: any = useAppSelector((state) => state.session.user);
 
   const dispatch = useAppDispatch();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -37,7 +42,7 @@ export const Footer: React.FC = () => {
   // global audio state
   const songList = useAppSelector((state) => state.player.songList);
   const play = useAppSelector((state) => state.player.play);
-  const currentSong = useAppSelector((state) => state.player.currentSong);
+  const currentSong: any = useAppSelector((state) => state.player.currentSong);
 
   // Local audio useState()
   const [currentTime, setCurrentTime] = useState<number | number[]>(0);
@@ -50,6 +55,10 @@ export const Footer: React.FC = () => {
 
   const [volumeHovered, setVolumeHovered] = useState(false);
   const [progressBarHovered, setProgressBarHovered] = useState(false);
+
+
+  // Local State UI
+  const [likedSongsUpdated, setLikedSongsUpdated] = useState<boolean>(false)
 
   // Hook that handles the useEffect effects for audio player
   useAudioPlayer(
@@ -92,6 +101,43 @@ const handleVolume = ( value: number | number[]) => {
   }
 }
 
+
+  // UI update when favoriting song in footer -----
+
+    // media state slice
+  const likedSongs: any = useAppSelector((state) => state.media.likedSongIds)
+  const likedSongsLoading: boolean = useAppSelector((state) => state.media.likedSongsLoading)
+
+    // location util help
+  const location = useLocation();
+  const mediaType = location.pathname.split('/')[1];
+  const mediaId = location.pathname.split('/')[2];
+
+  useEffect(() => { // hot refresh inside of liked songs media view page
+    let mediaInfo = {mediaType, mediaId}
+    if(mediaInfo.mediaType === 'collection') mediaInfo.mediaType = 'playlist'
+    if(mediaInfo.mediaId === 'tracks') mediaInfo.mediaId = user.likedSongsPlaylistId
+
+    dispatch(updateCurrentMedia(mediaInfo))
+  }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId, likedSongsUpdated])
+
+  useEffect(() => {
+    dispatch(getAllIdsInLikedSongs())
+  }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+
+  useEffect(() => { // reset for subsequent UI updates
+    if (likedSongsUpdated) {
+      setLikedSongsUpdated(false);
+    }
+  }, [likedSongsUpdated]);
+
+  if(user && likedSongsLoading) {
+    return <div className={styles.footer}></div>
+  }
+
+  // -------------------------------------------------------------------------------------------------------------------------------
+
+
   return (
     <div
       className={styles.footer}
@@ -129,7 +175,15 @@ const handleVolume = ( value: number | number[]) => {
             </div>
 
             <div className={styles.icons}>
-              <i className="far fa-heart"></i>
+              <i
+                className={ isTargetSongInLikedSongs(currentSong?._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
+                id={ isTargetSongInLikedSongs(currentSong?._id, likedSongs) === true ? mediaViewStyles.inLikedSongs : mediaViewStyles.notInLikedSongs}
+                onClick={() => {
+                  handleFavoriteSong(currentSong?._id, user.likedSongsPlaylistId, likedSongs)
+                  setLikedSongsUpdated(true);
+                }}
+              >
+              </i>
             </div>
           </div>
 
