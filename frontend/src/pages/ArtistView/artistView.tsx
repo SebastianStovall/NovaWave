@@ -34,7 +34,7 @@ export const ArtistView: React.FC = () => {
     const artistData: any = useAppSelector((state) => state.media.artistData);
 
     const dispatch = useAppDispatch()
-    const { data } = usePalette(artistData !== null ? artistData.bannerImage : '');
+    const { data } = usePalette(artistData !== null && artistData.bannerImage.length > 0 ? artistData.bannerImage : 'https://media.istockphoto.com/id/1133248464/photo/gray-abstract-background.jpg?s=612x612&w=0&k=20&c=NW-QBTklqJR8jRai5gPe6x5-f3QzZSmsMl3TYaJrL-4=');
 
     // player state slice
     const play: any = useAppSelector((state) => state.player.play);
@@ -60,8 +60,8 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         dispatch(changeMediaInfo(artistData?.name))
-        dispatch(changeGradient(`${hexToRgb(data.muted)}`))
-    }, [dispatch, data.muted, artistData])
+        dispatch(changeGradient(`${hexToRgb(data.vibrant)}`))
+    }, [dispatch, data.vibrant, artistData])
 
     return (
         <div>
@@ -76,7 +76,7 @@ export const ArtistView: React.FC = () => {
                 </div>
             </div>
 
-            <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
+            <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.vibrant)}, 1)`}}>
                 <div className={mediaViewStyles.controlButtons}>
                     <div className={mediaViewStyles.leftButtons}>
                         <div className={mediaViewStyles.resumeAndPause} onClick={() => handlePlayFromStart({tracks: artistTopSongs}, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>

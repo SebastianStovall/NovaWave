@@ -272,3 +272,14 @@
 #trackNumber {
     font-size: 14px;
 }
+
+
+/* Styles For If Song is Liked Or Not */
+
+#inLikedSongs {
+    color: var(--novawave-blue);
+}
+
+#notInLikedSongs {
+    border: 0px;
+}

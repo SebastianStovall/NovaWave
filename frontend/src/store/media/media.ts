@@ -31,7 +31,6 @@ export const updateCurrentMedia = createAsyncThunk('media/updateCurrent', async 
   }
 });
 
-
 // thunk to add media to user's recently viewed
 export const addMediaToRecentlyViewed = createAsyncThunk('media/addToRecentlyViewed', async (mediaInfo: MediaThunkRequestBody, thunkAPI) => {
   try {
@@ -56,10 +55,30 @@ export const addMediaToRecentlyViewed = createAsyncThunk('media/addToRecentlyVie
 });
 
 
+// thunk to grab current likedSongIds
+export const getAllIdsInLikedSongs = createAsyncThunk('media/getSongIds', async (_, thunkAPI) => {
+  try {
+      const response = await fetch("/api/library/likedSongs")
+
+      if (response.ok) {
+          const data = await response.json();
+          return data
+      } else {
+          const error = await response.json();
+          console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+          return thunkAPI.rejectWithValue(error);
+      }
+  } catch (e: any) {
+      console.error("There was an issue performing fetch to /api/library/getSongIds")
+      return thunkAPI.rejectWithValue(e.message)
+  }
+});
+
+
 // Create a slice for the session state
 const mediaSlice = createSlice({
   name: "media",
-  initialState: { albumData: null, playlistData: null, artistData: null, isLoading: true },
+  initialState: { albumData: null, playlistData: null, artistData: null, isLoading: true, likedSongIds: null, likedSongsLoading: true },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -79,6 +98,11 @@ const mediaSlice = createSlice({
       .addCase(addMediaToRecentlyViewed.fulfilled, (state, action) => {
         // no state change for this thunk
         // console.log("MESSAGE ---> ", action.payload)
+      })
+
+      .addCase(getAllIdsInLikedSongs.fulfilled, (state, action) => {
+        state.likedSongIds = action.payload.likedSongs
+        state.likedSongsLoading = false
       })
   },
 });

@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { addToLibrary, removeFromLibrary } from "../db/actions/playlist-actions";
-import { populateUserLibrary } from "../db/actions/user-actions";
+import { populateUserLibrary, getLikedSongIds } from "../db/actions/user-actions";
 import CustomError from "../utils/CustomError";
 import { get } from "lodash";
 
@@ -86,3 +86,13 @@ export const retreiveUserLibrary: RequestHandler = async (req, res, next) => {
         next(e)
     }
 };
+
+export const getLikedSongs: RequestHandler = async(req, res, next) => {
+    try {
+        const userId = get(req, "identity._id") as unknown as string
+        const likedSongs = await getLikedSongIds(userId)
+        return res.status(200).json({message: 'Success', likedSongs: likedSongs })
+    } catch (e: any) {
+        return next(e)
+    }
+}

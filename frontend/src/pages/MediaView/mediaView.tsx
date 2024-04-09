@@ -4,11 +4,11 @@ import { useMediaViewResize } from '../../hooks/useMediaViewResize'
 import { usePalette } from 'react-palette'
 import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/media'
+import { updateCurrentMedia, addMediaToRecentlyViewed, getAllIdsInLikedSongs } from '../../store/media/media'
 import { setPlay } from '../../store/player/player'
 import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { useLocation } from 'react-router-dom'
-import { isCurrentSongInLikedSongs, getLikedSongsPlaylistLength } from '../../utils/audio'
+import { isCurrentSongInLikedSongs, getLikedSongsPlaylistLength, isTargetSongInLikedSongs, handleFavoriteSong } from '../../utils/audio/likedSongsPlaylistHelpers'
 import styles from './mediaView.module.css'
 
 
@@ -20,13 +20,19 @@ export const MediaView: React.FC = () => {
     const dispatch = useAppDispatch();
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
+    const likedSongs: any = useAppSelector((state) => state.media.likedSongIds)
     const isLoading: boolean = useAppSelector((state) => state.media.isLoading)
+    const likedSongsLoading: boolean = useAppSelector((state) => state.media.likedSongsLoading)
     const user: any = useAppSelector((state) => state.session.user);
     const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
 
+    // audio
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
+
+    // misc
+    const [likedSongsUpdated, setLikedSongsUpdated] = useState<boolean>(false)
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -35,34 +41,29 @@ export const MediaView: React.FC = () => {
 
         dispatch(addMediaToRecentlyViewed(mediaInfo))
         dispatch(updateCurrentMedia(mediaInfo))
-    }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId])
+    }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId, likedSongsUpdated])
 
     useEffect(() => {
         dispatch(changeMediaInfo(mediaType === 'album' ? currentAlbumMedia?.title : currentPlaylistMedia?.title ))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, currentPlaylistMedia, currentAlbumMedia, data.muted, mediaType])
 
+    useEffect(() => {
+        dispatch(getAllIdsInLikedSongs())
+    }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+
+    useEffect(() => { // reset state when liked songs updates
+        if (likedSongsUpdated) {
+            setLikedSongsUpdated(false);
+        }
+    }, [likedSongsUpdated]);
+
     useMediaViewResize();
 
-    if(isLoading) {
+    if(isLoading || likedSongsLoading) {
         return <p>...Loading</p>
     }
 
-    async function handleFavoriteSong(trackId: string, playlistId: string) {
-        const response = await fetch('/api/playlists/add', {
-            method: 'PATCH',
-            body: JSON.stringify({trackId, playlistId}),
-            headers: { "Content-Type": "application/json" }
-        })
-
-        if(response.ok) {
-            const data = await response.json()
-            console.log("SUCESS")
-            console.log(data)
-        } else {
-            console.log("COULD NOT FAVORITE SONG")
-        }
-    }
 
     return (
         <div className={styles.mediaView} style={{background: `linear-gradient(transparent 0,rgba(0,0,0,.5) 100%), rgba(${hexToRgb(data.muted)}, 1)`}}>
@@ -144,7 +145,15 @@ export const MediaView: React.FC = () => {
                                     <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
                                     <p>{track.artistName}</p>
                                 </div>
-                                <i className="fa fa-heart-o" onClick={() => handleFavoriteSong(track._id, user.likedSongsPlaylistId)}></i>
+                                <i
+                                    className={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
+                                    id={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? styles.inLikedSongs : styles.notInLikedSongs}
+                                    onClick={() => {
+                                        handleFavoriteSong(track._id, user.likedSongsPlaylistId, likedSongs)
+                                        setLikedSongsUpdated(true);
+                                    }}
+                                >
+                                </i>
                             </div>
                             <div>
                                 <p>{track.length}</p>
@@ -179,7 +188,15 @@ export const MediaView: React.FC = () => {
                                     <p id={currentSong._id === track.track._id ? styles.activeTitleText : ''}>{track.track.title}</p>
                                     <p>{track.track.artistName}</p>
                                 </div>
-                                <i className="fa fa-heart-o"></i>
+                                <i
+                                className={ isTargetSongInLikedSongs(track.track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
+                                id={ isTargetSongInLikedSongs(track.track._id, likedSongs) === true ? styles.inLikedSongs : styles.notInLikedSongs}
+                                onClick={() => {
+                                    handleFavoriteSong(track.track._id, user.likedSongsPlaylistId, likedSongs)
+                                    setLikedSongsUpdated(true);
+                                }}
+                                >
+                                </i>
                             </div>
                             <div>
                                 <p>{track.track.length}</p>

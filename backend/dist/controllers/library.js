@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.retreiveUserLibrary = exports.removeEntityFromLibrary = exports.addEntityToLibrary = void 0;
+exports.getLikedSongs = exports.retreiveUserLibrary = exports.removeEntityFromLibrary = exports.addEntityToLibrary = void 0;
 const playlist_actions_1 = require("../db/actions/playlist-actions");
 const user_actions_1 = require("../db/actions/user-actions");
 const CustomError_1 = __importDefault(require("../utils/CustomError"));
@@ -67,3 +67,14 @@ const retreiveUserLibrary = async (req, res, next) => {
     }
 };
 exports.retreiveUserLibrary = retreiveUserLibrary;
+const getLikedSongs = async (req, res, next) => {
+    try {
+        const userId = (0, lodash_1.get)(req, "identity._id");
+        const likedSongs = await (0, user_actions_1.getLikedSongIds)(userId);
+        return res.status(200).json({ message: 'Success', likedSongs: likedSongs });
+    }
+    catch (e) {
+        return next(e);
+    }
+};
+exports.getLikedSongs = getLikedSongs;

@@ -1,5 +1,7 @@
 import { UserModel } from "../models/User";
 import CustomError from "../../utils/CustomError";
+import { PlaylistDocument } from "../models/modelTypes";
+import { PlaylistModel } from "../models/Playlist";
 
 // helper actions for User (used in controller functions)
 
@@ -63,6 +65,24 @@ export const populateUserLibrary = async (userId: string) => {
     if(user) {
       const populatedUser = await user.populate('playlists albums artists')
       return populatedUser
+    }
+  } catch(e) {
+    throw e
+  }
+}
+
+export const getLikedSongIds = async(userId: string) => {
+  try {
+    const userDocument = await getUserById(userId)
+    if(userDocument) {
+      const likedSongsPlaylist: PlaylistDocument | null = await PlaylistModel.findById(userDocument.likedSongsPlaylistId)
+      if(likedSongsPlaylist) {
+        let trackIds = []
+        for(let trackObj of likedSongsPlaylist.tracks) {
+          trackIds.push(trackObj.track)
+        }
+        return trackIds
+      }
     }
   } catch(e) {
     throw e

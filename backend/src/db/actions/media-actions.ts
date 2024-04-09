@@ -30,7 +30,7 @@ export const getMediaInfo = async(entityId: string, entityType: string) => {
             }
             return [artist, null]
         } else if (entityType === 'playlist') {
-            const playlist: PlaylistDocument | null = await PlaylistModel.findById(entityId).populate('tracks.track');;
+            const playlist: PlaylistDocument | null = await PlaylistModel.findById(entityId).populate('tracks.track');
             if(!playlist) {
                 throw new CustomError(
                     "Query Error",

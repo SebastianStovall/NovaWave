@@ -29,7 +29,6 @@ const getMediaInfo = async (entityId, entityType) => {
         }
         else if (entityType === 'playlist') {
             const playlist = await Playlist_1.PlaylistModel.findById(entityId).populate('tracks.track');
-            ;
             if (!playlist) {
                 throw new CustomError_1.default("Query Error", `${entityType} document could not be found`, 500);
             }
