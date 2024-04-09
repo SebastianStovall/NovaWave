@@ -17,7 +17,9 @@ import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { addCommasToNumber } from '../../utils/audio/numberUtils'
 import { AlbumDocument } from '../../../../backend/src/db/models/modelTypes';
 
+import { getAllIdsInLikedSongs } from '../../store/media/media';
 import { handleAddOrRemoveFromLibrary, isEntityInLibrary } from '../../utils/fetch';
+import { isTargetSongInLikedSongs, handleFavoriteSong } from '../../utils/audio/likedSongsPlaylistHelpers';
 import { getUserLibraryThunk } from '../../store/library/library';
 
 import styles from './artistView.module.css'
@@ -52,8 +54,16 @@ export const ArtistView: React.FC = () => {
     // library state slice
     const userLibrary: LibraryState = useAppSelector((state) => state.library)
 
+    // media state slice
+    const likedSongs: any = useAppSelector((state) => state.media.likedSongIds)
+    const likedSongsLoading: boolean = useAppSelector((state) => state.media.likedSongsLoading)
+
+    // session state slice
+    const user: any = useAppSelector((state) => state.session.user);
+
     // local ui updates
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [likedSongsUpdated, setLikedSongsUpdated] = useState<boolean>(false)
     const [libraryUpdated, setLibraryUpdated] = useState<boolean>(false);
 
     useEffect(() => {
@@ -77,11 +87,22 @@ export const ArtistView: React.FC = () => {
         dispatch(getUserLibraryThunk())
     }, [dispatch, libraryUpdated])
 
+    useEffect(() => {
+        dispatch(getAllIdsInLikedSongs())
+    }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+
     useEffect(() => { // reset for subsequent UI updates
+        if (likedSongsUpdated) {
+            setLikedSongsUpdated(false);
+        }
         if (libraryUpdated) {
             setLibraryUpdated(false);
         }
-    }, [libraryUpdated]);
+    }, [likedSongsUpdated, libraryUpdated]);
+
+    if(likedSongsLoading) {
+        return <p></p>
+    }
 
     return (
         <div>
@@ -149,7 +170,17 @@ export const ArtistView: React.FC = () => {
                                     <span aria-label="Explicit" className={styles.explicit}>E</span>
                                 </div>
                                 <span className={styles.viewCount} style={{marginLeft: 'auto', paddingLeft: '10px'}}>{addCommasToNumber(track.plays)}</span>
-                                <i className="fa fa-heart-o" style={{marginLeft: 'auto', paddingLeft: '10px'}}></i>
+                                {/* <i className="fa fa-heart-o" style={{marginLeft: 'auto', paddingLeft: '10px'}}></i> */}
+                                <i
+                                    className={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
+                                    id={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? mediaViewStyles.inLikedSongs : mediaViewStyles.notInLikedSongs}
+                                    style={{marginLeft: 'auto', paddingLeft: '10px'}}
+                                    onClick={() => {
+                                        handleFavoriteSong(track._id, user.likedSongsPlaylistId, likedSongs)
+                                        setLikedSongsUpdated(true);
+                                    }}
+                                >
+                                </i>
                             </div>
                             <div>
                                 <p>{track.length}</p>
