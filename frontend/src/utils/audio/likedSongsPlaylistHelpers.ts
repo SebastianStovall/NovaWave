@@ -1,4 +1,6 @@
 export function isCurrentSongInLikedSongs(currentPlaylistMedia: any, currentSong: {_id: string}) { // determine whether to render a play or pause button for liked songs playlist media page view
+    if(!currentPlaylistMedia) return
+    
     const normalizedSongList = [] //* tracks array in this case includes objects with multiple keys. need to normalize into an array of object with only the track key
         for(let track of currentPlaylistMedia.tracks) {
             normalizedSongList.push(track.track)

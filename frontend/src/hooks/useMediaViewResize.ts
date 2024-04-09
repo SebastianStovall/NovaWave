@@ -7,20 +7,20 @@ export function useMediaViewResize() {
 
 const dispatch = useAppDispatch()
 const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
-const isLoading: boolean = useAppSelector((state) => state.media.isLoading)
+const isLoading: boolean = useAppSelector((state) => state.media.isLoading);
+const likedSongsLoading: boolean = useAppSelector((state) => state.media.likedSongsLoading);
 const location = useLocation();
 const mediaType = location.pathname.split('/')[1];
 const mediaId = location.pathname.split('/')[2];
 const { data } = usePalette(mediaType === 'album' ? (currentAlbumMedia !== null ? currentAlbumMedia.image : '') : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png');
 
+const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement | null;
+const mediaContent = document.querySelector('.mediaView_mediaContent__9MFyo') as HTMLElement | null;
+const coverImage = document.querySelector('.mediaView_coverImg__dpy4n') as HTMLImageElement | null;
+const titleText = document.querySelector('.mediaView_title__HNM8j') as HTMLDivElement | null;
+const stickyHeader = document.getElementById('mediaView_stickyHead__lD+DR') as HTMLDivElement | null; // sticky header part of .flexGrid
+
 useEffect(() => {
-    const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLElement;
-    const mediaContent = document.querySelector('.mediaView_mediaContent__9MFyo') as HTMLElement | null;
-
-    const coverImage = document.querySelector('.mediaView_coverImg__dpy4n') as HTMLImageElement | null;
-    const titleText = document.querySelector('.mediaView_title__HNM8j') as HTMLDivElement | null;
-
-    const stickyHeader = document.getElementById('mediaView_stickyHead__lD+DR') as HTMLDivElement | null; // sticky header part of .flexGrid
 
     function handleStickyStyling() {
         if(stickyHeader && mainContent) {
@@ -127,13 +127,18 @@ useEffect(() => {
         });
     });
 
-    resizeObserver.observe(mainContent);
-    mainContent.addEventListener('scroll', handleStickyStyling );
+    if(mainContent) {
+        resizeObserver.observe(mainContent);
+        mainContent.addEventListener('scroll', handleStickyStyling );
+    }
+
 
     return () => {
-        resizeObserver.unobserve(mainContent);
-        mainContent.removeEventListener('scroll', handleStickyStyling );
+        if(mainContent) {
+            resizeObserver.unobserve(mainContent);
+            mainContent.removeEventListener('scroll', handleStickyStyling );
+        }
     };
-}, [dispatch, data.muted, location.pathname, mediaId, mediaType, isLoading])
+}, [dispatch, data.muted, location.pathname, mediaId, mediaType, isLoading, likedSongsLoading, coverImage, mainContent, mediaContent, stickyHeader, titleText])
 
 }
