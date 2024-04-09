@@ -8,6 +8,7 @@ import { updateCurrentMedia, addMediaToRecentlyViewed } from '../../store/media/
 import { setPlay } from '../../store/player/player'
 import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { useLocation } from 'react-router-dom'
+import { isCurrentSongInLikedSongs, getLikedSongsPlaylistLength } from '../../utils/audio'
 import styles from './mediaView.module.css'
 
 
@@ -27,23 +28,21 @@ export const MediaView: React.FC = () => {
     const play: any = useAppSelector((state) => state.player.play);
     const currentSong: any = useAppSelector((state) => state.player.currentSong);
 
-
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
-        if(mediaInfo.mediaType === 'collection') {
-            mediaInfo.mediaType = 'playlist'
-        }
+        if(mediaInfo.mediaType === 'collection') mediaInfo.mediaType = 'playlist' // change to correct mediaType to match backend (when viewing likedSongs playlist)
+        if(mediaInfo.mediaId === 'tracks') mediaInfo.mediaId = user.likedSongsPlaylistId // change to correct mediaId to match backend (when viewing likedSongs playlist)
+
         dispatch(addMediaToRecentlyViewed(mediaInfo))
         dispatch(updateCurrentMedia(mediaInfo))
-    }, [dispatch, location.pathname, mediaId, mediaType])
+    }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId])
 
     useEffect(() => {
         dispatch(changeMediaInfo(mediaType === 'album' ? currentAlbumMedia?.title : currentPlaylistMedia?.title ))
         dispatch(changeGradient(`${hexToRgb(data.muted)}`))
     }, [dispatch, currentPlaylistMedia, currentAlbumMedia, data.muted, mediaType])
 
-    const dependencies = [dispatch, data.muted, location.pathname, mediaId, mediaType]
-    useMediaViewResize(dependencies);
+    useMediaViewResize();
 
     if(isLoading) {
         return <p>...Loading</p>
@@ -61,7 +60,7 @@ export const MediaView: React.FC = () => {
             console.log("SUCESS")
             console.log(data)
         } else {
-            console.log("COULD NOT FAVORITE SONG ERROR")
+            console.log("COULD NOT FAVORITE SONG")
         }
     }
 
@@ -78,11 +77,11 @@ export const MediaView: React.FC = () => {
                     {mediaType === 'album' ? currentAlbumMedia?.title : 'Liked Songs'}
                     </div>
                     <div className={styles.stats}>
-                        <img src='https://sebass-novawave.s3.us-east-2.amazonaws.com/artist-about/%24B-ABOUT-Artist-1.jfif' width='24px' height='24px' alt='artist/owner' />
+                        <img src={mediaType === 'album' ? currentAlbumMedia?.artistImg : 'https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg'} width='24px' height='24px' alt='artist/owner' />
                         <span>{mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}</span>
-                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.yearReleased}` : ''}</span>
-                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
-                        <span>{mediaType === 'album' ? currentAlbumMedia?.length : `${currentPlaylistMedia?.length}`}</span>
+                        <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.yearReleased} •` : ''} </span>
+                        <span>{mediaType === 'album' ? `${currentAlbumMedia?.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
+                        <span>{mediaType === 'album' ? currentAlbumMedia?.length : `${getLikedSongsPlaylistLength(currentPlaylistMedia)}`}</span>
                     </div>
                 </div>
             </div>
@@ -92,7 +91,8 @@ export const MediaView: React.FC = () => {
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
                         <div className={styles.resumeAndPause} onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>
-                            <div className={`${ (play && currentSong.album === mediaId) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>
+                            {mediaType === 'album' && <div className={`${ (play && currentSong.album === mediaId) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>}
+                            {mediaId === 'tracks' && <div className={`${ (play && isCurrentSongInLikedSongs(currentPlaylistMedia, currentSong)) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>}
                         </div>
                         <div className={styles.favoriteAndUnfavorite}>
                             {/* <i className="fa fa-heart"></i> */}
@@ -156,7 +156,7 @@ export const MediaView: React.FC = () => {
                     }
 
                     {/* If viewing a playlist */}
-                    {(mediaType === 'playlist' || mediaType === 'collection') ? ( currentPlaylistMedia.tracks.map((track: any, index: number) => (
+                    {(mediaType === 'playlist' || mediaType === 'collection') ? ( currentPlaylistMedia?.tracks.map((track: any, index: number) => (
                         <div className={styles.gridItem}
                         key={track.track._id}
                         onMouseEnter={() => setHoveredIndex(index)}

@@ -24,8 +24,8 @@ export const updateCurrentMedia: RequestHandler = async(req, res, next) => {
             );
         }
 
-        const mediaInfo: ArtistDocument | AlbumDocument | PlaylistDocument = await getMediaInfo(mediaId, mediaType)
-        return res.status(200).json({ message: `Successfully Retreived ${mediaType} info from backend database`, media: mediaInfo, type: mediaType});
+        const [mediaInfo, artistImg] = await getMediaInfo(mediaId, mediaType)
+        return res.status(200).json({ message: `Successfully Retreived ${mediaType} info from backend database`, media: mediaInfo, type: mediaType, artistImg: artistImg});
 
     } catch(e) {
         next(e)

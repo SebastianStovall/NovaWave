@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Dashboard } from "./pages/Dashboard/dashboard";
@@ -10,19 +10,19 @@ import { ArtistView } from "./pages/ArtistView/artistView";
 import { Layout } from "./components/Layout/layout";
 
 import { useAppDispatch } from "./hooks";
+import { useAppSelector } from "./hooks";
 import { restoreUser } from "./store/session/session";
 
 import { initializeStoreWithDummyTrack } from "./store/player/player";
 
 const App: React.FC = () => {
-  const [isLoaded, setIsLoaded] = useState(false)
   const dispatch = useAppDispatch();
+  const isLoaded = useAppSelector((state) => state.session.isLoaded)
 
   // Check for and restore user information on page refresh
   useEffect(() => {
     dispatch(restoreUser());
     dispatch(initializeStoreWithDummyTrack())
-    setIsLoaded(true)
   }, [dispatch]);
 
   console.log("PAGE RE-RENDER FROM APP")

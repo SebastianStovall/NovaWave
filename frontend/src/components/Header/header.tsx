@@ -7,6 +7,7 @@ import { handlePlayFromStart } from "../../utils/audio/mediaViewHelpers";
 import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/session/session";
+import { isCurrentSongInLikedSongs } from "../../utils/audio";
 
 export const Header: React.FC = () => {
     const navigate = useNavigate()
@@ -18,7 +19,7 @@ export const Header: React.FC = () => {
     const dispatch = useAppDispatch();
     const songList = useAppSelector((state) => state.player.songList);
     const play = useAppSelector((state) => state.player.play)
-    const currentSong = useAppSelector((state) => state.player.currentSong)
+    const currentSong: any = useAppSelector((state) => state.player.currentSong)
     const currentAlbumMedia: any = useAppSelector((state) => state.media.albumData);
     const currentPlaylistMedia: any = useAppSelector((state) => state.media.playlistData);
 
@@ -115,9 +116,20 @@ export const Header: React.FC = () => {
     };
 
     function playOrPause() {
-        //* MEDIA VIEW PAGE
-        if(location.pathname.split("/")[1] === 'album' || location.pathname.split("/")[1] === 'collection') {
-            if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album' || location.pathname.split('/')[1] === 'collection') ) {
+        //* MEDIA VIEW PAGE ALBUM
+        if(location.pathname.split("/")[1] === 'album') {
+            if(songList && songList[0].albumName === headerState.media && (location.pathname.split('/')[1] === 'album') ) {
+                // If header media album name matches the currently queued song list album name
+                if(play === true) {
+                    return `fas fa-pause`
+                } else {
+                    return `fas fa-play`
+                }
+            } else {
+                return `fas fa-play`
+            }
+        } else if(location.pathname.split("/")[1] === 'collection') {
+            if(songList && isCurrentSongInLikedSongs(currentPlaylistMedia, currentSong) ) {
                 // If header media album name matches the currently queued song list album name
                 if(play === true) {
                     return `fas fa-pause`

@@ -65,7 +65,10 @@ const mediaSlice = createSlice({
     builder
       .addCase(updateCurrentMedia.fulfilled, (state, action) => {
         if(action.payload.type === 'album') {
-          state.albumData = action.payload.media
+          // current workaround for attaching artist image data when working with strictly album model schema
+          const album = action.payload.media
+          album.artistImg = action.payload.artistImg
+          state.albumData = album
         } else if (action.payload.type === 'playlist') {
           state.playlistData = action.payload.media
         } else if (action.payload.type === 'artist') {

@@ -8,7 +8,23 @@ export const handlePlayFromStart = (
     play: boolean,
     dispatch: any
 ) => {
-    const indexOfCurrentSongInsideMedia = currentAlbumMedia.tracks.findIndex((track: any) => track._id === currentSong._id)
+    let indexOfCurrentSongInsideMedia = -1
+
+    if(mediaType === 'album') {
+        indexOfCurrentSongInsideMedia = currentAlbumMedia.tracks.findIndex((track: any) => track._id === currentSong._id)
+    }
+
+    if(mediaType === 'collection') {
+        const normalizedSongList = [] //* tracks array in this case includes objects with multiple keys. need to normalize into an array of object with only the track key
+        for(let track of currentPlaylistMedia.tracks) {
+            normalizedSongList.push(track.track)
+        }
+        const indexOfCurrentSong = normalizedSongList.findIndex((track: any) => track._id === currentSong._id)
+        if(play === true) { // If already playing, then pause
+            dispatch(setPlay(false))
+            if(indexOfCurrentSong !== -1) return
+        }
+    }
 
     if(play === true) { // If already playing, then pause
         dispatch(setPlay(false))
