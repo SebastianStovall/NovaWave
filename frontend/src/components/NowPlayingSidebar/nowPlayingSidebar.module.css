@@ -10,6 +10,10 @@
   flex: 0 0 auto;
   min-width: 300px;
   max-width: 430px;
+
+  overflow: auto;
+  overflow-x: hidden;
+  transition: --var1 .5s;
 }
 
 .resizebar {
@@ -326,4 +330,38 @@
   .resizableSidebarContainer {
     display: none;
   }
+}
+
+
+
+
+
+
+@property --var1 {  /* Needed For Fade In Transition Of Scrollbars. Cannot do transitions for scrollbars default */
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+.resizableSidebar:hover {    /* For Scrollbar Fade-in when navigating to container */
+  --var1: rgba(147, 145, 145, 0.6);
+}
+
+
+.resizableSidebar::-webkit-scrollbar {
+  background: transparent;
+  width: 5px;
+}
+
+.resizableSidebar::-webkit-scrollbar-thumb {
+  background: var(--var1);
+  max-height: 10px;
+  border-radius: 1px;
+}
+
+.resizableSidebar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(230, 226, 226, 0.6);
+}
+.resizableSidebar::-webkit-scrollbar-thumb:active {
+  background-color: rgba(220, 217, 217, 0.8);
 }

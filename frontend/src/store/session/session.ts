@@ -88,7 +88,7 @@ export const restoreUser = createAsyncThunk('session/restoreUser', async (_, thu
 // Create a slice for the session state
 const sessionSlice = createSlice({
   name: 'session',
-  initialState: { user: null },
+  initialState: { user: null, isLoaded: false },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -103,6 +103,7 @@ const sessionSlice = createSlice({
       })
       .addCase(restoreUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.isLoaded = true
       });
   },
 });
