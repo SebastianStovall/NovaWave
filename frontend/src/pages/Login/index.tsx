@@ -105,6 +105,17 @@ export const Login: React.FC = () => {
 
                 <div className={styles.buttonContainer}>
                   <button className={styles.button} type='submit'>Log In User</button>
+                  <button
+                    className={styles.button}
+                    type="button"
+                    style={{marginTop: '15px'}}
+                    onClick={() => {
+                      dispatch(login({email: 'sebastianstovall@gmail.com', password: 'password'}))
+                      navigate('/')
+                    }}
+                  >
+                    Demo User
+                  </button>
                 </div>
               </div>
             </div>
