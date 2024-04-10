@@ -27,12 +27,7 @@ async function addToLibrary(entityType: string, entityId: string) {
         headers: { "Content-Type": "application/json" }
     })
 
-    if(response.ok) {
-        const data = await response.json()
-        console.log("SUCCESS ADDED, here is data --->", data)
-    } else {
-        console.log("FAILED TO ADD TO LIBRARY")
-    }
+    if(!response.ok) console.log("FAILED TO ADD TO LIBRARY")
 }
 
 async function removeFromLibrary(entityType: string, entityId: string) {
@@ -42,12 +37,7 @@ async function removeFromLibrary(entityType: string, entityId: string) {
         headers: { "Content-Type": "application/json" }
     })
 
-    if(response.ok) {
-        const data = await response.json()
-        console.log("SUCCESS REMOVED, here is data --->", data)
-    } else {
-        console.log("FAILED TO REMOVE FROM LIBRARY")
-    }
+    if(!response.ok) console.log("FAILED TO REMOVE FROM LIBRARY")
 }
 
 // handles removing and favoriting to user library

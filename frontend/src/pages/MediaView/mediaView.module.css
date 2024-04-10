@@ -78,6 +78,11 @@
     margin-right: 3px;
 }
 
+#navigateToArtist:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 
 
 /* Song List Container (top) */

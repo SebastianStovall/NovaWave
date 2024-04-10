@@ -15,7 +15,9 @@ export const LibrarySidebar: React.FC = () => {
         x: 0,
         y: 0,
         entityType: '',
-        entityId: ''
+        entityId: '',
+        userLibrary: {},
+        setLibraryUpdated: (value: boolean) => {} // Initial value for setLibraryUpdated
     }
 
     // local state
@@ -23,13 +25,22 @@ export const LibrarySidebar: React.FC = () => {
     const user: any = useAppSelector((state) => state.session.user);
     const [contextMenu, setContextMenu] = useState(initialContextMenu); // store the initial context menu in state
 
+    // hot refresh UI update
+    const [libraryUpdated, setLibraryUpdated] = useState<boolean>(false);
+
     // hooks
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getUserLibraryThunk());
-    }, [dispatch]);
+    }, [dispatch, libraryUpdated]);
+
+    useEffect(() => { // reset for subsequent UI updates
+        if (libraryUpdated) {
+            setLibraryUpdated(false);
+        }
+    }, [libraryUpdated]);
 
     if(!userLibrary.isLoaded) {
         return null
@@ -45,7 +56,7 @@ export const LibrarySidebar: React.FC = () => {
         e.preventDefault() // prevents default right-click content from displaying
 
         const {pageX, pageY} = e
-        setContextMenu({show: true, x: pageX, y: pageY, entityType, entityId })
+        setContextMenu({show: true, x: pageX, y: pageY, entityType, entityId, userLibrary, setLibraryUpdated: setLibraryUpdated })
     }
 
     const contextMenuClose = () => { // reset to initialContextMenu (show: close)
@@ -61,6 +72,8 @@ export const LibrarySidebar: React.FC = () => {
                 y={contextMenu.y}
                 entityType={contextMenu.entityType}
                 entityId={contextMenu.entityId}
+                userLibrary={userLibrary}
+                setLibraryUpdated={setLibraryUpdated}
                 closeContextMenu={contextMenuClose}
             />
             } {/* Doesn't matter where you put Context Menu, just needs to be somewhere on the output JSX */}

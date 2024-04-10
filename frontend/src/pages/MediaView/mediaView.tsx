@@ -6,7 +6,7 @@ import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { updateCurrentMedia, addMediaToRecentlyViewed, getAllIdsInLikedSongs } from '../../store/media/media'
 import { setPlay } from '../../store/player/player'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { handlePlayFromStart, handlePlayFromTrackNumber } from '../../utils/audio/mediaViewHelpers'
 import { isCurrentSongInLikedSongs, getLikedSongsPlaylistLength, isTargetSongInLikedSongs, handleFavoriteSong } from '../../utils/audio/likedSongsPlaylistHelpers'
 import { isEntityInLibrary, handleAddOrRemoveFromLibrary } from '../../utils/fetch'
@@ -21,6 +21,8 @@ export const MediaView: React.FC = () => {
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
+
+    const navigate = useNavigate()
 
     // media slice
     const dispatch = useAppDispatch();
@@ -103,7 +105,12 @@ export const MediaView: React.FC = () => {
                     </div>
                     <div className={styles.stats}>
                         <img src={mediaType === 'album' ? currentAlbumMedia?.artistImg : 'https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg'} width='24px' height='24px' alt='artist/owner' />
-                        <span>{mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}</span>
+                        <span
+                            id={mediaType === 'album' ? styles.navigateToArtist : ''}
+                            onClick={() => mediaType === 'album' && navigate(`/artist/${currentAlbumMedia?.artist}`)}
+                        >
+                            {mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}
+                        </span>
                         <span>{mediaType === 'album' ? `• ${currentAlbumMedia?.yearReleased} •` : ''} </span>
                         <span>{mediaType === 'album' ? `${currentAlbumMedia?.tracks.length} songs` : `• ${currentPlaylistMedia?.tracks.length} songs`} •</span>
                         <span>{mediaType === 'album' ? currentAlbumMedia?.length : `${getLikedSongsPlaylistLength(currentPlaylistMedia)}`}</span>
@@ -175,7 +182,7 @@ export const MediaView: React.FC = () => {
                             <div className={styles.song}>
                                 <div>
                                     <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
-                                    <p>{track.artistName}</p>
+                                    <p id={styles.navigateToArtist} onClick={() => navigate(`/artist/${track.artist}`)}>{track.artistName}</p>
                                 </div>
                                 <i
                                     className={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
@@ -218,7 +225,7 @@ export const MediaView: React.FC = () => {
                             <div className={styles.song}>
                                 <div>
                                     <p id={currentSong._id === track.track._id ? styles.activeTitleText : ''}>{track.track.title}</p>
-                                    <p>{track.track.artistName}</p>
+                                    <p id={styles.navigateToArtist} onClick={() => navigate(`/artist/${track.track.artist}`)}>{track.track.artistName}</p>
                                 </div>
                                 <i
                                 className={ isTargetSongInLikedSongs(track.track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}

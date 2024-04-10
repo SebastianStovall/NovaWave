@@ -166,7 +166,13 @@ export const ArtistView: React.FC = () => {
                             <div className={mediaViewStyles.song}>
                                 <img src={track.image} width='40px' height='40px' style={{borderRadius: '5px'}} alt='album-cover-img' />
                                 <div className={styles.testThis}>
-                                    <p id={currentSong._id === track._id ? mediaViewStyles.activeTitleText : ''} className={styles.songTitle}>{track.title}</p>
+                                    <p
+                                    id={currentSong._id === track._id ? mediaViewStyles.activeTitleText : ''}
+                                    className={styles.songTitle}
+                                    onClick={() => navigate(`/album/${track.album}`)}
+                                    >
+                                        {track.title}
+                                    </p>
                                     <span aria-label="Explicit" className={styles.explicit}>E</span>
                                 </div>
                                 <span className={styles.viewCount} style={{marginLeft: 'auto', paddingLeft: '10px'}}>{addCommasToNumber(track.plays)}</span>

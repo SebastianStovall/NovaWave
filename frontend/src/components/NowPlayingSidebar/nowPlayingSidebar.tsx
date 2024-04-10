@@ -64,7 +64,9 @@ export const NowPlayingSidebar: React.FC = () => {
         if(mediaInfo.mediaType === 'collection') mediaInfo.mediaType = 'playlist'
         if(mediaInfo.mediaId === 'tracks') mediaInfo.mediaId = user.likedSongsPlaylistId
 
-        dispatch(updateCurrentMedia(mediaInfo))
+        if(mediaType === 'collection') { // if on liked songs page
+            dispatch(updateCurrentMedia(mediaInfo))
+        }
     }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId, likedSongsUpdated])
 
     // UI HOT REFRESH
