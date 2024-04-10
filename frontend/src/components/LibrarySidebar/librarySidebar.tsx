@@ -1,19 +1,46 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import styles from "./librarySidebar.module.css";
 import { useSidebarResize } from "../../hooks/useSidebarResize";
 import { convertTimestampToFormattedDate } from "../../utils/dateUtils";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getUserLibraryThunk } from "../../store/library/library";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ContextMenu } from "../ContextMenu/contextMenu";
 
 export const LibrarySidebar: React.FC = () => {
     const { sidebarWidth, handleMouseDown } = useSidebarResize("left");
-    const userLibrary = useAppSelector((state) => state.library )
-    const dispatch = useAppDispatch()
+
+    const initialContextMenu = { // default menu options for context menu
+        show: false,
+        x: 0,
+        y: 0,
+        entityType: '',
+        entityId: '',
+        userLibrary: {},
+        setLibraryUpdated: (value: boolean) => {} // Initial value for setLibraryUpdated
+    }
+
+    // local state
+    const userLibrary = useAppSelector((state) => state.library );
+    const user: any = useAppSelector((state) => state.session.user);
+    const [contextMenu, setContextMenu] = useState(initialContextMenu); // store the initial context menu in state
+
+    // hot refresh UI update
+    const [libraryUpdated, setLibraryUpdated] = useState<boolean>(false);
+
+    // hooks
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getUserLibraryThunk());
-    }, [dispatch]);
+    }, [dispatch, libraryUpdated]);
+
+    useEffect(() => { // reset for subsequent UI updates
+        if (libraryUpdated) {
+            setLibraryUpdated(false);
+        }
+    }, [libraryUpdated]);
 
     if(!userLibrary.isLoaded) {
         return null
@@ -23,8 +50,34 @@ export const LibrarySidebar: React.FC = () => {
     const isMobileView = sidebarWidth === 80;  //! NEEDED FOR STYLE CHANGES WHEN USER RE-SIZE SIDEBAR (media queries only for window resize)
     const is584OrLarger = sidebarWidth >= 584; //! NEEDED FOR STYLE CHANGES WHEN USER RE-SIZE SIDEBAR (media queries only for window resize)
 
+    // context menu functions
+
+    const handleContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, entityType: string, entityId: string) => {
+        e.preventDefault() // prevents default right-click content from displaying
+
+        const {pageX, pageY} = e
+        setContextMenu({show: true, x: pageX, y: pageY, entityType, entityId, userLibrary, setLibraryUpdated: setLibraryUpdated })
+    }
+
+    const contextMenuClose = () => { // reset to initialContextMenu (show: close)
+        setContextMenu(initialContextMenu)
+    }
+
+
     return (
         <>
+            {contextMenu.show &&
+            <ContextMenu
+                x={contextMenu.x}
+                y={contextMenu.y}
+                entityType={contextMenu.entityType}
+                entityId={contextMenu.entityId}
+                userLibrary={userLibrary}
+                setLibraryUpdated={setLibraryUpdated}
+                closeContextMenu={contextMenuClose}
+            />
+            } {/* Doesn't matter where you put Context Menu, just needs to be somewhere on the output JSX */}
+
             <div className={styles.resizableSidebarContainer}>
                 <div className={styles.resizableSidebar} style={{ width: sidebarWidth }}> {/* inital width of container contained in state, but changed with events */}
 
@@ -65,7 +118,14 @@ export const LibrarySidebar: React.FC = () => {
 
                             <div className={styles.userPlaylists}>
                                 {Object.values(userLibrary.playlists).map(playlist => (
-                                    <div key={playlist._id} className={styles.item}>
+                                    <div
+                                    key={playlist._id}
+                                    className={styles.item}
+                                    onContextMenu={(e) => handleContextMenu(e, 'playlist', playlist._id)} // tooltip available on this div
+                                    onClick={() => {
+                                        if(playlist._id === user.likedSongsPlaylistId) navigate('/collection/tracks')
+                                    }}
+                                    >
                                         <div className={styles.mainInfo}>
                                             <img src="https://misc.scdn.co/liked-songs/liked-songs-300.png" alt="playlistPhoto"/>
                                             <div>
@@ -78,7 +138,14 @@ export const LibrarySidebar: React.FC = () => {
                                 ))}
 
                                 {Object.values(userLibrary.albums).map(album => (
-                                    <div key={album._id} className={styles.item}>
+                                    <div
+                                    key={album._id}
+                                    className={styles.item}
+                                    onContextMenu={(e) => handleContextMenu(e, 'album', album._id)} // tooltip available on this div
+                                    onClick={() => {
+                                        navigate(`/album/${album._id}`)
+                                    }}
+                                    >
                                         <div className={styles.mainInfo}>
                                             <img src={album.image} alt="AlbumPhoto"/>
                                             <div>
@@ -91,7 +158,14 @@ export const LibrarySidebar: React.FC = () => {
                                 ))}
 
                                 {Object.values(userLibrary.artists).map(artist => (
-                                    <div key={artist._id} className={styles.item}>
+                                    <div
+                                    key={artist._id}
+                                    className={styles.item}
+                                    onContextMenu={(e) => handleContextMenu(e, 'artist', artist._id)} // tooltip available on this div
+                                    onClick={() => {
+                                        navigate(`/artist/${artist._id}`)
+                                    }}
+                                    >
                                         <div className={styles.mainInfo}>
                                             <img src={artist.aboutImage} alt="ArtistPhoto"/>
                                             <div>

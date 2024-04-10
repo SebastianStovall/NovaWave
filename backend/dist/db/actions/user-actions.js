@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.populateUserLibrary = exports.deleteUserById = exports.updateUserById = exports.createUser = exports.getUserById = exports.getUserBySessionToken = exports.getUserByEmail = exports.getUsers = void 0;
+exports.getLikedSongIds = exports.populateUserLibrary = exports.deleteUserById = exports.updateUserById = exports.createUser = exports.getUserById = exports.getUserBySessionToken = exports.getUserByEmail = exports.getUsers = void 0;
 const User_1 = require("../models/User");
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
+const Playlist_1 = require("../models/Playlist");
 // helper actions for User (used in controller functions)
 const getUsers = async () => {
     try {
@@ -67,3 +68,22 @@ const populateUserLibrary = async (userId) => {
     }
 };
 exports.populateUserLibrary = populateUserLibrary;
+const getLikedSongIds = async (userId) => {
+    try {
+        const userDocument = await (0, exports.getUserById)(userId);
+        if (userDocument) {
+            const likedSongsPlaylist = await Playlist_1.PlaylistModel.findById(userDocument.likedSongsPlaylistId);
+            if (likedSongsPlaylist) {
+                let trackIds = [];
+                for (let trackObj of likedSongsPlaylist.tracks) {
+                    trackIds.push(trackObj.track);
+                }
+                return trackIds;
+            }
+        }
+    }
+    catch (e) {
+        throw e;
+    }
+};
+exports.getLikedSongIds = getLikedSongIds;

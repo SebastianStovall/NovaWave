@@ -56,7 +56,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 5px;
+    gap: 1px;
 }
 
 .stats img {
@@ -70,6 +70,17 @@
 }
 .stats span:first-of-type {
     font-weight: 700;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.stats span:nth-of-type(3) {
+    margin-right: 3px;
+}
+
+#navigateToArtist:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 
@@ -265,4 +276,29 @@
 }
 #trackNumber {
     font-size: 14px;
+}
+
+
+/* Styles For If Song is Liked Or Not */
+
+#inLikedSongs {
+    color: var(--novawave-blue);
+}
+
+#inLikedSongs:hover {
+    cursor: pointer;
+}
+
+#notInLikedSongs {
+    border: 0px;
+}
+
+#notInLikedSongs:hover {
+    cursor: pointer;
+}
+
+/* Styles for if album is or not in library */
+
+#inLibrary {
+    color: var(--novawave-blue)
 }

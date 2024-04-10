@@ -17,9 +17,15 @@ import { hexToRgb } from '../../utils/gradientOverlayUtils'
 import { addCommasToNumber } from '../../utils/audio/numberUtils'
 import { AlbumDocument } from '../../../../backend/src/db/models/modelTypes';
 
+import { getAllIdsInLikedSongs } from '../../store/media/media';
+import { handleAddOrRemoveFromLibrary, isEntityInLibrary } from '../../utils/fetch';
+import { isTargetSongInLikedSongs, handleFavoriteSong } from '../../utils/audio/likedSongsPlaylistHelpers';
+import { getUserLibraryThunk } from '../../store/library/library';
+
 import styles from './artistView.module.css'
 import mediaViewStyles from '../MediaView/mediaView.module.css'
 import dashboardStyles from '../Dashboard/dashboard.module.css'
+import { LibraryState } from '../../store/library/libraryTypes';
 
 export const ArtistView: React.FC = () => {
     const { artistId } = useParams();
@@ -34,7 +40,7 @@ export const ArtistView: React.FC = () => {
     const artistData: any = useAppSelector((state) => state.media.artistData);
 
     const dispatch = useAppDispatch()
-    const { data } = usePalette(artistData !== null ? artistData.bannerImage : '');
+    const { data } = usePalette(artistData !== null && artistData.bannerImage.length > 0 ? artistData.bannerImage : 'https://media.istockphoto.com/id/1133248464/photo/gray-abstract-background.jpg?s=612x612&w=0&k=20&c=NW-QBTklqJR8jRai5gPe6x5-f3QzZSmsMl3TYaJrL-4=');
 
     // player state slice
     const play: any = useAppSelector((state) => state.player.play);
@@ -45,7 +51,20 @@ export const ArtistView: React.FC = () => {
     const artistTopSongs: any = useAppSelector((state) => state.artist.artistTopSongs);
     const artist: any = useAppSelector((state) => state.artist.artist);
 
+    // library state slice
+    const userLibrary: LibraryState = useAppSelector((state) => state.library)
+
+    // media state slice
+    const likedSongs: any = useAppSelector((state) => state.media.likedSongIds)
+    const likedSongsLoading: boolean = useAppSelector((state) => state.media.likedSongsLoading)
+
+    // session state slice
+    const user: any = useAppSelector((state) => state.session.user);
+
+    // local ui updates
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [likedSongsUpdated, setLikedSongsUpdated] = useState<boolean>(false)
+    const [libraryUpdated, setLibraryUpdated] = useState<boolean>(false);
 
     useEffect(() => {
         let mediaInfo = {mediaType, mediaId}
@@ -60,8 +79,30 @@ export const ArtistView: React.FC = () => {
 
     useEffect(() => {
         dispatch(changeMediaInfo(artistData?.name))
-        dispatch(changeGradient(`${hexToRgb(data.muted)}`))
-    }, [dispatch, data.muted, artistData])
+        dispatch(changeGradient(`${hexToRgb(data.vibrant)}`))
+    }, [dispatch, data.vibrant, artistData])
+
+    // UI HOT REFRESH
+    useEffect(() => {
+        dispatch(getUserLibraryThunk())
+    }, [dispatch, libraryUpdated])
+
+    useEffect(() => {
+        dispatch(getAllIdsInLikedSongs())
+    }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+
+    useEffect(() => { // reset for subsequent UI updates
+        if (likedSongsUpdated) {
+            setLikedSongsUpdated(false);
+        }
+        if (libraryUpdated) {
+            setLibraryUpdated(false);
+        }
+    }, [likedSongsUpdated, libraryUpdated]);
+
+    if(likedSongsLoading) {
+        return <p></p>
+    }
 
     return (
         <div>
@@ -76,15 +117,21 @@ export const ArtistView: React.FC = () => {
                 </div>
             </div>
 
-            <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
+            <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.vibrant)}, 1)`}}>
                 <div className={mediaViewStyles.controlButtons}>
                     <div className={mediaViewStyles.leftButtons}>
                         <div className={mediaViewStyles.resumeAndPause} onClick={() => handlePlayFromStart({tracks: artistTopSongs}, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>
                             {/* //* should show play or pause depending if current song playing is part of that artist top songs */}
                             <div className={`${ (play && currentSong && artistTopSongs && artistTopSongs.some((song: Song) => song._id === currentSong._id)) ? `fas fa-pause` : `fas fa-play`} ${mediaViewStyles.playPause}` }></div>
                         </div>
-                        <button className={styles.followButton}>
-                            Follow
+                        <button
+                        className={styles.followButton}
+                        onClick={() => {
+                            handleAddOrRemoveFromLibrary('artist', mediaId, userLibrary)
+                            setLibraryUpdated(true)
+                        }}
+                        >
+                            {isEntityInLibrary('artist', mediaId, userLibrary) ? 'Following' : 'Follow'}
                         </button>
                         <div className={mediaViewStyles.moreOptions}>
                             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg>
@@ -112,18 +159,34 @@ export const ArtistView: React.FC = () => {
                                     {currentSong._id !== track._id ? index + 1 : (play ? '\u2223 \u2223' : index + 1)}
                                 </div>
                                 :
-                                currentSong._id === track._id ? <div id={mediaViewStyles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={mediaViewStyles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber({tracks: artistTopSongs}, currentPlaylistMedia, index, dispatch)} >{`\u25B6`}</div>
+                                currentSong._id === track._id ? <div id={mediaViewStyles.togglePlay} onClick={() => play === true ? dispatch(setPlay(false)) : dispatch(setPlay(true))}>{play ? '\u2223 \u2223' : `\u25B6`}</div> : <div id={mediaViewStyles.togglePlayGrey} onClick={() => handlePlayFromTrackNumber({tracks: artistTopSongs}, currentPlaylistMedia, mediaType, index, dispatch)} >{`\u25B6`}</div>
                                 //* When hovering over audio, if track is queued VS not queued
                             }
 
                             <div className={mediaViewStyles.song}>
                                 <img src={track.image} width='40px' height='40px' style={{borderRadius: '5px'}} alt='album-cover-img' />
                                 <div className={styles.testThis}>
-                                    <p id={currentSong._id === track._id ? mediaViewStyles.activeTitleText : ''} className={styles.songTitle}>{track.title}</p>
+                                    <p
+                                    id={currentSong._id === track._id ? mediaViewStyles.activeTitleText : ''}
+                                    className={styles.songTitle}
+                                    onClick={() => navigate(`/album/${track.album}`)}
+                                    >
+                                        {track.title}
+                                    </p>
                                     <span aria-label="Explicit" className={styles.explicit}>E</span>
                                 </div>
                                 <span className={styles.viewCount} style={{marginLeft: 'auto', paddingLeft: '10px'}}>{addCommasToNumber(track.plays)}</span>
-                                <i className="fa fa-heart-o" style={{marginLeft: 'auto', paddingLeft: '10px'}}></i>
+                                {/* <i className="fa fa-heart-o" style={{marginLeft: 'auto', paddingLeft: '10px'}}></i> */}
+                                <i
+                                    className={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
+                                    id={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? mediaViewStyles.inLikedSongs : mediaViewStyles.notInLikedSongs}
+                                    style={{marginLeft: 'auto', paddingLeft: '10px'}}
+                                    onClick={() => {
+                                        handleFavoriteSong(track._id, user.likedSongsPlaylistId, likedSongs)
+                                        setLikedSongsUpdated(true);
+                                    }}
+                                >
+                                </i>
                             </div>
                             <div>
                                 <p>{track.length}</p>

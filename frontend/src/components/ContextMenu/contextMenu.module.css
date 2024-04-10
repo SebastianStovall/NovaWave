@@ -1,0 +1,28 @@
+.contextMenuStyling {
+    position: absolute;
+    z-index: 2;
+
+    background-color: #282828;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 5px;
+}
+
+.contextMenuStyling > div {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contextMenuStyling > div:hover {
+    background-color: hsla(0, 0%, 100%, .1);
+    cursor: pointer;
+}
+
+.contextMenuStyling > div > div {
+    font-size: 13px;
+    font-weight: 500;
+    color: #FFFFFFE6;
+    margin-left: 15px;
+}
