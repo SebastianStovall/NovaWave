@@ -24,6 +24,10 @@ export const NowPlayingSidebar: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
 
+    // use to reset top of page when navigating
+    const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLDivElement | null;
+    const header = document.querySelector('.header_header__lOwdN') as HTMLDivElement | null;
+
     // location util help
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
@@ -105,7 +109,18 @@ export const NowPlayingSidebar: React.FC = () => {
                         <div className={styles.innerOverflowContainer}>
                             <div className={styles.secondInnerOverflowContainer}>
                                 <div className={styles.containerForOverflowText}>
-                                    <h2 className={styles.scrollText} onClick={() => navigate(`/album/${currentSong.album}`)}>{currentSong?.albumName}</h2>
+                                    <h2
+                                    className={styles.scrollText}
+                                    onClick={() => {
+                                        if(mainContent && header) {
+                                            mainContent.scrollTop = 0
+                                            header.style.background = 'transparent'
+                                            navigate(`/album/${currentSong.album}`)
+                                        }
+                                    }}
+                                    >
+                                        {currentSong?.albumName}
+                                    </h2>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +143,18 @@ export const NowPlayingSidebar: React.FC = () => {
                         <div className={styles.innerOverflowContainer2}>
                             <div className={styles.secondInnerOverflowContainer2}>
                                 <div className={styles.containerForOverflowText2}>
-                                    <h2 className={styles.scrollText22} onClick={() => navigate(`/album/${currentSong.album}`)}>{currentSong?.title}</h2>
+                                    <h2
+                                    className={styles.scrollText22}
+                                    onClick={() => {
+                                        if(mainContent && header) {
+                                            mainContent.scrollTop = 0
+                                            header.style.background = 'transparent'
+                                            navigate(`/album/${currentSong.album}`)
+                                        }
+                                    }}
+                                    >
+                                        {currentSong?.title}
+                                    </h2>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +173,18 @@ export const NowPlayingSidebar: React.FC = () => {
                     </button>
                 </div>
 
-                <h3 className={styles.artistName} onClick={() => navigate(`/artist/${currentSong.artist}`)}>{currentSong?.artistName}</h3>
+                <h3
+                className={styles.artistName}
+                onClick={() => {
+                    if(mainContent && header) {
+                        mainContent.scrollTop = 0
+                        header.style.background = 'transparent'
+                        navigate(`/artist/${currentSong.artist}`)
+                    }
+                }}
+                >
+                    {currentSong?.artistName}
+                </h3>
 
                 <div className={styles.aboutSection}>
                     <button>

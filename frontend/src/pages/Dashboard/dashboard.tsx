@@ -13,6 +13,11 @@ import { useNavigate } from "react-router-dom";
 import styles from "./dashboard.module.css";
 
 export const Dashboard: React.FC = () => {
+
+  // use to reset top of page when navigating
+  const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLDivElement | null;
+  const header = document.querySelector('.header_header__lOwdN') as HTMLDivElement | null;
+
   const navigate = useNavigate()
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -102,9 +107,17 @@ export const Dashboard: React.FC = () => {
         {recommendedAlbums.map((album, index) => (
           <div key={index} onClick={(e) => {
             if ((e.target as HTMLElement).tagName.toLowerCase() === 'p') {
-              navigate(`/artist/${album.artist}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/artist/${album.artist}`)
+              }
             } else {
-              navigate(`/album/${album._id}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/album/${album._id}`)
+              }
             }
             }}>
             <div>
@@ -128,9 +141,17 @@ export const Dashboard: React.FC = () => {
         {recentlyViewed.map((album: any, index) => (
           <div key={index} onClick={(e) => {
             if ((e.target as HTMLElement).tagName.toLowerCase() === 'p') {
-              navigate(`/artist/${album.artist}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/artist/${album.artist}`)
+              }
             } else {
-              navigate(`/album/${album._id}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/album/${album._id}`)
+              }
             }
             }}>
           <div>
@@ -152,7 +173,16 @@ export const Dashboard: React.FC = () => {
       <h2 className={styles.recommended}>Popular Artists</h2>
       <div className={styles.mainGridSection}>
         {popularArtists.map((artist: any, index) => (
-          <div key={index} onClick={() => navigate(`/artist/${artist._id}`)}>
+          <div
+            key={index}
+            onClick={() => {
+              if (mainContent && header) {
+                mainContent.scrollTop = 0; // Set scroll position to the top
+                header.style.background = 'transparent';
+                navigate(`/artist/${artist._id}`)
+              }
+            }}
+          >
             <div>
             <img
               src={artist.aboutImage as string}

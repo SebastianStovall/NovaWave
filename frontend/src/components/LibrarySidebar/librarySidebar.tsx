@@ -20,6 +20,10 @@ export const LibrarySidebar: React.FC = () => {
         setLibraryUpdated: (value: boolean) => {} // Initial value for setLibraryUpdated
     }
 
+    // use to reset top of page when navigating
+    const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLDivElement | null;
+    const header = document.querySelector('.header_header__lOwdN') as HTMLDivElement | null;
+
     // local state
     const userLibrary = useAppSelector((state) => state.library );
     const user: any = useAppSelector((state) => state.session.user);
@@ -85,7 +89,12 @@ export const LibrarySidebar: React.FC = () => {
 
                     <div className={styles.topNav}>
                         <ul>
-                            <li>
+                            <li onClick={() => {
+                                if(mainContent && header) {
+                                    mainContent.scrollTop = 0
+                                    header.style.background = 'transparent'
+                                }
+                            }}>
                                 <Link to="/">
                                     <span className="fa fa-home"></span>
                                     {!isMobileView && <span>Home</span>}
@@ -123,7 +132,11 @@ export const LibrarySidebar: React.FC = () => {
                                     className={styles.item}
                                     onContextMenu={(e) => handleContextMenu(e, 'playlist', playlist._id)} // tooltip available on this div
                                     onClick={() => {
-                                        if(playlist._id === user.likedSongsPlaylistId) navigate('/collection/tracks')
+                                        if(playlist._id === user.likedSongsPlaylistId && mainContent && header) {
+                                            mainContent.scrollTop = 0
+                                            header.style.background = 'transparent'
+                                            navigate('/collection/tracks')
+                                        }
                                     }}
                                     >
                                         <div className={styles.mainInfo}>
@@ -143,7 +156,11 @@ export const LibrarySidebar: React.FC = () => {
                                     className={styles.item}
                                     onContextMenu={(e) => handleContextMenu(e, 'album', album._id)} // tooltip available on this div
                                     onClick={() => {
-                                        navigate(`/album/${album._id}`)
+                                        if(mainContent && header) {
+                                            mainContent.scrollTop = 0
+                                            header.style.background = 'transparent'
+                                            navigate(`/album/${album._id}`)
+                                        }
                                     }}
                                     >
                                         <div className={styles.mainInfo}>
@@ -163,7 +180,11 @@ export const LibrarySidebar: React.FC = () => {
                                     className={styles.item}
                                     onContextMenu={(e) => handleContextMenu(e, 'artist', artist._id)} // tooltip available on this div
                                     onClick={() => {
-                                        navigate(`/artist/${artist._id}`)
+                                        if(mainContent && header) {
+                                            mainContent.scrollTop = 0
+                                            header.style.background = 'transparent'
+                                            navigate(`/artist/${artist._id}`)
+                                        }
                                     }}
                                     >
                                         <div className={styles.mainInfo}>
