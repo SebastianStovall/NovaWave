@@ -74,9 +74,10 @@ export const restoreUser = createAsyncThunk('session/restoreUser', async (_, thu
       const data = await response.json();
       return data.isLoggedIn ? data.user : null;
     } else {
-      const error = await response.json();
-      console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
-      return thunkAPI.rejectWithValue(error);
+      // const error = await response.json();
+      // console.error('fetch in thunk was successful, but didnt emit a successful res.status code')
+      // return thunkAPI.rejectWithValue(error);
+      return null
     }
   } catch (e: any) {
     console.error("There was an issue performing fetch to /api/session/restoreUser")

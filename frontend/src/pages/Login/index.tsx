@@ -112,6 +112,7 @@ export const Login: React.FC = () => {
                     onClick={() => {
                       dispatch(login({email: 'sebastianstovall@gmail.com', password: 'password'}))
                       navigate('/')
+                      window.location.reload();
                     }}
                   >
                     Demo User
