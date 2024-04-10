@@ -164,11 +164,11 @@ export const NowPlayingSidebar: React.FC = () => {
                                     <div
                                         className={artistPageStyles.followButton} style={{transform: 'scale(0.95)', alignContent: 'center'}}
                                         onClick={() => {
-                                            handleAddOrRemoveFromLibrary('artist', mediaId, userLibrary)
+                                            handleAddOrRemoveFromLibrary('artist', currentSong.artist, userLibrary)
                                             setLibraryUpdated(true)
                                         }}
                                     >
-                                        {isEntityInLibrary('artist', mediaId, userLibrary) ? 'Following' : 'Follow'}
+                                        {isEntityInLibrary('artist', currentSong.artist, userLibrary) ? 'Following' : 'Follow'}
                                     </div>
                                 </div>
                             </div>

@@ -285,8 +285,16 @@
     color: var(--novawave-blue);
 }
 
+#inLikedSongs:hover {
+    cursor: pointer;
+}
+
 #notInLikedSongs {
     border: 0px;
+}
+
+#notInLikedSongs:hover {
+    cursor: pointer;
 }
 
 /* Styles for if album is or not in library */

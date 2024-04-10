@@ -42,6 +42,9 @@ async function removeFromLibrary(entityType: string, entityId: string) {
 
 // handles removing and favoriting to user library
 export async function handleAddOrRemoveFromLibrary(entityType: string, entityId: string, userLibrary: LibraryState) {
+    console.log("ENTITY ID", entityId)
+    console.log("ENTITY TYPE", entityType)
+    console.log("LIB", userLibrary)
     if(isEntityInLibrary(entityType, entityId, userLibrary)) {
         await removeFromLibrary(entityType, entityId)
     } else {
