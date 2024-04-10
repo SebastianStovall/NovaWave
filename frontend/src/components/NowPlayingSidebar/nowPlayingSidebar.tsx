@@ -62,12 +62,12 @@ export const NowPlayingSidebar: React.FC = () => {
     useEffect(() => { // hot refresh inside of liked songs media view page
         let mediaInfo = {mediaType, mediaId}
         if(mediaInfo.mediaType === 'collection') mediaInfo.mediaType = 'playlist'
-        if(mediaInfo.mediaId === 'tracks') mediaInfo.mediaId = user.likedSongsPlaylistId
+        if(mediaInfo.mediaId === 'tracks' && user) mediaInfo.mediaId = user?.likedSongsPlaylistId
 
         if(mediaType === 'collection') { // if on liked songs page
             dispatch(updateCurrentMedia(mediaInfo))
         }
-    }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId, likedSongsUpdated])
+    }, [dispatch, location.pathname, mediaId, mediaType, user, likedSongsUpdated])
 
     // UI HOT REFRESH
     useEffect(() => {
@@ -75,8 +75,10 @@ export const NowPlayingSidebar: React.FC = () => {
     }, [dispatch, libraryUpdated])
 
     useEffect(() => {
-        dispatch(getAllIdsInLikedSongs())
-    }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+        if(user) {
+            dispatch(getAllIdsInLikedSongs())
+        }
+    }, [dispatch, likedSongsUpdated, user]) // retreive new liked songs when adding/removing track for the new UI update
 
     useEffect(() => { // reset for subsequent UI updates
         if (likedSongsUpdated) {

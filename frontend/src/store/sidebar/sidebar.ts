@@ -4,7 +4,7 @@ interface SidebarState {
     active: boolean
 }
 
-const nowPlayingSidebarState = JSON.parse(localStorage.getItem('nowPlayingSidebarState') || 'false')
+const nowPlayingSidebarState = JSON.parse(localStorage.getItem('nowPlayingSidebarState') || 'true')
 const initialState: SidebarState = { active: nowPlayingSidebarState }
 
 const sidebarSlice = createSlice({

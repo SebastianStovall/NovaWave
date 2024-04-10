@@ -116,7 +116,7 @@ export const LibrarySidebar: React.FC = () => {
                                 <p>Date Added</p>
                             </div>}
 
-                            <div className={styles.userPlaylists}>
+                            { user ? <div className={styles.userPlaylists}>
                                 {Object.values(userLibrary.playlists).map(playlist => (
                                     <div
                                     key={playlist._id}
@@ -175,7 +175,24 @@ export const LibrarySidebar: React.FC = () => {
                                         </div>
                                     </div>
                                 ))}
-                            </div>
+                            </div> :
+
+                            // if user not signed in, they will see this library sidebar content
+                            <>
+                                <div className={styles.redirectUser}>
+                                    <h3>Create your first playlist</h3>
+                                    <p>Its easy, we'll help you</p>
+                                    <button onClick={() => navigate('/login')}>Create playlist</button>
+                                </div>
+
+                                <div className={styles.redirectUser}>
+                                    <h3>Let's find some artists to follow</h3>
+                                    <p>We'll keep you updated on upcoming artists</p>
+                                    <button onClick={() => navigate('/login')}>Browse artists</button>
+                                </div>
+                            </>
+
+                            }
 
                         </div>
                     </div>
@@ -184,7 +201,7 @@ export const LibrarySidebar: React.FC = () => {
 
                 </div>
             </div>
-        <div className={styles.resizebar} onMouseDown={handleMouseDown}></div> {/* attach handleMouseDown to resizebar div */}
+            <div className={styles.resizebar} onMouseDown={handleMouseDown}></div> {/* attach handleMouseDown to resizebar div */}
         </>
     );
 };

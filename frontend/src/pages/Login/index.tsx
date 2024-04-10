@@ -31,21 +31,19 @@ export const Login: React.FC = () => {
       email: email,
       password: password,
     };
-    console.log('am i here bros')
     const response = await dispatch(login(user));
     if(response.meta.requestStatus === 'rejected') {
       setErrors(response.payload.error)
     } else {
       navigate('/')
+      window.location.reload();
     }
-    console.log('res -----------------', response.meta)
   };
 
 
   return (
     <div>
       <div className={styles.header}>
-        Header
       </div>
 
       <div className={styles.mainGradient}>
@@ -134,7 +132,6 @@ export const Login: React.FC = () => {
       </div>
 
       <div className={styles.header}>
-        footer
       </div>
 
     </div>

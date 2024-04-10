@@ -288,7 +288,10 @@ export const Header: React.FC = () => {
               <img
                 src="https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg"
                 alt="pf-pic"
-                onClick={logoutUser}
+                onClick={() => {
+                  logoutUser()
+                  window.location.reload();
+                }}
               />
             </button>
           </div>

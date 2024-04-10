@@ -72,8 +72,10 @@ export const MediaView: React.FC = () => {
     }, [dispatch, libraryUpdated])
 
     useEffect(() => {
-        dispatch(getAllIdsInLikedSongs())
-    }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+        if(user) {
+            dispatch(getAllIdsInLikedSongs())
+        }
+    }, [dispatch, likedSongsUpdated, user]) // retreive new liked songs when adding/removing track for the new UI update
 
     useEffect(() => { // reset for subsequent UI updates
         if (likedSongsUpdated) {
@@ -87,7 +89,7 @@ export const MediaView: React.FC = () => {
     useMediaViewResize();
 
     if(isLoading || likedSongsLoading) {
-        return <p>...Loading</p>
+        return <div></div>
     }
 
 

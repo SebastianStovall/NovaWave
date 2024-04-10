@@ -49,7 +49,6 @@ export const Signup: React.FC = () => {
   return (
     <div>
       <div className={styles.header}>
-        Header
       </div>
 
       <div className={styles.mainGradient}>
@@ -161,7 +160,6 @@ export const Signup: React.FC = () => {
       </div>
 
       <div className={styles.header}>
-        footer
       </div>
 
     </div>

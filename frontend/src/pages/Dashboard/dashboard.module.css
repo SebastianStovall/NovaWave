@@ -193,3 +193,99 @@
 .artistClick:hover {
     text-decoration: underline;
 }
+
+
+
+/* User Signed Out Styles */
+
+@keyframes bg-animation {
+    0% {background-position: left}
+    100% {background-position: right}
+}
+
+.redirectUser {
+    display: flex;
+    height: 500px;
+    background: linear-gradient(to right, #ae2896, #509bf5);
+    background-size: 300%;
+    border-radius: 10px;
+    margin-top: 30px;
+    animation: bg-animation 5s infinite alternate;
+}
+
+.redirectUser > div:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+.redirectUser > div > img {
+    height: 80%;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.redirectUser > div:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.redirectUser > div:last-child > h3 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -.4px;
+    line-height: normal;
+    margin: 32px 0 0;
+    font-size: 32px;
+    margin: 8px 0 24px;
+    text-align: center;
+}
+
+.redirectUser > div:last-child > button {
+    background-color: white;
+    border: none;
+    color: #000000;
+    display: flex;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 9999px;
+    min-block-size: 48px;
+    align-items: center;
+    justify-content: center;
+    padding-block-start: 8px;
+    padding-block-end: 8px;
+    padding-inline-start: 32px;
+    padding-inline-end: 32px;
+    width: 180px;
+}
+
+.redirectUser > div:last-child > p {
+    margin-top: 10px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.redirectUser > div:last-child > button:last-child {
+    background-color: white;
+    border: none;
+    color: #000000;
+    display: flex;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 9999px;
+    min-block-size: 48px;
+    align-items: center;
+    justify-content: center;
+    padding-block-start: 8px;
+    padding-block-end: 8px;
+    padding-inline-start: 32px;
+    padding-inline-end: 32px;
+    width: 200px;
+}
+
+.redirectUser > div:last-child > button:hover {
+    cursor: pointer;
+}
