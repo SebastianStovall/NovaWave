@@ -8,7 +8,6 @@ export function useDashboardResizeStylings(dependencies: any) {
         const resizeObserver = new ResizeObserver(entries => { //? Monitor Width Change of Main Content. Depending on its width, change styling for .quickPlayGrid
             entries.forEach(entry => {
                 const { width } = entry.contentRect;
-                // console.log(`Element width changed to ${width}`);
 
                 if(quickPlayGrid) {
                     if(width <= 922) { //* quickPlayGrid Styling

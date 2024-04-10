@@ -7,7 +7,6 @@ import { get } from 'lodash';
 export const register: RequestHandler = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
-    console.log(req.body)
 
     if (!email || !password || !username) {
       throw new CustomError(
@@ -91,7 +90,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     res
       .status(200)
-      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username, likedSongsId: user.likedSongsPlaylistId} });
+      .json({ message: "Successfully Logged In User", user: {id: user._id, email: user.email, username: user.username, likedSongsPlaylistId: user.likedSongsPlaylistId} });
   } catch (e: any) {
     next(e)
   }

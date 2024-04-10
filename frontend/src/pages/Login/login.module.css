@@ -188,6 +188,10 @@
     width: 100%;
 }
 
+.button:hover {
+    cursor: pointer;
+}
+
 .formHr2{
     margin: 32px 100px;
     border-right: none;

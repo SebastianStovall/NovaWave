@@ -49,7 +49,6 @@ export const Signup: React.FC = () => {
   return (
     <div>
       <div className={styles.header}>
-        Header
       </div>
 
       <div className={styles.mainGradient}>
@@ -134,6 +133,17 @@ export const Signup: React.FC = () => {
 
                 <div className={styles.buttonContainer}>
                   <button className={styles.button} type='submit'>Sign up</button>
+                  <button
+                    className={styles.button}
+                    type="button"
+                    style={{marginTop: '15px'}}
+                    onClick={() => {
+                      dispatch(login({email: 'sebastianstovall@gmail.com', password: 'password'}))
+                      navigate('/')
+                    }}
+                  >
+                    Demo User
+                  </button>
                 </div>
               </div>
             </div>
@@ -161,7 +171,6 @@ export const Signup: React.FC = () => {
       </div>
 
       <div className={styles.header}>
-        footer
       </div>
 
     </div>

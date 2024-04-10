@@ -47,14 +47,14 @@ const dashboardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getQuickplayGridThunk.fulfilled, (state, action) => {
-        state.quickplayLoading = false
         state.quickplayGrid = action.payload;
+        state.quickplayLoading = false
       })
       .addCase(getGridInfo.fulfilled, (state, action) => {
-        state.gridsLoading = false
         state.recommendedForToday = action.payload.recommendedAlbums;
         state.popularArtists = action.payload.popularArtists;
         state.recentlyViewed = action.payload.recentlyViewed;
+        state.gridsLoading = false
       })
   },
 });

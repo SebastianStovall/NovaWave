@@ -25,8 +25,6 @@ const App: React.FC = () => {
     dispatch(initializeStoreWithDummyTrack())
   }, [dispatch]);
 
-  console.log("PAGE RE-RENDER FROM APP")
-
   return (
     <div>
       { isLoaded && (

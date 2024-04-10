@@ -17,12 +17,16 @@ import { getUserLibraryThunk } from '../../store/library/library'
 
 export const MediaView: React.FC = () => {
 
+    // use to reset top of page when navigating
+    const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLDivElement | null;
+    const header = document.querySelector('.header_header__lOwdN') as HTMLDivElement | null;
+    const navigate = useNavigate()
+
     // location util help
     const location = useLocation();
     const mediaType = location.pathname.split('/')[1];
     const mediaId = location.pathname.split('/')[2];
 
-    const navigate = useNavigate()
 
     // media slice
     const dispatch = useAppDispatch();
@@ -72,8 +76,10 @@ export const MediaView: React.FC = () => {
     }, [dispatch, libraryUpdated])
 
     useEffect(() => {
-        dispatch(getAllIdsInLikedSongs())
-    }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+        if(user) {
+            dispatch(getAllIdsInLikedSongs())
+        }
+    }, [dispatch, likedSongsUpdated, user]) // retreive new liked songs when adding/removing track for the new UI update
 
     useEffect(() => { // reset for subsequent UI updates
         if (likedSongsUpdated) {
@@ -87,7 +93,7 @@ export const MediaView: React.FC = () => {
     useMediaViewResize();
 
     if(isLoading || likedSongsLoading) {
-        return <p>...Loading</p>
+        return <div></div>
     }
 
 
@@ -107,7 +113,13 @@ export const MediaView: React.FC = () => {
                         <img src={mediaType === 'album' ? currentAlbumMedia?.artistImg : 'https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg'} width='24px' height='24px' alt='artist/owner' />
                         <span
                             id={mediaType === 'album' ? styles.navigateToArtist : ''}
-                            onClick={() => mediaType === 'album' && navigate(`/artist/${currentAlbumMedia?.artist}`)}
+                            onClick={() => {
+                                if(mediaType === 'album' && mainContent && header) {
+                                    mainContent.scrollTop = 0
+                                    header.style.background = 'transparent'
+                                    navigate(`/artist/${currentAlbumMedia?.artist}`)
+                                }
+                            }}
                         >
                             {mediaType === 'album' ? currentAlbumMedia?.artistName : user?.username}
                         </span>
@@ -182,7 +194,18 @@ export const MediaView: React.FC = () => {
                             <div className={styles.song}>
                                 <div>
                                     <p id={currentSong._id === track._id ? styles.activeTitleText : ''}>{track.title}</p>
-                                    <p id={styles.navigateToArtist} onClick={() => navigate(`/artist/${track.artist}`)}>{track.artistName}</p>
+                                    <p
+                                        id={styles.navigateToArtist}
+                                        onClick={() => {
+                                            if(mainContent && header) {
+                                                mainContent.scrollTop = 0
+                                                header.style.background = 'transparent'
+                                                navigate(`/artist/${track.artist}`)
+                                            }
+                                        }}
+                                    >
+                                        {track.artistName}
+                                    </p>
                                 </div>
                                 <i
                                     className={ isTargetSongInLikedSongs(track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
@@ -225,7 +248,18 @@ export const MediaView: React.FC = () => {
                             <div className={styles.song}>
                                 <div>
                                     <p id={currentSong._id === track.track._id ? styles.activeTitleText : ''}>{track.track.title}</p>
-                                    <p id={styles.navigateToArtist} onClick={() => navigate(`/artist/${track.track.artist}`)}>{track.track.artistName}</p>
+                                    <p
+                                    id={styles.navigateToArtist}
+                                    onClick={() => {
+                                        if(mainContent && header) {
+                                            mainContent.scrollTop = 0
+                                            header.style.background = 'transparent'
+                                            navigate(`/artist/${track.track.artist}`)
+                                        }
+                                    }}
+                                    >
+                                        {track.track.artistName}
+                                    </p>
                                 </div>
                                 <i
                                 className={ isTargetSongInLikedSongs(track.track._id, likedSongs) === true ? 'fa fa-heart' : 'fa fa-heart-o'}
