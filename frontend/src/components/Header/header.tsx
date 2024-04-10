@@ -157,9 +157,12 @@ export const Header: React.FC = () => {
     };
   }, [headerState, location.pathname]);
 
-  const logoutUser = async () => {
-    await dispatch(logout());
+  const logoutUser = () => {
     navigate("/");
+    dispatch(logout());
+    setTimeout(() => {
+      window.location.reload();
+    }, 500)
   };
 
   function playOrPause() {
@@ -294,7 +297,6 @@ export const Header: React.FC = () => {
                 alt="pf-pic"
                 onClick={() => {
                   logoutUser()
-                  window.location.reload();
                 }}
               />
             </button>

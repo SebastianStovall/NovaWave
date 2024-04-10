@@ -11,7 +11,6 @@ const lodash_1 = require("lodash");
 const register = async (req, res, next) => {
     try {
         const { email, password, username } = req.body;
-        console.log(req.body);
         if (!email || !password || !username) {
             throw new CustomError_1.default("MissingFieldError", "A required field is missing", 422);
         }
@@ -60,7 +59,7 @@ const login = async (req, res, next) => {
         }); // store session token as cookie
         res
             .status(200)
-            .json({ message: "Successfully Logged In User", user: { id: user._id, email: user.email, username: user.username, likedSongsId: user.likedSongsPlaylistId } });
+            .json({ message: "Successfully Logged In User", user: { id: user._id, email: user.email, username: user.username, likedSongsPlaylistId: user.likedSongsPlaylistId } });
     }
     catch (e) {
         next(e);

@@ -72,7 +72,6 @@ export const restoreUser = createAsyncThunk('session/restoreUser', async (_, thu
 
     if (response.ok) {
       const data = await response.json();
-      data.isLoggedIn ? console.log("USER: ", data.user) : console.log('No Signed In User');
       return data.isLoggedIn ? data.user : null;
     } else {
       const error = await response.json();
