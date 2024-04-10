@@ -29,7 +29,7 @@ export function getLikedSongsPlaylistLength(currentPlaylistMedia: any) { // get 
 
 export function isTargetSongInLikedSongs(trackId: string, likedSongIds: string[]) { // Check if a song is in user's liked songs
     if(!trackId) return
-    
+
     const indexOfCurrentSong = likedSongIds.findIndex((_id: string) => _id === trackId)
     return indexOfCurrentSong >= 0
 }

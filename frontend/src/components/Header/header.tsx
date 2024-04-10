@@ -37,10 +37,10 @@ export const Header: React.FC = () => {
     const handleScroll = () => {
       const mainContent = document.querySelector(
         ".layout_mainContent__ZQulu"
-      ) as HTMLElement;
+      ) as HTMLElement | null;
       const header = document.querySelector(
         ".header_header__lOwdN"
-      ) as HTMLElement;
+      ) as HTMLElement | null;
 
       if (mainContent && header) {
         const scrollPosition = mainContent.scrollTop;
@@ -60,21 +60,23 @@ export const Header: React.FC = () => {
 
           const playButtonContainer = document.querySelector(
             ".mediaView_mediaContent__9MFyo"
-          ) as HTMLDivElement;
+          ) as HTMLDivElement | null;
           const headerPlayButton = document.querySelector(
             ".mediaView_resumeAndPause__hK21k"
-          ) as HTMLDivElement;
+          ) as HTMLDivElement | null;
           const headerMediaText = document.querySelector(
             ".header_headerMediaText__u3IHJ"
-          ) as HTMLDivElement;
+          ) as HTMLDivElement | null;
 
           //* TOGGLE MEDIA TITLE TEXT + PLAY BUTTON OPACITY DEPENDING ON SCROLL POSITION
-          if (scrollPosition >= playButtonContainer.scrollHeight + 10) {
+          if (playButtonContainer && headerPlayButton && headerMediaText && scrollPosition >= playButtonContainer.scrollHeight + 10) {
             headerPlayButton.style.opacity = "1";
             headerMediaText.style.opacity = "1";
           } else {
-            headerPlayButton.style.opacity = "0";
-            headerMediaText.style.opacity = "0";
+            if(headerPlayButton && headerMediaText) {
+              headerPlayButton.style.opacity = "0";
+              headerMediaText.style.opacity = "0";
+            }
           }
         } else if (location.pathname.split("/")[1] === "artist") {
           // ARTIST PAGE
@@ -108,21 +110,23 @@ export const Header: React.FC = () => {
 
           const artistBackgroundContainer = document.querySelector(
             ".artistView_coverBannerBackground__eHIZw"
-          ) as HTMLDivElement;
+          ) as HTMLDivElement | null;
           const headerPlayButton = document.querySelector(
             ".mediaView_resumeAndPause__hK21k"
-          ) as HTMLDivElement;
+          ) as HTMLDivElement | null;
           const headerMediaText = document.querySelector(
             ".header_headerMediaText__u3IHJ"
-          ) as HTMLDivElement;
+          ) as HTMLDivElement | null;
 
           //* TOGGLE MEDIA TITLE TEXT + PLAY BUTTON OPACITY DEPENDING ON SCROLL POSITION
-          if (scrollPosition >= artistBackgroundContainer.clientHeight + 14) {
+          if (headerPlayButton && headerMediaText && artistBackgroundContainer && scrollPosition >= artistBackgroundContainer.clientHeight + 14) {
             headerPlayButton.style.opacity = "1";
             headerMediaText.style.opacity = "1";
           } else {
-            headerPlayButton.style.opacity = "0";
-            headerMediaText.style.opacity = "0";
+            if(headerPlayButton && headerMediaText) {
+              headerPlayButton.style.opacity = "0";
+              headerMediaText.style.opacity = "0";
+            }
           }
         }
 
@@ -153,9 +157,12 @@ export const Header: React.FC = () => {
     };
   }, [headerState, location.pathname]);
 
-  const logoutUser = async () => {
-    await dispatch(logout());
+  const logoutUser = () => {
     navigate("/");
+    dispatch(logout());
+    setTimeout(() => {
+      window.location.reload();
+    }, 500)
   };
 
   function playOrPause() {
@@ -288,7 +295,9 @@ export const Header: React.FC = () => {
               <img
                 src="https://i.pinimg.com/736x/35/99/27/359927d1398df943a13c227ae0468357.jpg"
                 alt="pf-pic"
-                onClick={logoutUser}
+                onClick={() => {
+                  logoutUser()
+                }}
               />
             </button>
           </div>

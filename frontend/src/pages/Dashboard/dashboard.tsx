@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styles from "./dashboard.module.css";
 import { usePalette } from "react-palette";
 import { hexToRgb, handleMouseEnter, handleMouseLeave } from "../../utils/gradientOverlayUtils";
 import { useDashboardResizeStylings } from "../../hooks/useDashboardResizeStylings";
@@ -11,7 +10,14 @@ import { getQuickplayGridThunk, getGridInfo } from "../../store/dashboard/dashbo
 import {ArtistDocument, AlbumDocument, PlaylistDocument} from '../../../../backend/src/db/models/modelTypes';
 import { useNavigate } from "react-router-dom";
 
+import styles from "./dashboard.module.css";
+
 export const Dashboard: React.FC = () => {
+
+  // use to reset top of page when navigating
+  const mainContent = document.querySelector('.layout_mainContent__ZQulu') as HTMLDivElement | null;
+  const header = document.querySelector('.header_header__lOwdN') as HTMLDivElement | null;
+
   const navigate = useNavigate()
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -23,6 +29,8 @@ export const Dashboard: React.FC = () => {
   const quickplayLoading: boolean = useAppSelector((state) => state.dashboard.quickplayLoading)
   const gridsLoading: boolean = useAppSelector((state) => state.dashboard.gridsLoading)
 
+  const user: any = useAppSelector((state) => state.session.user)
+
   const gradientOverlay: HTMLElement | null = document.querySelector(
     ".dashboard_gradientOverlayForTransition__AEA6r"
     ) as HTMLElement;
@@ -32,22 +40,24 @@ export const Dashboard: React.FC = () => {
   const hoveredItem = hoveredIndex !== null ? userQuickplayGrid[hoveredIndex] : null
   const { data } = usePalette(
     /* { data, loading, error } */ /* //! Extracts Prominent Colors from an Image */
-    hoveredIndex !== null && hoveredItem !== null ? ( 'image' in hoveredItem ? hoveredItem.image as string : 'aboutImage' in hoveredItem ? hoveredItem.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png' ) : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'
+    hoveredIndex !== null && hoveredItem !== null ? ( (typeof hoveredItem === 'object' && 'image' in hoveredItem) ? hoveredItem.image as string : (typeof hoveredItem === 'object' && 'aboutImage' in hoveredItem) ? hoveredItem.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png' ) : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'
   );
 
   useEffect(() => {
-    dispatch(changeGradient('33, 17, 95')); // liked songs playlist purple
-    dispatch(changeMediaInfo(''));
-    dispatch(getQuickplayGridThunk());
-    dispatch(getGridInfo())
-  }, [dispatch]);
+    if(user) {
+      dispatch(changeGradient('33, 17, 95')); // liked songs playlist purple
+      dispatch(changeMediaInfo(''));
+      dispatch(getQuickplayGridThunk());
+      dispatch(getGridInfo())
+    }
+  }, [dispatch, user]);
 
-  if(quickplayLoading || gridsLoading ) {
-    return <p>...Loading</p>
+  if(user && (quickplayLoading || gridsLoading) ) {
+    return <div></div>
   }
 
   return (
-    <div className={styles.dashboard}>
+    (user ? <div className={styles.dashboard}>
       <div
         className={
           styles.gradientOverlayForTransition
@@ -69,9 +79,9 @@ export const Dashboard: React.FC = () => {
             }
             onMouseLeave={() => handleMouseLeave(gradientOverlay)}
             onClick={
-              'image' in item ?
+              (typeof item === 'object' && 'image' in item) ?
               () => navigate(`/album/${item._id}`) :
-              'name' in item ?
+              (typeof item === 'object' && 'name' in item) ?
               () => navigate(`/artist/${item._id}`) :
               index === 0 ?
               () => navigate(`/collection/tracks`) :
@@ -79,10 +89,10 @@ export const Dashboard: React.FC = () => {
             }
           >
             <div className={styles.imageContainer}>
-              <img src={ 'image' in item ? item.image as string : 'aboutImage' in item ? item.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'} alt="media_image" />
+              <img src={ (typeof item === 'object' && 'image' in item) ? item.image as string : (typeof item === 'object' && 'aboutImage' in item) ? item.aboutImage as string : 'https://sebass-novawave.s3.us-east-2.amazonaws.com/album-images/liked-songs-640.png'} alt="media_image" />
             </div>
             <div>
-              <p>{ 'title' in item ? item.title as string : 'name' in item ? item.name as string : 'Liked Songs'}</p>
+              <p>{ (typeof item === 'object' && 'title' in item) ? item.title as string : (typeof item === 'object' && 'name' in item) ? item.name as string : 'Liked Songs'}</p>
               <div>
                 <span>&#9654;</span>
               </div>
@@ -97,9 +107,17 @@ export const Dashboard: React.FC = () => {
         {recommendedAlbums.map((album, index) => (
           <div key={index} onClick={(e) => {
             if ((e.target as HTMLElement).tagName.toLowerCase() === 'p') {
-              navigate(`/artist/${album.artist}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/artist/${album.artist}`)
+              }
             } else {
-              navigate(`/album/${album._id}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/album/${album._id}`)
+              }
             }
             }}>
             <div>
@@ -123,9 +141,17 @@ export const Dashboard: React.FC = () => {
         {recentlyViewed.map((album: any, index) => (
           <div key={index} onClick={(e) => {
             if ((e.target as HTMLElement).tagName.toLowerCase() === 'p') {
-              navigate(`/artist/${album.artist}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/artist/${album.artist}`)
+              }
             } else {
-              navigate(`/album/${album._id}`)
+              if(mainContent && header) {
+                mainContent.scrollTop = 0
+                header.style.background = 'transparent'
+                navigate(`/album/${album._id}`)
+              }
             }
             }}>
           <div>
@@ -147,7 +173,16 @@ export const Dashboard: React.FC = () => {
       <h2 className={styles.recommended}>Popular Artists</h2>
       <div className={styles.mainGridSection}>
         {popularArtists.map((artist: any, index) => (
-          <div key={index} onClick={() => navigate(`/artist/${artist._id}`)}>
+          <div
+            key={index}
+            onClick={() => {
+              if (mainContent && header) {
+                mainContent.scrollTop = 0; // Set scroll position to the top
+                header.style.background = 'transparent';
+                navigate(`/artist/${artist._id}`)
+              }
+            }}
+          >
             <div>
             <img
               src={artist.aboutImage as string}
@@ -163,6 +198,20 @@ export const Dashboard: React.FC = () => {
         ))}
       </div>
 
-    </div>
+    </div> :
+
+    <div className={styles.dashboard}>
+      <div className={styles.redirectUser} style={{height: '350px', width: '1000px'}}>
+        <div>
+          <img src="https://sebass-novawave.s3.us-east-2.amazonaws.com/playlist-photos/novawavelogoofficial.png" alt="novawave-no-sign-in"></img>
+        </div>
+        <div>
+          <h3>Start Listening with a free Novawave account</h3>
+          <button onClick={() => navigate('/signup')}>Sign up for free</button>
+          <p>Already have an account..?</p>
+          <button onClick={() => navigate('/login')}>Log In</button>
+        </div>
+      </div>
+    </div> )
   );
 };

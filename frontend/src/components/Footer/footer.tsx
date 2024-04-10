@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./footer.module.css";
 import mediaViewStyles from '../../pages/MediaView/mediaView.module.css'
 import { NowPlayingButton } from "../UI/nowPlayingButton/nowPlayingButton";
@@ -35,6 +35,7 @@ import { isTargetSongInLikedSongs, handleFavoriteSong } from "../../utils/audio/
 
 export const Footer: React.FC = () => {
   const user: any = useAppSelector((state) => state.session.user);
+  const navigate = useNavigate()
 
   const dispatch = useAppDispatch();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -116,16 +117,18 @@ const handleVolume = ( value: number | number[]) => {
   useEffect(() => { // hot refresh inside of liked songs media view page
     let mediaInfo = {mediaType, mediaId}
     if(mediaInfo.mediaType === 'collection') mediaInfo.mediaType = 'playlist'
-    if(mediaInfo.mediaId === 'tracks') mediaInfo.mediaId = user.likedSongsPlaylistId
+    if(mediaInfo.mediaId === 'tracks' && user) mediaInfo.mediaId = user?.likedSongsPlaylistId
 
     if(mediaType === 'collection') { // if on liked songs page
       dispatch(updateCurrentMedia(mediaInfo))
     }
-  }, [dispatch, location.pathname, mediaId, mediaType, user.likedSongsPlaylistId, likedSongsUpdated])
+  }, [dispatch, location.pathname, mediaId, mediaType, user, likedSongsUpdated])
 
   useEffect(() => {
-    dispatch(getAllIdsInLikedSongs())
-  }, [dispatch, likedSongsUpdated]) // retreive new liked songs when adding/removing track for the new UI update
+    if(user) {
+      dispatch(getAllIdsInLikedSongs())
+    }
+  }, [dispatch, likedSongsUpdated, user]) // retreive new liked songs when adding/removing track for the new UI update
 
   useEffect(() => { // reset for subsequent UI updates
     if (likedSongsUpdated) {
@@ -258,7 +261,7 @@ const handleVolume = ( value: number | number[]) => {
             <h6>Preview of NovaWave</h6>
             <p>Sign up to start listening to your favorite songs.</p>
           </div>
-          <button>Sign up Free</button>
+          <button onClick={() => navigate('/login')}>Sign up Free</button>
         </>
       )}
     </div>

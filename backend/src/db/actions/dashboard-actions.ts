@@ -83,6 +83,7 @@ export const getQuickplayDocuments = async(userId: string) => {
         if(userDocument.recentlyViewed.length < 5) { // if less than 5 items in recentlyViewed populate it (this will be for new users only)
             const nineRandomAlbums = await getRandomAlbums()
             userDocument.recentlyViewed = userDocument.recentlyViewed.concat(nineRandomAlbums);
+            await userDocument.populate('recentlyViewed')
             await userDocument.save();
 
         } else {
