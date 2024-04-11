@@ -102,10 +102,10 @@ export const LibrarySidebar: React.FC = () => {
                             </li>
 
                             <li>
-                                <a href="/">
+                                <Link to="/" onClick={() => alert('Search Feature Currently Unavailable')}>
                                     <span className="fa fa-search"></span>
                                     {!isMobileView && <span>Search</span>}
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

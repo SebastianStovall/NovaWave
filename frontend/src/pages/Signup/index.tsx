@@ -133,18 +133,6 @@ export const Signup: React.FC = () => {
 
                 <div className={styles.buttonContainer}>
                   <button className={styles.button} type='submit'>Sign up</button>
-                  <button
-                    className={styles.button}
-                    type="button"
-                    style={{marginTop: '15px'}}
-                    onClick={() => {
-                      dispatch(login({email: 'sebastianstovall@gmail.com', password: 'password'}))
-                      navigate('/')
-                      window.location.reload();
-                    }}
-                  >
-                    Demo User
-                  </button>
                 </div>
               </div>
             </div>
