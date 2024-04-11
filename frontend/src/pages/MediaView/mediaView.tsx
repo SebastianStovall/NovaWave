@@ -134,7 +134,14 @@ export const MediaView: React.FC = () => {
             <div className={styles.songsContainer} style={{background: `linear-gradient(rgba(0,0,0,.6) 0,rgba(18,18,18,1) 240px),rgba(${hexToRgb(data.muted)}, 1)`}}>
                 <div className={styles.controlButtons}>
                     <div className={styles.leftButtons}>
-                        <div className={styles.resumeAndPause} onClick={() => handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, mediaType, play, dispatch)}>
+                        <div
+                        className={styles.resumeAndPause}
+                        onClick={() => {
+                            if(currentPlaylistMedia &&  getLikedSongsPlaylistLength(currentPlaylistMedia) !== '0:00') {
+                                handlePlayFromStart(currentAlbumMedia, currentPlaylistMedia, currentSong, mediaType, play, dispatch)
+                            }
+                        }}
+                        >
                             {mediaType === 'album' && <div className={`${ (play && currentSong.album === mediaId) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>}
                             {mediaId === 'tracks' && <div className={`${ (play && isCurrentSongInLikedSongs(currentPlaylistMedia, currentSong)) ? `fas fa-pause` : `fas fa-play`} ${styles.playPause}` }></div>}
                         </div>

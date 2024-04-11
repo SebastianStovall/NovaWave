@@ -7,7 +7,7 @@ import { handlePlayFromStart } from "../../utils/audio/mediaViewHelpers";
 import mediaViewStyles from "../../pages/MediaView/mediaView.module.css";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../store/session/session";
-import { isCurrentSongInLikedSongs } from "../../utils/audio/likedSongsPlaylistHelpers";
+import { getLikedSongsPlaylistLength, isCurrentSongInLikedSongs } from "../../utils/audio/likedSongsPlaylistHelpers";
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -259,6 +259,10 @@ export const Header: React.FC = () => {
                 onClick={() => {
                   //! If you are on Media page, play the start of the album
                   if (location.pathname.split("/")[1] !== "artist") {
+                    if(location.pathname.split('/')[1] === 'collection' && currentPlaylistMedia && getLikedSongsPlaylistLength(currentPlaylistMedia) === '0:00') {
+                      // dont play if in collection that has no liked songs
+                      return
+                    }
                     handlePlayFromStart(
                       currentAlbumMedia,
                       currentPlaylistMedia,
